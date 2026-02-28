@@ -1,0 +1,175 @@
+import santaMaria from "@/assets/projects/santa-maria.jpg";
+import santaMaria2 from "@/assets/projects/santa-maria-2.jpg";
+import modernVilla from "@/assets/projects/modern-villa.jpg";
+import astoria1 from "@/assets/projects/astoria-1.jpg";
+import astoria2 from "@/assets/projects/astoria-2.jpg";
+
+export interface Project {
+  title: string;
+  slug: string;
+  category: string;
+  status: string;
+  image?: string;
+  video?: string;
+  location: string;
+  completionDate: string;
+  shortDescription: string;
+  detailedDescription: string;
+  concept: string;
+  designInspiration: string;
+  rendering: string;
+  gallery: string[];
+}
+
+export const allProjects: Project[] = [
+  {
+    title: "Hospital Santa Maria",
+    slug: "hospital-santa-maria",
+    category: "Commercial Architecture",
+    status: "Completed",
+    image: santaMaria,
+    location: "São Paulo, Brazil",
+    completionDate: "2025",
+    shortDescription: "A bold, angular hospital design that redefines healthcare architecture with dramatic cantilevered volumes and warm lighting.",
+    detailedDescription: "Hospital Santa Maria represents a paradigm shift in healthcare architecture. The design embraces angular geometry and cantilevered volumes to create a structure that is both monumental and welcoming. Warm LED accents trace the building's dramatic lines, while the ground-level transparency invites the public realm inward.",
+    concept: "The concept was born from the intersection of healing and architecture — a belief that the built environment directly impacts patient recovery. Angular forms symbolize strength and precision, while warm lighting creates a sense of safety and comfort.",
+    designInspiration: "Inspired by the works of Zaha Hadid and Santiago Calatrava, the design explores how acute angles and sweeping cantilevers can create drama without sacrificing function. The triangular crown element serves as both a wayfinding landmark and a symbol of upward momentum.",
+    rendering: "Rendered using V-Ray with careful attention to golden-hour lighting conditions. The exterior materials — white concrete, dark glass, and brushed metal — were calibrated to achieve photorealistic accuracy under natural Brazilian light.",
+    gallery: [santaMaria, santaMaria2, santaMaria],
+  },
+  {
+    title: "Modern Villa Residence",
+    slug: "modern-villa",
+    category: "Residential Design",
+    status: "Completed",
+    image: modernVilla,
+    location: "Nairobi, Kenya",
+    completionDate: "2024",
+    shortDescription: "A contemporary residential villa blending indoor-outdoor living with clean architectural lines.",
+    detailedDescription: "The Modern Villa Residence is a study in spatial fluidity. Expansive glass walls dissolve the boundary between interior and landscape, while concrete planes and timber screens create rhythm and privacy. Every room frames a curated view of the surrounding terrain.",
+    concept: "Designed around the principle of 'living landscapes' — each space opens to nature while maintaining architectural privacy. The villa functions as a sequence of interconnected pavilions rather than a monolithic structure.",
+    designInspiration: "Drawing from mid-century modernism and tropical contemporary architecture, the villa references the openness of Oscar Niemeyer's residential work and the material honesty of East African vernacular building traditions.",
+    rendering: "Produced with Corona Renderer, emphasizing natural light diffusion through the glazed facades. Interior scenes showcase material transitions between polished concrete, warm timber, and natural stone.",
+    gallery: [modernVilla, modernVilla, modernVilla],
+  },
+  {
+    title: "Lumina Tower",
+    slug: "lumina-tower",
+    category: "ArchViz",
+    status: "In Progress",
+    video: "/videos/lumina.mp4",
+    location: "Dubai, UAE",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A soaring mixed-use tower with a crystalline facade that captures and refracts desert light.",
+    detailedDescription: "Lumina Tower rises as a beacon of contemporary design in the Gulf skyline. Its faceted glass envelope is engineered to modulate solar gain while creating a shimmering, ever-changing exterior appearance. The tower houses premium residences, commercial floors, and a sky lounge.",
+    concept: "The tower's form is derived from the geometry of light refraction — each facade panel is angled to create dynamic reflections throughout the day, transforming the building into a living light sculpture.",
+    designInspiration: "Inspired by the prismatic quality of desert crystals and the vertical ambition of Gulf architecture. The design balances spectacle with environmental performance through its parametrically optimized skin.",
+    rendering: "Cinematic animation produced with Lumion and post-processed in DaVinci Resolve. Atmospheric effects including volumetric fog and lens flares were added to convey the tower's luminous character.",
+    gallery: [],
+  },
+  {
+    title: "Mar-A-Lago Concept",
+    slug: "mar-a-lago",
+    category: "Architectural Design",
+    status: "Design",
+    video: "/videos/mar-a-lago.mp4",
+    location: "Palm Beach, Florida",
+    completionDate: "Concept Phase",
+    shortDescription: "A conceptual reimagining of luxury coastal estate architecture with modernist sensibility.",
+    detailedDescription: "This conceptual project explores the tension between heritage estate architecture and contemporary minimalism. The design preserves the grandeur and symmetry of classical estate planning while introducing clean lines, frameless glass, and floating volumes.",
+    concept: "A dialogue between old and new — the project asks what a luxury coastal estate looks like when stripped of ornament and rebuilt with contemporary spatial logic. Courtyards, water features, and covered loggias create a procession of experiences.",
+    designInspiration: "Referencing the Mediterranean revival tradition while channeling the restraint of John Pawson and Tadao Ando. The result is an estate that feels timeless rather than historicist.",
+    rendering: "Animated walkthrough rendered in Unreal Engine 5 with Lumen global illumination. The cinematic camera path emphasizes spatial depth and material transitions.",
+    gallery: [],
+  },
+  {
+    title: "Urban Oasis",
+    slug: "urban-oasis",
+    category: "Product Visualization",
+    status: "Completed",
+    video: "/videos/vid-1.mp4",
+    location: "London, UK",
+    completionDate: "2024",
+    shortDescription: "Premium outdoor furniture visualization set within a curated rooftop terrace environment.",
+    detailedDescription: "Urban Oasis is a product visualization project showcasing a luxury outdoor furniture collection within a meticulously designed rooftop setting. Every element — from the fire pit to the pergola — was modeled and lit to convey warmth, comfort, and aspiration.",
+    concept: "The concept merges product showcase with lifestyle narrative. Rather than isolated product shots, each piece is presented within a complete environmental story — golden hour, city skyline, ambient fire glow.",
+    designInspiration: "Inspired by high-end hospitality design and the editorial quality of Architectural Digest photography. The rooftop setting references contemporary penthouse living in global cities.",
+    rendering: "Rendered with V-Ray Next, utilizing HDRI lighting captured on location. Post-production in Photoshop enhanced the twilight atmosphere and volumetric light effects.",
+    gallery: [],
+  },
+  {
+    title: "Skyline Residences",
+    slug: "skyline-residences",
+    category: "ArchViz",
+    status: "In Progress",
+    video: "/videos/ins-project.mp4",
+    location: "Singapore",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A residential tower visualization emphasizing vertical gardens and biophilic design principles.",
+    detailedDescription: "Skyline Residences explores the integration of nature into high-rise living. Cascading planters, sky gardens, and green terraces soften the tower's geometric form while providing residents with private outdoor spaces at every level.",
+    concept: "The project envisions a future where towers breathe — where vegetation is not decoration but integral to the building's identity and environmental performance.",
+    designInspiration: "Influenced by WOHA Architects and Stefano Boeri's Bosco Verticale. The design extends the biophilic movement into a tropical context with species-specific planting strategies for each elevation.",
+    rendering: "Produced as a cinematic fly-through using Twinmotion with custom vegetation assets. The animation emphasizes the interplay of light filtering through the planted terraces.",
+    gallery: [],
+  },
+  {
+    title: "Echelon Heights",
+    slug: "echelon-heights",
+    category: "ArchViz",
+    status: "In Progress",
+    video: "/videos/echelon.mp4",
+    location: "Nairobi, Kenya",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A premium mixed-use development visualization with bold massing and refined materiality.",
+    detailedDescription: "Echelon Heights is a mixed-use development combining residential, retail, and office spaces within a bold architectural composition. The stacked volumes create dynamic overhangs and recesses that provide shade and visual interest.",
+    concept: "The concept explores 'urban stacking' — programmatic volumes layered and offset to create visual complexity and functional diversity within a single structure.",
+    designInspiration: "Drawing from OMA's programmatic experiments and the material precision of David Chipperfield, the design balances boldness with refinement.",
+    rendering: "Cinematic animation rendered in Lumion with atmospheric post-processing. Night and day sequences showcase the building's dual character.",
+    gallery: [],
+  },
+  {
+    title: "Astoria Collection",
+    slug: "astoria-collection",
+    category: "Commercial Architecture",
+    status: "Completed",
+    image: astoria1,
+    location: "Rio de Janeiro, Brazil",
+    completionDate: "2025",
+    shortDescription: "A luxury residential tower with a distinctive podium design and refined urban presence.",
+    detailedDescription: "The Astoria Collection is a high-rise residential tower distinguished by its articulated podium and elegant facade composition. The lower levels feature double-height glass lobbies, curated landscaping, and covered entry sequences that establish a premium arrival experience.",
+    concept: "The design separates the tower into three zones — a civic podium, a residential shaft, and a crown — each with distinct architectural character but unified through material palette and proportional harmony.",
+    designInspiration: "Inspired by the sophisticated residential towers of São Paulo and the urban elegance of European apartment buildings. The facade rhythm references classical proportion while maintaining contemporary crispness.",
+    rendering: "Rendered with V-Ray, focusing on accurate representation of facade materials including natural stone, dark composite panels, and warm-toned glazing. Street-level scenes include realistic vegetation and automotive models.",
+    gallery: [astoria1, astoria2, astoria1],
+  },
+  {
+    title: "Sterling Manor",
+    slug: "sterling-manor",
+    category: "Residential Design",
+    status: "In Progress",
+    video: "/videos/sterling-manor.mp4",
+    location: "Cape Town, South Africa",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A contemporary manor house blending Cape Dutch heritage with modern minimalism.",
+    detailedDescription: "Sterling Manor reimagines the traditional Cape Dutch estate through a contemporary lens. Clean volumes replace ornamental gables, while the estate's relationship to landscape is preserved through expansive courtyards and framed mountain views.",
+    concept: "A respectful evolution of regional architectural identity — maintaining the estate typology's sense of arrival, symmetry, and landscape integration while stripping away historical pastiche.",
+    designInspiration: "Referencing both the Cape Dutch farmstead tradition and the minimal residential work of Vincent Van Duysen. Materials include lime-washed concrete, natural timber, and local stone.",
+    rendering: "Animated flyover produced in Twinmotion, emphasizing the estate's relationship to the surrounding vineyards and mountain backdrop.",
+    gallery: [],
+  },
+  {
+    title: "Acerion Tower",
+    slug: "acerion-tower",
+    category: "ArchViz",
+    status: "Design",
+    video: "/videos/acerion.mp4",
+    location: "Lagos, Nigeria",
+    completionDate: "Concept Phase",
+    shortDescription: "A conceptual supertall tower exploring parametric facade design and vertical urbanism.",
+    detailedDescription: "Acerion Tower is a conceptual exploration of supertall architecture in the West African context. The parametric facade responds to solar orientation, creating a building that performs environmentally while presenting a striking silhouette.",
+    concept: "The tower challenges the glass-box paradigm by introducing a responsive facade system that varies in opacity, angle, and depth based on environmental data — creating a building that breathes with its climate.",
+    designInspiration: "Inspired by the parametric explorations of Zaha Hadid Architects and the environmental ambition of Ken Yeang's bioclimatic towers. The form celebrates African urbanity and technological ambition.",
+    rendering: "Cinematic sequence rendered in Unreal Engine 5 with real-time global illumination. The animation showcases the tower from street level to aerial perspective.",
+    gallery: [],
+  },
+];
