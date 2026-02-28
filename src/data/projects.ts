@@ -3,6 +3,12 @@ import santaMaria2 from "@/assets/projects/santa-maria-2.jpg";
 import modernVilla from "@/assets/projects/modern-villa.jpg";
 import astoria1 from "@/assets/projects/astoria-1.jpg";
 import astoria2 from "@/assets/projects/astoria-2.jpg";
+import blueHorizon1 from "@/assets/projects/blue-horizon-1.jpg";
+import blueHorizon2 from "@/assets/projects/blue-horizon-2.jpg";
+import blueHorizon3 from "@/assets/projects/blue-horizon-3.jpg";
+import jardins1 from "@/assets/projects/jardins-1.jpg";
+import jardins2 from "@/assets/projects/jardins-2.jpg";
+import jardins3 from "@/assets/projects/jardins-3.jpg";
 
 export interface Project {
   title: string;
@@ -170,6 +176,66 @@ export const allProjects: Project[] = [
     concept: "The tower challenges the glass-box paradigm by introducing a responsive facade system that varies in opacity, angle, and depth based on environmental data — creating a building that breathes with its climate.",
     designInspiration: "Inspired by the parametric explorations of Zaha Hadid Architects and the environmental ambition of Ken Yeang's bioclimatic towers. The form celebrates African urbanity and technological ambition.",
     rendering: "Cinematic sequence rendered in Unreal Engine 5 with real-time global illumination. The animation showcases the tower from street level to aerial perspective.",
+    gallery: [],
+  },
+  {
+    title: "Jardins Tower",
+    slug: "jardins-tower",
+    category: "Commercial Architecture",
+    status: "Completed",
+    image: jardins1,
+    location: "São Paulo, Brazil",
+    completionDate: "2025",
+    shortDescription: "A striking stepped tower with a bold podium design, blending commercial and residential luxury in the heart of São Paulo.",
+    detailedDescription: "Jardins Tower is a landmark mixed-use development that commands attention through its distinctive stepped massing. The tower's cascading floor plates create generous terraces at every level, while the ground-floor podium features a dramatic framed glass facade that anchors the building to its urban context.",
+    concept: "The stepped form is derived from maximizing natural light and outdoor space at height — each setback creates a sky garden that connects residents to the tropical climate. The podium's bold frame establishes a civic presence.",
+    designInspiration: "Inspired by the layered urbanism of São Paulo's Jardins district and the sculptural towers of Isay Weinfeld. The material palette of white concrete, dark glass, and warm timber creates a refined tropical modernism.",
+    rendering: "Rendered with V-Ray using accurate Brazilian daylight conditions. The stepped facade materials were calibrated for photorealistic accuracy with careful attention to shadow play across the terraces.",
+    gallery: [jardins1, jardins2, jardins3],
+  },
+  {
+    title: "Blue Horizon Estate",
+    slug: "blue-horizon-estate",
+    category: "Residential Design",
+    status: "Completed",
+    video: "/videos/blue-horizon.mp4",
+    location: "Florianópolis, Brazil",
+    completionDate: "2025",
+    shortDescription: "An expansive contemporary estate with infinity pools, lush landscaping, and seamless indoor-outdoor living.",
+    detailedDescription: "Blue Horizon Estate is a sprawling luxury residence that dissolves the boundaries between architecture and landscape. The horizontal composition stretches across the site, embracing infinity-edge pools, cascading water features, and meticulously curated tropical gardens. A sculptural spiral staircase serves as the centerpiece.",
+    concept: "Designed as a series of interconnected pavilions rather than a single structure, the estate creates a journey through water, greenery, and light. Each wing opens to a distinct landscape experience — from the volleyball court to the infinity pool overlooking the horizon.",
+    designInspiration: "Drawing from the Brazilian modernist tradition of Marcio Kogan and the landscape architecture of Roberto Burle Marx. The estate celebrates the relationship between built form and tropical nature.",
+    rendering: "Cinematic walkthrough rendered in Lumion with drone-perspective sequences. Golden-hour lighting emphasizes the warmth of natural stone and timber against the lush vegetation.",
+    gallery: [blueHorizon1, blueHorizon2, blueHorizon3],
+  },
+  {
+    title: "Luna Residence",
+    slug: "luna-residence",
+    category: "Residential Design",
+    status: "In Progress",
+    video: "/videos/luna-project.mp4",
+    location: "Lisbon, Portugal",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A serene contemporary villa that captures the essence of coastal living with refined minimalism.",
+    detailedDescription: "Luna Residence is a contemporary coastal villa designed to frame panoramic ocean views. The architecture employs clean horizontal planes and floor-to-ceiling glazing to create a sense of floating above the landscape. Natural materials ground the design in its Mediterranean context.",
+    concept: "Named after the moon's influence on tides, the design mirrors the rhythm of coastal living — open, fluid spaces that shift in character from dawn to dusk. The architecture serves as a frame for nature rather than competing with it.",
+    designInspiration: "Influenced by the restrained elegance of Portuguese contemporary architecture and the coastal works of John Pawson. The material palette centers on local limestone, white plaster, and warm timber.",
+    rendering: "Animated walkthrough produced in Twinmotion with emphasis on natural light progression and ocean reflections through the glazed facades.",
+    gallery: [],
+  },
+  {
+    title: "BTS Studio Tour",
+    slug: "bts-studio-tour",
+    category: "Behind The Scenes",
+    status: "Completed",
+    video: "/videos/bts-tour-2.mp4",
+    location: "Nairobi, Kenya",
+    completionDate: "2025",
+    shortDescription: "An intimate look at the creative process behind Aureon's architectural visualization workflow.",
+    detailedDescription: "This behind-the-scenes project documents the complete visualization pipeline — from initial concept sketches through 3D modeling, material development, lighting setup, and final cinematic rendering. It showcases the tools, techniques, and creative decisions that bring architectural visions to life.",
+    concept: "Transparency in the creative process — revealing the craftsmanship behind every pixel. The tour demonstrates how artistic vision and technical precision converge to create compelling architectural narratives.",
+    designInspiration: "Inspired by documentary filmmaking and the studio visit tradition in fine art. The cinematic approach brings viewers into the creative environment and process.",
+    rendering: "Captured with professional cinema cameras and edited in DaVinci Resolve. Screen recordings of the 3D workflow are intercut with studio footage.",
     gallery: [],
   },
 ];
