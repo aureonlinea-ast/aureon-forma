@@ -26,7 +26,7 @@ const HeroSection = () => {
         <motion.img
           src={aureonLogo}
           alt="Aureon"
-          className="h-14 lg:h-20 w-auto mb-10"
+          className="h-10 lg:h-14 w-auto mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.8 }}
