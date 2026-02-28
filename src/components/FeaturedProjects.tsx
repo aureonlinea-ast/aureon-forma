@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { allProjects } from "@/data/projects";
 
-const featured = allProjects.slice(0, 3);
+const featuredSlugs = ["jardins-tower", "blue-horizon-estate", "luna-residence", "bts-studio-tour"];
+const featured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
 
 const FeaturedProjects = () => {
   return (
@@ -21,7 +22,7 @@ const FeaturedProjects = () => {
           <div className="w-12 h-[1px] bg-primary mt-6" />
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {featured.map((project, i) => (
             <motion.div
               key={project.slug}
