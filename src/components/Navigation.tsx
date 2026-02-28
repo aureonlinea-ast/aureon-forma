@@ -33,6 +33,23 @@ const Navigation = () => {
     setMobileOpen(false);
   }, [location]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  const menuItemVariants = {
+    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { delay: 0.1 + i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+    }),
+    exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+  };
+
   return (
     <>
       <motion.header
@@ -43,9 +60,9 @@ const Navigation = () => {
           scrolled ? "glass-surface" : "bg-transparent"
         }`}
       >
-        <div className="container mx-auto flex items-center justify-between px-6 py-4 lg:px-12 lg:py-5">
+        <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12 lg:py-5">
           <Link to="/" className="relative z-10">
-            <img src={aureonLogo} alt="Aureon" className="h-6 lg:h-8 w-auto brightness-100" />
+            <img src={aureonLogo} alt="Aureon" className="h-5 sm:h-6 lg:h-8 w-auto brightness-100" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-10">
@@ -92,18 +109,20 @@ const Navigation = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center gap-6 sm:gap-8"
           >
             {navLinks.map((link, i) => (
               <motion.div
                 key={link.href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
+                custom={i}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={menuItemVariants}
               >
                 <Link
                   to={link.href}
-                  className="text-2xl font-display font-light tracking-[0.1em] text-foreground hover:text-primary transition-colors"
+                  className="text-xl sm:text-2xl font-display font-light tracking-[0.1em] text-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </Link>
