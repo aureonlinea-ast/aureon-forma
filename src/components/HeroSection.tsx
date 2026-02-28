@@ -13,7 +13,8 @@ const HeroSection = () => {
           loop
           playsInline
           preload="auto"
-          className="w-full h-full object-cover animate-slow-zoom"
+          className="w-full h-full object-cover md:object-cover object-center animate-slow-zoom"
+          style={{ minWidth: '100%', minHeight: '100%' }}
         >
           <source src="/videos/hero-1.mp4" type="video/mp4" />
         </video>
@@ -26,7 +27,7 @@ const HeroSection = () => {
         <motion.img
           src={aureonLogo}
           alt="Aureon"
-          className="h-[72px] lg:h-[100px] w-auto mb-10"
+          className="h-[108px] lg:h-[150px] w-auto mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.8 }}

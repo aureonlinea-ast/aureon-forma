@@ -62,7 +62,7 @@ const Navigation = () => {
       >
         <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12 lg:py-5">
           <Link to="/" className="relative z-10">
-            <img src={aureonLogo} alt="Aureon" className="h-5 sm:h-6 lg:h-8 w-auto brightness-100" />
+            <img src={aureonLogo} alt="Aureon" className="h-[30px] sm:h-9 lg:h-12 w-auto brightness-100" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-10">
