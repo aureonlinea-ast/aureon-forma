@@ -64,21 +64,21 @@ const BehindTheScenesPage = () => {
           ))}
 
           {/* Videos */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <div className="flex flex-col gap-4 sm:gap-6">
             {videos.map((video, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
-                className="relative overflow-hidden aspect-video glass-surface"
+                className="relative overflow-hidden rounded-sm glass-surface w-full"
               >
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto block"
                 >
                   <source src={video.src} type="video/mp4" />
                 </video>

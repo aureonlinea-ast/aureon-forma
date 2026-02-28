@@ -95,7 +95,7 @@ export const allServices: Service[] = [
       "Rendering and color grading",
       "Delivery in required formats and resolutions",
     ],
-    headerVideo: "/videos/vid-1.mp4",
+    headerVideo: "/videos/echelon.mp4",
   },
   {
     title: "Branding & Marketing",
@@ -117,6 +117,6 @@ export const allServices: Service[] = [
       "Format adaptation across media",
       "Production-ready file delivery",
     ],
-    headerVideo: "/videos/behind-the-scenes.mp4",
+    headerVideo: "/videos/hypervsn.mp4",
   },
 ];
