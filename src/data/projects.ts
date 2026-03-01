@@ -9,6 +9,11 @@ import blueHorizon3 from "@/assets/projects/blue-horizon-3.jpg";
 import jardins1 from "@/assets/projects/jardins-1.jpg";
 import jardins2 from "@/assets/projects/jardins-2.jpg";
 import jardins3 from "@/assets/projects/jardins-3.jpg";
+import jardins4 from "@/assets/projects/jardins-4.jpg";
+import jardins5 from "@/assets/projects/jardins-5.jpg";
+import astra1 from "@/assets/projects/astra-1.jpg";
+import astra2 from "@/assets/projects/astra-2.jpg";
+import astra3 from "@/assets/projects/astra-3.jpg";
 
 export interface Project {
   title: string;
@@ -183,7 +188,7 @@ export const allProjects: Project[] = [
     slug: "jardins-tower",
     category: "Commercial Architecture",
     status: "Completed",
-    image: jardins1,
+    image: jardins5,
     location: "São Paulo, Brazil",
     completionDate: "2025",
     shortDescription: "A striking stepped tower with a bold podium design, blending commercial and residential luxury in the heart of São Paulo.",
@@ -191,7 +196,7 @@ export const allProjects: Project[] = [
     concept: "The stepped form is derived from maximizing natural light and outdoor space at height — each setback creates a sky garden that connects residents to the tropical climate. The podium's bold frame establishes a civic presence.",
     designInspiration: "Inspired by the layered urbanism of São Paulo's Jardins district and the sculptural towers of Isay Weinfeld. The material palette of white concrete, dark glass, and warm timber creates a refined tropical modernism.",
     rendering: "Rendered with V-Ray using accurate Brazilian daylight conditions. The stepped facade materials were calibrated for photorealistic accuracy with careful attention to shadow play across the terraces.",
-    gallery: [jardins1, jardins2, jardins3],
+    gallery: [jardins1, jardins2, jardins3, jardins4, jardins5],
   },
   {
     title: "Blue Horizon Estate",
@@ -237,5 +242,50 @@ export const allProjects: Project[] = [
     designInspiration: "Inspired by documentary filmmaking and the studio visit tradition in fine art. The cinematic approach brings viewers into the creative environment and process.",
     rendering: "Captured with professional cinema cameras and edited in DaVinci Resolve. Screen recordings of the 3D workflow are intercut with studio footage.",
     gallery: [],
+  },
+  {
+    title: "Virelle",
+    slug: "virelle",
+    category: "ArchViz",
+    status: "In Progress",
+    video: "/videos/virelle.mp4",
+    location: "Milan, Italy",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A sculptural residential tower with fluid balconies and an organic facade that evokes natural movement.",
+    detailedDescription: "Virelle is an architectural visualization of a residential tower that challenges rectilinear convention. Flowing balcony forms cascade down the facade, creating a dynamic silhouette that shifts appearance from every angle. The design integrates biophilic elements with luxury living.",
+    concept: "Inspired by the fluidity of water and organic growth patterns, Virelle's facade is a continuous ribbon of living spaces that blur the line between interior comfort and exterior expression.",
+    designInspiration: "Drawing from the organic architecture of MAD Architects and the sculptural towers of Jeanne Gang. The design celebrates movement, light, and the poetry of curved form in vertical living.",
+    rendering: "Cinematic flythrough rendered in Lumion with atmospheric fog and golden-hour lighting to emphasize the tower's sculptural quality.",
+    gallery: [],
+  },
+  {
+    title: "SilverWood",
+    slug: "silverwood",
+    category: "Residential Design",
+    status: "In Progress",
+    video: "/videos/silverwood.mp4",
+    location: "Zurich, Switzerland",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A contemporary alpine residence merging warm timber with sleek concrete in a forested mountain setting.",
+    detailedDescription: "SilverWood is a luxury mountain residence that harmonizes with its alpine surroundings. The design layers natural timber cladding over concrete volumes, creating a warm yet modern aesthetic. Floor-to-ceiling glazing frames panoramic mountain views from every living space.",
+    concept: "The residence is conceived as a series of interlocking timber and concrete volumes that step with the natural terrain, minimizing landscape disruption while maximizing views and natural light.",
+    designInspiration: "Influenced by the alpine modernism of Peter Zumthor and the material sensitivity of Herzog & de Meuron. The palette of silver-toned timber, exposed concrete, and local stone roots the design in its Swiss context.",
+    rendering: "Animated walkthrough produced in Twinmotion with emphasis on seasonal light changes and the interplay of timber textures against snow-covered landscapes.",
+    gallery: [],
+  },
+  {
+    title: "Astra Tower",
+    slug: "astra-tower",
+    category: "Commercial Architecture",
+    status: "Completed",
+    image: astra1,
+    location: "Goiânia, Brazil",
+    completionDate: "2025",
+    shortDescription: "A contemporary high-rise with a bold dark podium and refined facade articulation, blending urban density with residential elegance.",
+    detailedDescription: "Astra Tower is a premium residential high-rise that commands its streetscape through a striking material contrast — a dark composite podium anchors the tower while the upper floors feature warm-toned balconies and crisp white volumes. The rooftop amenity deck includes an infinity pool with panoramic city views.",
+    concept: "The design separates public and private realms through material identity — the podium's dark solidity conveys urban presence while the tower's lighter palette creates an aspirational residential character above.",
+    designInspiration: "Inspired by the contemporary Brazilian high-rise tradition and the material boldness of Aflalo/Gasperini. The facade rhythm balances repetition with variation through staggered balcony depths.",
+    rendering: "Rendered with V-Ray under twilight conditions to showcase the interplay of artificial lighting against the dramatic Brazilian sky. Interior amenity spaces were visualized with Corona Renderer for material accuracy.",
+    gallery: [astra1, astra2, astra3],
   },
 ];
