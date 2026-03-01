@@ -2,7 +2,18 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { allProjects } from "@/data/projects";
 
-const featuredSlugs = ["jardins-tower", "blue-horizon-estate", "luna-residence", "bts-studio-tour"];
+const featuredSlugs = [
+  "jardins-tower",
+  "blue-horizon-estate",
+  "luna-residence",
+  "bts-studio-tour",
+  "lumina-tower",
+  "mar-a-lago",
+  "skyline-residences",
+  "echelon-heights",
+  "virelle",
+  "silverwood",
+];
 const featured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
 
 const FeaturedProjects = () => {
@@ -22,14 +33,14 @@ const FeaturedProjects = () => {
           <div className="w-12 h-[1px] bg-primary mt-6" />
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
           {featured.map((project, i) => (
             <motion.div
               key={project.slug}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
             >
               <Link
                 to={`/work/${project.slug}`}

@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import GallerySlideshow from "@/components/GallerySlideshow";
 import { allProjects } from "@/data/projects";
 
 const ProjectDetail = () => {
@@ -114,22 +115,12 @@ const ProjectDetail = () => {
           <p className="text-sm font-body font-light text-muted-foreground leading-[1.8]">{project.rendering}</p>
         </motion.div>
 
-        {/* Gallery */}
+        {/* Gallery Slideshow */}
         {project.gallery.length > 0 && (
           <motion.div custom={5} initial="hidden" animate="visible" variants={sectionVariants}>
             <h2 className="font-display text-2xl text-foreground font-light mb-4">Gallery</h2>
             <div className="w-8 h-[1px] bg-primary mb-6" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {project.gallery.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={`${project.title} - ${i + 1}`}
-                  className="w-full aspect-[4/3] object-cover"
-                  loading="lazy"
-                />
-              ))}
-            </div>
+            <GallerySlideshow images={project.gallery} title={project.title} />
           </motion.div>
         )}
 
