@@ -50,57 +50,6 @@ export type Database = {
         }
         Relationships: []
       }
-      quote_requests: {
-        Row: {
-          additional_notes: string | null
-          company: string | null
-          created_at: string
-          email: string
-          estimated_price: number | null
-          full_name: string
-          id: string
-          phone: string | null
-          project_classification: string
-          project_type: string
-          requirement_period: string | null
-          selected_services: string[]
-          status: string
-          timeline: string
-        }
-        Insert: {
-          additional_notes?: string | null
-          company?: string | null
-          created_at?: string
-          email: string
-          estimated_price?: number | null
-          full_name: string
-          id?: string
-          phone?: string | null
-          project_classification: string
-          project_type: string
-          requirement_period?: string | null
-          selected_services?: string[]
-          status?: string
-          timeline: string
-        }
-        Update: {
-          additional_notes?: string | null
-          company?: string | null
-          created_at?: string
-          email?: string
-          estimated_price?: number | null
-          full_name?: string
-          id?: string
-          phone?: string | null
-          project_classification?: string
-          project_type?: string
-          requirement_period?: string | null
-          selected_services?: string[]
-          status?: string
-          timeline?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
