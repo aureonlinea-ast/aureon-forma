@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -13,11 +15,34 @@ const ContactPage = () => {
     message: "",
     callbackRequested: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Future: POST to backend
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+
+    const { error } = await supabase.from("contact_submissions").insert({
+      full_name: formData.fullName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim() || null,
+      company: formData.company.trim() || null,
+      project_type: formData.projectType || null,
+      message: formData.message.trim(),
+      callback_requested: formData.callbackRequested,
+    });
+
+    setIsSubmitting(false);
+
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+
+    toast.success("Message sent! We'll be in touch soon.");
+    setFormData({
+      fullName: "", email: "", phone: "", company: "",
+      projectType: "", message: "", callbackRequested: false,
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -116,9 +141,10 @@ const ContactPage = () => {
             </label>
             <button
               type="submit"
-              className="mt-4 glass-surface px-8 py-4 text-sm font-body font-light tracking-[0.2em] uppercase text-foreground hover:text-primary hover:border-primary/50 transition-all duration-500"
+              disabled={isSubmitting}
+              className="mt-4 glass-surface px-8 py-4 text-sm font-body font-light tracking-[0.2em] uppercase text-foreground hover:text-primary hover:border-primary/50 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send Message
+              {isSubmitting ? "Sending..." : "Send Message"}
             </button>
           </motion.form>
         </div>
