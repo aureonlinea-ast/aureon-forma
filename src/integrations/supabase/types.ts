@@ -101,6 +101,42 @@ export type Database = {
         }
         Relationships: []
       }
+      service_pricing: {
+        Row: {
+          base_price: number
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          price_per_unit: string | null
+          service_category: string
+          service_name: string
+          updated_at: string
+        }
+        Insert: {
+          base_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          price_per_unit?: string | null
+          service_category?: string
+          service_name: string
+          updated_at?: string
+        }
+        Update: {
+          base_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          price_per_unit?: string | null
+          service_category?: string
+          service_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
