@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { allServices } from "@/data/services";
 import { useIsMobile } from "@/hooks/use-mobile";
 import astoriaBg from "@/assets/projects/astoria-2.jpg";
+import GetQuoteButton from "@/components/GetQuoteButton";
 
 const ServicesPage = () => {
   const isMobile = useIsMobile();
