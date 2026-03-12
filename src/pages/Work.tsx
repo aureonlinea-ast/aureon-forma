@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { allProjects } from "@/data/projects";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
+import GetQuoteButton from "@/components/GetQuoteButton";
 
 const WorkPage = () => {
   return (
