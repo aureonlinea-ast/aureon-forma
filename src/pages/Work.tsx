@@ -38,6 +38,10 @@ const WorkPage = () => {
               </div>
             ))}
           </div>
+
+          <div className="mt-12 flex justify-center">
+            <GetQuoteButton />
+          </div>
         </div>
       </main>
       <Footer />
