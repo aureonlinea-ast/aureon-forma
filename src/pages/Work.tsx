@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { allProjects } from "@/data/projects";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
+import GetQuoteButton from "@/components/GetQuoteButton";
 
 const WorkPage = () => {
   return (
@@ -36,6 +37,10 @@ const WorkPage = () => {
                 />
               </div>
             ))}
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <GetQuoteButton />
           </div>
         </div>
       </main>

@@ -50,6 +50,93 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_requests: {
+        Row: {
+          additional_notes: string | null
+          company: string | null
+          created_at: string
+          email: string
+          estimated_price: number | null
+          full_name: string
+          id: string
+          phone: string | null
+          project_classification: string
+          project_type: string
+          requirement_period: string | null
+          selected_services: string[]
+          status: string
+          timeline: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          estimated_price?: number | null
+          full_name: string
+          id?: string
+          phone?: string | null
+          project_classification: string
+          project_type: string
+          requirement_period?: string | null
+          selected_services?: string[]
+          status?: string
+          timeline: string
+        }
+        Update: {
+          additional_notes?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          estimated_price?: number | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          project_classification?: string
+          project_type?: string
+          requirement_period?: string | null
+          selected_services?: string[]
+          status?: string
+          timeline?: string
+        }
+        Relationships: []
+      }
+      service_pricing: {
+        Row: {
+          base_price: number
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          price_per_unit: string | null
+          service_category: string
+          service_name: string
+          updated_at: string
+        }
+        Insert: {
+          base_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          price_per_unit?: string | null
+          service_category?: string
+          service_name: string
+          updated_at?: string
+        }
+        Update: {
+          base_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          price_per_unit?: string | null
+          service_category?: string
+          service_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

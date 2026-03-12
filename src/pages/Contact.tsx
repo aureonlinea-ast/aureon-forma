@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import GetQuoteButton from "@/components/GetQuoteButton";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -147,6 +148,16 @@ const ContactPage = () => {
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
           </motion.form>
+
+          <div className="mt-16 pt-12 border-t border-border/20">
+            <h2 className="font-display text-2xl text-foreground font-light mb-4 tracking-wide">
+              Need a detailed quote?
+            </h2>
+            <p className="text-sm font-body font-light text-muted-foreground mb-6 leading-relaxed">
+              Use our quote engine to configure your project and get an instant estimate.
+            </p>
+            <GetQuoteButton />
+          </div>
         </div>
       </main>
       <Footer />
