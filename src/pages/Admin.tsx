@@ -137,7 +137,7 @@ const AdminPage = () => {
             autoFocus
           />
           {loginError && (
-            <p className="text-xs font-body text-red-400 mb-4">{loginError}</p>
+            <p className="text-xs font-body text-destructive mb-4">{loginError}</p>
           )}
           <button
             type="submit"
