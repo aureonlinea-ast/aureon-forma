@@ -210,25 +210,25 @@ const QuotePage = () => {
                 Project Details
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <select name="projectClassification" value={formData.projectClassification} onChange={handleChange} className={inputClasses} required>
+                <select name="projectClassification" value={formData.projectClassification} onChange={handleChange} className={selectClasses} required>
                   <option value="">Project Classification *</option>
                   {projectClassifications.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
-                <select name="projectType" value={formData.projectType} onChange={handleChange} className={inputClasses} required>
+                <select name="projectType" value={formData.projectType} onChange={handleChange} className={selectClasses} required>
                   <option value="">Project Type *</option>
                   {projectTypes.map((t) => (
                     <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
-                <select name="timeline" value={formData.timeline} onChange={handleChange} className={inputClasses} required>
+                <select name="timeline" value={formData.timeline} onChange={handleChange} className={selectClasses} required>
                   <option value="">Timeline *</option>
                   {timelines.map((t) => (
                     <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
-                <select name="requirementPeriod" value={formData.requirementPeriod} onChange={handleChange} className={inputClasses}>
+                <select name="requirementPeriod" value={formData.requirementPeriod} onChange={handleChange} className={selectClasses}>
                   <option value="">Engagement Type</option>
                   {requirementPeriods.map((r) => (
                     <option key={r} value={r}>{r}</option>
