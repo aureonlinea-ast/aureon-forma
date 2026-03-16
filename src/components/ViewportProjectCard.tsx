@@ -37,6 +37,10 @@ const ViewportProjectCard = ({
   const y = useTransform(scrollYProgress, [0, 1], isMobile ? [60, -60] : [0, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], isMobile ? [0.92, 1, 0.92] : [1, 1, 1]);
 
+  // Alternate slide direction on mobile: even index from left, odd from right
+  const slideFromLeft = index % 2 === 0;
+  const mobileInitialX = isMobile ? (slideFromLeft ? -80 : 80) : 0;
+
   return (
     <motion.div
       ref={parallaxRef}
@@ -45,10 +49,10 @@ const ViewportProjectCard = ({
     >
       <motion.div
         ref={ref}
-        initial={{ opacity: 0, y: 40 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: isMobile ? 20 : 40, x: mobileInitialX }}
+        animate={inView ? { opacity: 1, y: 0, x: 0 } : { opacity: 0, y: isMobile ? 20 : 40, x: mobileInitialX }}
         transition={{
-          duration: isMobile ? 1.2 : 0.7,
+          duration: isMobile ? 1.4 : 0.7,
           delay: isMobile ? 0 : index * 0.08,
           ease: [0.22, 1, 0.36, 1],
         }}

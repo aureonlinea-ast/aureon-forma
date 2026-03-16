@@ -10,11 +10,11 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <HeroSection />
-      <div className="container mx-auto px-6 lg:px-12 py-12 flex justify-center">
-        <GetQuoteButton />
-      </div>
       <FeaturedProjects />
       <ServicesOverview />
+      <div className="container mx-auto px-6 lg:px-12 py-16 flex justify-center">
+        <GetQuoteButton />
+      </div>
       <Footer />
     </div>
   );

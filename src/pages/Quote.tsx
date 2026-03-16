@@ -154,6 +154,9 @@ const QuotePage = () => {
   const inputClasses =
     "w-full glass-surface bg-transparent px-5 py-4 text-sm font-body font-light text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors duration-300";
 
+  const selectClasses =
+    `${inputClasses} appearance-none bg-background text-foreground [&>option]:bg-background [&>option]:text-foreground`;
+
   const groupedServices = categoryOrder
     .map((cat) => ({
       category: cat,
