@@ -320,7 +320,7 @@ const AdminPage = () => {
         )}
 
         {/* Quotes Tab */}
-        {activeTab === "quotes" && <QuotesTab quotes={quotes} pricing={pricing} formatDate={formatDate} />}
+        {activeTab === "quotes" && <QuotesTab quotes={quotes} pricing={pricing} formatDate={formatDate} onRefresh={fetchData} />}
 
         {/* Pricing Tab */}
         {activeTab === "pricing" && (
