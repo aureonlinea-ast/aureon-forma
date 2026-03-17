@@ -7,6 +7,18 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const LOGO_URL = "https://ydmpyuntwrhczxdgnucg.supabase.co/storage/v1/object/public/assets/logos/aureon-gold-logo.png";
+
+async function fetchLogo(): Promise<Uint8Array | null> {
+  try {
+    const res = await fetch(LOGO_URL);
+    if (!res.ok) return null;
+    return new Uint8Array(await res.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -23,19 +35,53 @@ serve(async (req) => {
     const gold = rgb(0.72, 0.64, 0.42);
     const dark = rgb(0.08, 0.08, 0.08);
     const gray = rgb(0.45, 0.45, 0.45);
-    const white = rgb(1, 1, 1);
+
+    // Fetch and embed logo
+    const logoBytes = await fetchLogo();
+    let logoImage: any = null;
+    if (logoBytes) {
+      logoImage = await pdfDoc.embedPng(logoBytes);
+    }
 
     // Background
     page.drawRectangle({ x: 0, y: 0, width, height, color: rgb(0.97, 0.97, 0.96) });
 
+    // Watermark — faint centered logo
+    if (logoImage) {
+      const wmScale = 0.6;
+      const wmWidth = 300 * wmScale;
+      const wmHeight = (logoImage.height / logoImage.width) * 300 * wmScale;
+      page.drawImage(logoImage, {
+        x: (width - wmWidth) / 2,
+        y: (height - wmHeight) / 2,
+        width: wmWidth,
+        height: wmHeight,
+        opacity: 0.04,
+      });
+    }
+
     // Header bar
     page.drawRectangle({ x: 0, y: height - 100, width, height: 100, color: dark });
-    page.drawText("AUREON", {
-      x: 50, y: height - 55, size: 28, font: helveticaBold, color: gold,
-    });
-    page.drawText("Digital Studio", {
-      x: 50, y: height - 78, size: 11, font: helvetica, color: rgb(0.7, 0.7, 0.7),
-    });
+
+    // Header logo
+    if (logoImage) {
+      const headerLogoWidth = 120;
+      const headerLogoHeight = (logoImage.height / logoImage.width) * headerLogoWidth;
+      page.drawImage(logoImage, {
+        x: 40,
+        y: height - 55 - headerLogoHeight / 2 + 8,
+        width: headerLogoWidth,
+        height: headerLogoHeight,
+      });
+    } else {
+      page.drawText("AUREON", {
+        x: 50, y: height - 55, size: 28, font: helveticaBold, color: gold,
+      });
+      page.drawText("Digital Studio", {
+        x: 50, y: height - 78, size: 11, font: helvetica, color: rgb(0.7, 0.7, 0.7),
+      });
+    }
+
     page.drawText("PROJECT QUOTE", {
       x: width - 190, y: height - 55, size: 16, font: helveticaBold, color: gold,
     });
@@ -98,10 +144,7 @@ serve(async (req) => {
 
     const services = quote.services || [];
     for (const svc of services) {
-      if (y < 120) {
-        // Would need new page for very long lists
-        break;
-      }
+      if (y < 120) break;
       const convertedPrice = (svc.base_price * rate).toFixed(2);
       page.drawText(svc.service_name, { x: 60, y, size: 9, font: helvetica, color: dark });
       page.drawText(svc.service_category?.replace(/-/g, " ") || "", { x: 300, y, size: 8, font: helvetica, color: gray });
@@ -131,7 +174,6 @@ serve(async (req) => {
       y -= 8;
       page.drawRectangle({ x: 50, y, width: width - 100, height: 1, color: rgb(0.85, 0.85, 0.85) });
       y -= 18;
-      // Word wrap notes
       const words = quote.additional_notes.split(" ");
       let line = "";
       for (const word of words) {
@@ -149,13 +191,26 @@ serve(async (req) => {
       }
     }
 
-    // Footer
-    page.drawRectangle({ x: 0, y: 0, width, height: 40, color: dark });
-    page.drawText("AUREON Digital Studio  •  Premium Architectural Visualization & Marketing", {
-      x: 50, y: 16, size: 8, font: helvetica, color: rgb(0.5, 0.5, 0.5),
+    // Footer bar
+    page.drawRectangle({ x: 0, y: 0, width, height: 50, color: dark });
+
+    // Footer logo
+    if (logoImage) {
+      const footerLogoWidth = 70;
+      const footerLogoHeight = (logoImage.height / logoImage.width) * footerLogoWidth;
+      page.drawImage(logoImage, {
+        x: 40,
+        y: (50 - footerLogoHeight) / 2,
+        width: footerLogoWidth,
+        height: footerLogoHeight,
+      });
+    }
+
+    page.drawText("Premium Architectural Visualization & Marketing", {
+      x: 130, y: 22, size: 8, font: helvetica, color: rgb(0.5, 0.5, 0.5),
     });
     page.drawText(`Quote ID: ${quote.id?.slice(0, 8) || "DRAFT"}`, {
-      x: width - 160, y: 16, size: 8, font: helvetica, color: rgb(0.5, 0.5, 0.5),
+      x: width - 160, y: 22, size: 8, font: helvetica, color: rgb(0.5, 0.5, 0.5),
     });
 
     const pdfBytes = await pdfDoc.save();
