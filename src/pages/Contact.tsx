@@ -39,6 +39,22 @@ const ContactPage = () => {
       return;
     }
 
+    // Send notification to team
+    supabase.functions.invoke("send-notification", {
+      body: {
+        type: "contact",
+        data: {
+          full_name: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || null,
+          company: formData.company.trim() || null,
+          project_type: formData.projectType || null,
+          message: formData.message.trim(),
+          callback_requested: formData.callbackRequested,
+        },
+      },
+    }).catch(console.error);
+
     toast.success("Message sent! We'll be in touch soon.");
     setFormData({
       fullName: "", email: "", phone: "", company: "",

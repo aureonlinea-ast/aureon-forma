@@ -142,6 +142,26 @@ const QuotePage = () => {
       return;
     }
 
+    // Send notification to team
+    supabase.functions.invoke("send-notification", {
+      body: {
+        type: "quote",
+        data: {
+          full_name: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || null,
+          company: formData.company.trim() || null,
+          project_classification: formData.projectClassification,
+          project_type: formData.projectType,
+          selected_services: selectedServices,
+          timeline: formData.timeline,
+          requirement_period: formData.requirementPeriod || null,
+          estimated_price: finalPrice,
+          additional_notes: formData.additionalNotes.trim() || null,
+        },
+      },
+    }).catch(console.error);
+
     toast.success("Quote request submitted! We'll get back to you shortly.");
     setFormData({
       fullName: "", email: "", phone: "", company: "",
