@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 type Currency = "USD" | "KES" | "EUR" | "RMB";
 
@@ -32,6 +33,7 @@ interface Props {
   quotes: QuoteRequest[];
   pricing: ServicePrice[];
   formatDate: (d: string) => string;
+  onRefresh: () => void;
 }
 
 const CURRENCY_SYMBOLS: Record<Currency, string> = {
@@ -41,10 +43,23 @@ const CURRENCY_SYMBOLS: Record<Currency, string> = {
   RMB: "¥",
 };
 
-const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
+const STATUSES = ["pending", "reviewed", "approved", "in_progress", "completed", "declined"] as const;
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "bg-yellow-500/10 text-yellow-400",
+  reviewed: "bg-blue-500/10 text-blue-400",
+  approved: "bg-green-500/10 text-green-400",
+  in_progress: "bg-primary/10 text-primary",
+  completed: "bg-emerald-500/10 text-emerald-400",
+  declined: "bg-red-500/10 text-red-400",
+};
+
+const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
   const [currency, setCurrency] = useState<Currency>("USD");
   const [rates, setRates] = useState<Record<string, number>>({ USD: 1, KES: 1, EUR: 1, CNY: 1 });
   const [generatingPdf, setGeneratingPdf] = useState<string | null>(null);
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>("all");
 
   useEffect(() => {
     fetchRates();
@@ -63,7 +78,6 @@ const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
         });
       }
     } catch {
-      // Fallback rates
       setRates({ USD: 1, KES: 129, EUR: 0.92, CNY: 7.24 });
     }
   };
@@ -79,27 +93,55 @@ const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
 
   const sym = CURRENCY_SYMBOLS[currency];
 
+  const updateQuoteStatus = async (quoteId: string, newStatus: string) => {
+    setUpdatingStatus(quoteId);
+    const quote = quotes.find((q) => q.id === quoteId);
+
+    const { error } = await supabase
+      .from("quote_requests")
+      .update({ status: newStatus })
+      .eq("id", quoteId);
+
+    if (error) {
+      toast.error("Failed to update status");
+      console.error("Status update error:", error);
+    } else {
+      toast.success(`Status updated to ${newStatus}`);
+
+      // Send notification for status change
+      if (quote) {
+        supabase.functions.invoke("send-notification", {
+          body: {
+            type: "status_change",
+            data: {
+              full_name: quote.full_name,
+              email: quote.email,
+              estimated_price: quote.estimated_price,
+              new_status: newStatus,
+            },
+          },
+        }).catch(console.error);
+      }
+
+      onRefresh();
+    }
+    setUpdatingStatus(null);
+  };
+
   const generatePdf = async (quote: QuoteRequest) => {
     setGeneratingPdf(quote.id);
     try {
-      // Find service details for this quote
       const services = quote.selected_services.map((name) => {
         const svc = pricing.find((p) => p.service_name === name);
         return svc || { service_name: name, service_category: "general", base_price: 0 };
       });
 
       const { data, error } = await supabase.functions.invoke("generate-quote-pdf", {
-        body: {
-          ...quote,
-          services,
-          currency,
-          exchangeRate: getRate(),
-        },
+        body: { ...quote, services, currency, exchangeRate: getRate() },
       });
 
       if (error) throw error;
 
-      // Download the PDF
       const byteCharacters = atob(data.pdf);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -117,47 +159,88 @@ const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error("PDF generation failed:", err);
-      alert("Failed to generate PDF. Please try again.");
+      toast.error("Failed to generate PDF. Please try again.");
     } finally {
       setGeneratingPdf(null);
     }
   };
 
+  const filteredQuotes = filterStatus === "all"
+    ? quotes
+    : quotes.filter((q) => q.status === filterStatus);
+
+  const statusCounts = STATUSES.reduce<Record<string, number>>((acc, s) => {
+    acc[s] = quotes.filter((q) => q.status === s).length;
+    return acc;
+  }, {});
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <h2 className="font-display text-xl text-foreground font-light tracking-wide">
-          Quote Requests ({quotes.length})
-        </h2>
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-body font-light text-muted-foreground uppercase tracking-wider">Currency:</span>
-          {(["USD", "KES", "EUR", "RMB"] as Currency[]).map((c) => (
+      {/* Header with currency & filters */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <h2 className="font-display text-xl text-foreground font-light tracking-wide">
+            Quote Requests ({quotes.length})
+          </h2>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-body font-light text-muted-foreground uppercase tracking-wider">Currency:</span>
+            {(["USD", "KES", "EUR", "RMB"] as Currency[]).map((c) => (
+              <button
+                key={c}
+                onClick={() => setCurrency(c)}
+                className={`px-3 py-1.5 text-xs font-body font-light tracking-[0.1em] uppercase transition-all duration-300 ${
+                  currency === c
+                    ? "text-primary glass-surface border-primary/50"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {currency !== "USD" && (
+          <p className="text-xs font-body font-light text-muted-foreground">
+            Exchange rate: 1 USD = {getRate().toFixed(2)} {currency === "RMB" ? "CNY" : currency} (live)
+          </p>
+        )}
+
+        {/* Status filter bar */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setFilterStatus("all")}
+            className={`px-3 py-1.5 text-xs font-body font-light tracking-[0.1em] uppercase transition-all duration-300 ${
+              filterStatus === "all"
+                ? "text-primary glass-surface border-primary/50"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            All ({quotes.length})
+          </button>
+          {STATUSES.map((s) => (
             <button
-              key={c}
-              onClick={() => setCurrency(c)}
+              key={s}
+              onClick={() => setFilterStatus(s)}
               className={`px-3 py-1.5 text-xs font-body font-light tracking-[0.1em] uppercase transition-all duration-300 ${
-                currency === c
+                filterStatus === s
                   ? "text-primary glass-surface border-primary/50"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {c}
+              {s.replace("_", " ")} ({statusCounts[s] || 0})
             </button>
           ))}
         </div>
       </div>
 
-      {currency !== "USD" && (
-        <p className="text-xs font-body font-light text-muted-foreground">
-          Exchange rate: 1 USD = {getRate().toFixed(2)} {currency === "RMB" ? "CNY" : currency} (live)
+      {filteredQuotes.length === 0 ? (
+        <p className="text-sm font-body font-light text-muted-foreground">
+          {filterStatus === "all" ? "No quote requests yet." : `No ${filterStatus.replace("_", " ")} quotes.`}
         </p>
-      )}
-
-      {quotes.length === 0 ? (
-        <p className="text-sm font-body font-light text-muted-foreground">No quote requests yet.</p>
       ) : (
         <div className="flex flex-col gap-3">
-          {quotes.map((q) => (
+          {filteredQuotes.map((q) => (
             <div key={q.id} className="glass-surface p-5">
               <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
                 <div>
@@ -172,10 +255,8 @@ const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
                     {sym}{Number(convertPrice(q.estimated_price || 0)).toLocaleString()}
                   </p>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-body px-2 py-1 ${
-                      q.status === "pending" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                    }`}>
-                      {q.status}
+                    <span className={`text-xs font-body px-2 py-1 ${STATUS_COLORS[q.status] || "bg-muted text-muted-foreground"}`}>
+                      {q.status.replace("_", " ")}
                     </span>
                     <button
                       onClick={() => generatePdf(q)}
@@ -187,6 +268,7 @@ const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
                   </div>
                 </div>
               </div>
+
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
                 <div>
                   <p className="text-xs font-body text-muted-foreground uppercase tracking-wider">Classification</p>
@@ -205,14 +287,38 @@ const QuotesTab = ({ quotes, pricing, formatDate }: Props) => {
                   <p className="text-sm font-body font-light text-foreground">{q.requirement_period || "One-time"}</p>
                 </div>
               </div>
+
               <div className="flex flex-wrap gap-2 mb-2">
                 {q.selected_services.map((s) => (
                   <span key={s} className="text-xs font-body font-light px-2 py-1 glass-surface text-muted-foreground">{s}</span>
                 ))}
               </div>
+
               {q.additional_notes && (
                 <p className="text-sm font-body font-light text-muted-foreground mt-2">{q.additional_notes}</p>
               )}
+
+              {/* Status workflow */}
+              <div className="mt-4 pt-3 border-t border-border/20">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-body font-light text-muted-foreground uppercase tracking-wider mr-2">
+                    Update Status:
+                  </span>
+                  {STATUSES.filter((s) => s !== q.status).map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => updateQuoteStatus(q.id, s)}
+                      disabled={updatingStatus === q.id}
+                      className={`text-xs font-body font-light px-3 py-1.5 transition-all duration-300 disabled:opacity-50 ${
+                        STATUS_COLORS[s] || "bg-muted text-muted-foreground"
+                      } hover:opacity-80`}
+                    >
+                      {s.replace("_", " ")}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <p className="text-xs font-body font-light text-muted-foreground mt-2">{formatDate(q.created_at)}</p>
             </div>
           ))}
