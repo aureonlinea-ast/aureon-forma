@@ -214,7 +214,13 @@ serve(async (req) => {
     });
 
     const pdfBytes = await pdfDoc.save();
-    const base64 = btoa(String.fromCharCode(...pdfBytes));
+    // Convert to base64 in chunks to avoid stack overflow
+    let binary = "";
+    const chunkSize = 8192;
+    for (let i = 0; i < pdfBytes.length; i += chunkSize) {
+      binary += String.fromCharCode(...pdfBytes.subarray(i, i + chunkSize));
+    }
+    const base64 = btoa(binary);
 
     return new Response(
       JSON.stringify({ pdf: base64, filename: `Aureon-Quote-${quote.full_name?.replace(/\s+/g, "-") || "Client"}.pdf` }),
