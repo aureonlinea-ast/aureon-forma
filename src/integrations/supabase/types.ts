@@ -101,6 +101,57 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_template: {
+        Row: {
+          acceptance_text: string
+          company_address: string
+          company_name: string
+          company_phone_1: string
+          company_phone_2: string
+          company_website: string
+          id: string
+          others_amount: number
+          others_label: string
+          tax_label: string
+          tax_percentage: number
+          terms_conditions: string[]
+          updated_at: string
+          validity_days: number
+        }
+        Insert: {
+          acceptance_text?: string
+          company_address?: string
+          company_name?: string
+          company_phone_1?: string
+          company_phone_2?: string
+          company_website?: string
+          id?: string
+          others_amount?: number
+          others_label?: string
+          tax_label?: string
+          tax_percentage?: number
+          terms_conditions?: string[]
+          updated_at?: string
+          validity_days?: number
+        }
+        Update: {
+          acceptance_text?: string
+          company_address?: string
+          company_name?: string
+          company_phone_1?: string
+          company_phone_2?: string
+          company_website?: string
+          id?: string
+          others_amount?: number
+          others_label?: string
+          tax_label?: string
+          tax_percentage?: number
+          terms_conditions?: string[]
+          updated_at?: string
+          validity_days?: number
+        }
+        Relationships: []
+      }
       service_pricing: {
         Row: {
           base_price: number
