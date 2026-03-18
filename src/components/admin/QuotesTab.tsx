@@ -139,7 +139,7 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
     setUpdatingStatus(null);
   };
 
-  const generatePdf = async (quote: QuoteRequest) => {
+  const generatePdf = async (quote: QuoteRequest, style: "branded" | "simple" = "branded") => {
     setGeneratingPdf(quote.id);
     try {
       const services = quote.selected_services.map((name) => {
