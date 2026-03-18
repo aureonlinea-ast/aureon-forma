@@ -159,6 +159,7 @@ const AdminPage = () => {
     { key: "contacts", label: "Contact Forms" },
     { key: "quotes", label: "Quotes" },
     { key: "pricing", label: "Pricing" },
+    { key: "template", label: "Quote Template" },
   ];
 
   const formatDate = (d: string) =>
