@@ -382,6 +382,9 @@ const AdminPage = () => {
             ))}
           </motion.div>
         )}
+
+        {/* Quote Template Tab */}
+        {activeTab === "template" && <QuoteTemplateTab />}
       </div>
     </div>
   );
