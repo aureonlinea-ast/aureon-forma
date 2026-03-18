@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import ClientsTab from "@/components/admin/ClientsTab";
 import QuotesTab from "@/components/admin/QuotesTab";
+import QuoteTemplateTab from "@/components/admin/QuoteTemplateTab";
 
 interface ContactSubmission {
   id: string;
@@ -44,7 +45,7 @@ interface ServicePrice {
   is_active: boolean;
 }
 
-type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clients";
+type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clients" | "template";
 
 const AdminPage = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -158,6 +159,7 @@ const AdminPage = () => {
     { key: "contacts", label: "Contact Forms" },
     { key: "quotes", label: "Quotes" },
     { key: "pricing", label: "Pricing" },
+    { key: "template", label: "Quote Template" },
   ];
 
   const formatDate = (d: string) =>
@@ -380,6 +382,9 @@ const AdminPage = () => {
             ))}
           </motion.div>
         )}
+
+        {/* Quote Template Tab */}
+        {activeTab === "template" && <QuoteTemplateTab />}
       </div>
     </div>
   );
