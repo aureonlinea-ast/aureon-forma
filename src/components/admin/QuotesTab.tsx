@@ -148,7 +148,7 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
       });
 
       const { data, error } = await supabase.functions.invoke("generate-quote-pdf", {
-        body: { ...quote, services, currency, exchangeRate: getRate(), template },
+        body: { ...quote, services, currency, exchangeRate: getRate(), template, style },
       });
 
       if (error) throw error;
