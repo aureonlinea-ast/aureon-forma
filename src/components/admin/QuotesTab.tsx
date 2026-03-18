@@ -60,10 +60,21 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
   const [generatingPdf, setGeneratingPdf] = useState<string | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [template, setTemplate] = useState<any>(null);
 
   useEffect(() => {
     fetchRates();
+    fetchTemplate();
   }, []);
+
+  const fetchTemplate = async () => {
+    const { data } = await supabase
+      .from("quote_template" as any)
+      .select("*")
+      .limit(1)
+      .single();
+    if (data) setTemplate(data);
+  };
 
   const fetchRates = async () => {
     try {
