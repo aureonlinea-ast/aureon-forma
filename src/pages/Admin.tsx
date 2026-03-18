@@ -183,7 +183,7 @@ const AdminPage = () => {
 
       {/* Tabs */}
       <div className="border-b border-border/20">
-        <div className="container mx-auto px-6 lg:px-12 flex gap-0 overflow-x-auto">
+        <div className="container mx-auto px-6 lg:px-12 flex gap-0 overflow-x-auto scrollbar-hide">
           {tabs.map((tab) => (
             <button
               key={tab.key}

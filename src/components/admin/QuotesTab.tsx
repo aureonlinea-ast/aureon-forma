@@ -139,7 +139,7 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
     setUpdatingStatus(null);
   };
 
-  const generatePdf = async (quote: QuoteRequest) => {
+  const generatePdf = async (quote: QuoteRequest, style: "branded" | "simple" = "branded") => {
     setGeneratingPdf(quote.id);
     try {
       const services = quote.selected_services.map((name) => {
@@ -148,7 +148,7 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
       });
 
       const { data, error } = await supabase.functions.invoke("generate-quote-pdf", {
-        body: { ...quote, services, currency, exchangeRate: getRate(), template },
+        body: { ...quote, services, currency, exchangeRate: getRate(), template, style },
       });
 
       if (error) throw error;
@@ -270,11 +270,18 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
                       {q.status.replace("_", " ")}
                     </span>
                     <button
-                      onClick={() => generatePdf(q)}
+                      onClick={() => generatePdf(q, "branded")}
                       disabled={generatingPdf === q.id}
                       className="text-xs font-body font-light px-3 py-1 glass-surface text-primary hover:text-primary/80 hover:border-primary/30 transition-all disabled:opacity-50"
                     >
-                      {generatingPdf === q.id ? "Generating..." : "↓ PDF"}
+                      {generatingPdf === q.id ? "..." : "↓ Branded"}
+                    </button>
+                    <button
+                      onClick={() => generatePdf(q, "simple")}
+                      disabled={generatingPdf === q.id}
+                      className="text-xs font-body font-light px-3 py-1 glass-surface text-primary hover:text-primary/80 hover:border-primary/30 transition-all disabled:opacity-50"
+                    >
+                      {generatingPdf === q.id ? "..." : "↓ Simple"}
                     </button>
                   </div>
                 </div>
