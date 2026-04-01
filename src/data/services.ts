@@ -1,3 +1,5 @@
+import hillsidePlan1 from "@/assets/projects/hillside-plan-1.png";
+
 export interface Service {
   title: string;
   slug: string;
@@ -6,6 +8,7 @@ export interface Service {
   capabilities: string[];
   process: string[];
   headerVideo?: string;
+  headerImage?: string;
 }
 
 export const allServices: Service[] = [
@@ -51,7 +54,7 @@ export const allServices: Service[] = [
       "Material selection and detailing",
       "Final design documentation",
     ],
-    headerVideo: "/videos/mar-a-lago.mp4",
+    headerImage: hillsidePlan1,
   },
   {
     title: "3D Modelling",

@@ -14,6 +14,15 @@ import jardins5 from "@/assets/projects/jardins-5.jpg";
 import astra1 from "@/assets/projects/astra-1.jpg";
 import astra2 from "@/assets/projects/astra-2.jpg";
 import astra3 from "@/assets/projects/astra-3.jpg";
+import hillsideMansion from "@/assets/projects/hillside-mansion.png";
+import hillsideMansion2 from "@/assets/projects/hillside-mansion-2.png";
+import hillsideMansion3 from "@/assets/projects/hillside-mansion-3.png";
+import hillsideMansion4 from "@/assets/projects/hillside-mansion-4.png";
+import hillsideCloseup from "@/assets/projects/hillside-closeup.png";
+import hillsidePlanLower from "@/assets/projects/hillside-plan-lower.png";
+import hillsidePlan1 from "@/assets/projects/hillside-plan-1.png";
+import hillsidePlan2 from "@/assets/projects/hillside-plan-2.png";
+import hillsidePlanCirculation from "@/assets/projects/hillside-plan-circulation.png";
 
 export interface Project {
   title: string;
@@ -33,6 +42,21 @@ export interface Project {
 }
 
 export const allProjects: Project[] = [
+  {
+    title: "Terraced Hillside Retreat",
+    slug: "hillside-retreat",
+    category: "Architectural Design",
+    status: "In Progress",
+    image: hillsideMansion,
+    location: "Coastal East Africa",
+    completionDate: "2026 (Est.)",
+    shortDescription: "A cascading luxury mansion carved into a tropical hillside, featuring infinity pools, terraced living, and panoramic valley views.",
+    detailedDescription: "The Terraced Hillside Retreat is a multi-level luxury residence that descends a lush tropical hillside in a series of cascading stone-clad volumes. Each level opens to expansive terraces with unobstructed views of the valley and ocean beyond. The design integrates an infinity pool, spa, entertainment lounge, and private suites across three distinct levels connected by a grand central staircase.",
+    concept: "Inspired by the natural terracing of hillside landscapes, the design follows the contours of the terrain rather than imposing upon it. A central axis from the gated entry courtyard descends through public spaces to private wings, creating a journey of discovery through spatial layers.",
+    designInspiration: "Drawing from Balinese resort architecture and the terraced villa traditions of the Mediterranean, combined with contemporary material precision. Natural stone, warm timber decking, and frameless glass dissolve boundaries between architecture and landscape.",
+    rendering: "Rendered using V-Ray with golden-hour lighting to emphasize the warmth of stone cladding and the reflective quality of the infinity pool. Aerial perspectives and close-up detail shots showcase the cascading volumetric composition.",
+    gallery: [hillsideMansion, hillsideMansion2, hillsideMansion3, hillsideMansion4, hillsideCloseup, hillsidePlan1, hillsidePlan2, hillsidePlanLower, hillsidePlanCirculation],
+  },
   {
     title: "Hospital Santa Maria",
     slug: "hospital-santa-maria",
@@ -289,3 +313,6 @@ export const allProjects: Project[] = [
     gallery: [astra1, astra2, astra3],
   },
 ];
+
+// Export images for use elsewhere
+export { hillsidePlan1, hillsideMansion, hillsideCloseup };

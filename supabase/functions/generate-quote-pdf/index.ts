@@ -36,9 +36,8 @@ serve(async (req) => {
 
   try {
     const quote = await req.json();
-    const style = quote.style || "branded"; // "branded" or "simple"
+    const style = quote.style || "branded";
 
-    // Common data
     const template = quote.template || {};
     const companyName = template.company_name || "AUREON Inc.";
     const companyWebsite = template.company_website || "www.aureon.afrinexus.com";
@@ -70,22 +69,18 @@ serve(async (req) => {
     const othersConverted = othersAmount * rate;
     const total = subtotal + taxAmount + othersConverted;
 
-    let pdfBytes: Uint8Array;
+    const d = {
+      quote, template, services, quoteNumber, dateStr, validStr,
+      currencySymbol, rate, subtotal, taxAmount, othersConverted, total,
+      taxLabel, othersLabel, termsConditions, acceptanceText,
+      companyName, companyWebsite, companyPhone1, companyPhone2, companyAddress,
+    };
 
+    let pdfBytes: Uint8Array;
     if (style === "branded") {
-      pdfBytes = await generateBrandedPdf({
-        quote, template, services, quoteNumber, dateStr, validStr,
-        currencySymbol, rate, subtotal, taxAmount, othersConverted, total,
-        taxLabel, othersLabel, termsConditions, acceptanceText,
-        companyName, companyWebsite, companyPhone1, companyPhone2, companyAddress,
-      });
+      pdfBytes = await generateBrandedPdf(d);
     } else {
-      pdfBytes = await generateSimplePdf({
-        quote, template, services, quoteNumber, dateStr, validStr,
-        currencySymbol, rate, subtotal, taxAmount, othersConverted, total,
-        taxLabel, othersLabel, termsConditions, acceptanceText,
-        companyName, companyWebsite, companyPhone1, companyPhone2, companyAddress,
-      });
+      pdfBytes = await generateSimplePdf(d);
     }
 
     const base64 = toBase64(pdfBytes);
@@ -107,7 +102,7 @@ serve(async (req) => {
   }
 });
 
-// ===================== BRANDED PDF (matches template exactly) =====================
+// ===================== BRANDED PDF =====================
 async function generateBrandedPdf(d: any): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
   const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -115,7 +110,6 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
   const helveticaOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
   const helveticaBoldOblique = await pdfDoc.embedFont(StandardFonts.HelveticaBoldOblique);
 
-  // Fetch images
   const [goldLogoBytes, watermarkBytes] = await Promise.all([
     fetchImage(GOLD_LOGO_URL),
     fetchImage(WATERMARK_URL),
@@ -136,211 +130,319 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
 
   const W = 595;
   const H = 842;
-  const maxServicesPage1 = 6;
-  const servicesPage1 = d.services.slice(0, maxServicesPage1);
-  const hasPage2Services = d.services.length > maxServicesPage1;
-  const servicesPage2 = hasPage2Services ? d.services.slice(maxServicesPage1) : d.services.slice(0, Math.min(3, d.services.length));
+  const MARGIN_LEFT = 40;
+  const MARGIN_RIGHT = 45;
+  const MARGIN_TOP = 30;
+  const MARGIN_BOTTOM = 130;
+  const CONTENT_LEFT = MARGIN_LEFT + 20;
+  const CONTENT_RIGHT = W - MARGIN_RIGHT;
 
   const fmt = (n: number) => `${d.currencySymbol}${n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
-  // ---- Helpers ----
-  const drawBg = (page: any) => {
+  // Helper: draw page chrome (background, vertical lines, footer)
+  const drawPageChrome = (page: any, pageNum: number, totalPages: number) => {
+    // Cream background
     page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: cream });
-    // Left BLACK vertical line
-    page.drawRectangle({ x: 28, y: 60, width: 1.5, height: H - 120, color: black });
+    // Left BLACK vertical line — full page height
+    page.drawRectangle({ x: MARGIN_LEFT, y: MARGIN_BOTTOM, width: 1.5, height: H - MARGIN_TOP - MARGIN_BOTTOM, color: black });
+    // Footer separator
+    page.drawRectangle({ x: 0, y: MARGIN_BOTTOM, width: W, height: 1.5, color: black });
+    // Footer content
+    page.drawText(d.companyName, { x: CONTENT_LEFT + 10, y: MARGIN_BOTTOM - 30, size: 16, font: helveticaBold, color: black });
+    page.drawText(d.companyWebsite, { x: CONTENT_LEFT + 10, y: MARGIN_BOTTOM - 48, size: 10, font: helvetica, color: darkGray });
+
+    page.drawText("Reach us at", { x: 360, y: MARGIN_BOTTOM - 20, size: 9, font: helvetica, color: gray });
+    page.drawText(d.companyPhone1, { x: 360, y: MARGIN_BOTTOM - 34, size: 9, font: helvetica, color: darkGray });
+    page.drawText(d.companyPhone2, { x: 360, y: MARGIN_BOTTOM - 47, size: 9, font: helvetica, color: darkGray });
+    page.drawText(d.companyAddress, { x: 360, y: MARGIN_BOTTOM - 60, size: 9, font: helvetica, color: darkGray });
+
+    if (totalPages > 1) {
+      page.drawText(`Page ${pageNum} of ${totalPages}`, { x: W - 100, y: 25, size: 8, font: helvetica, color: gray });
+    }
   };
 
   const drawGoldLogo = (page: any) => {
     if (goldLogo) {
-      const logoW = 130;
+      const logoW = 120;
       const logoH = (goldLogo.height / goldLogo.width) * logoW;
-      page.drawImage(goldLogo, { x: W - logoW - 50, y: H - 45 - logoH, width: logoW, height: logoH });
+      page.drawImage(goldLogo, { x: W - logoW - MARGIN_RIGHT - 5, y: H - MARGIN_TOP - logoH - 5, width: logoW, height: logoH });
     } else {
-      page.drawText("AUREON", { x: W - 180, y: H - 65, size: 28, font: helveticaBold, color: gold });
+      page.drawText("AUREON", { x: W - 170, y: H - 55, size: 26, font: helveticaBold, color: gold });
     }
   };
 
   const drawTitle = (page: any) => {
-    // Bold italic "Quotation #XXXX"
-    page.drawText(`Quotation #${d.quoteNumber}`, { x: 55, y: H - 95, size: 28, font: helveticaBoldOblique, color: black });
+    page.drawText(`Quotation #${d.quoteNumber}`, { x: CONTENT_LEFT + 10, y: H - MARGIN_TOP - 55, size: 26, font: helveticaBoldOblique, color: black });
   };
 
-  const drawCustomer = (page: any) => {
-    let y = H - 150;
-    page.drawText("Customer", { x: 55, y, size: 12, font: helveticaBold, color: black });
-    y -= 20;
-    page.drawText(d.quote.full_name || "—", { x: 55, y, size: 11, font: helvetica, color: darkGray });
-    y -= 16;
+  const drawCustomerInfo = (page: any) => {
+    let y = H - MARGIN_TOP - 100;
+    page.drawText("Customer", { x: CONTENT_LEFT + 10, y, size: 12, font: helveticaBold, color: black });
+    y -= 18;
+    page.drawText(d.quote.full_name || "—", { x: CONTENT_LEFT + 10, y, size: 10, font: helvetica, color: darkGray });
+    y -= 15;
     if (d.quote.company) {
-      page.drawText(d.quote.company, { x: 55, y, size: 11, font: helvetica, color: darkGray });
-      y -= 16;
+      page.drawText(d.quote.company, { x: CONTENT_LEFT + 10, y, size: 10, font: helvetica, color: darkGray });
+      y -= 15;
     }
-    page.drawText(d.quote.phone || "—", { x: 55, y, size: 11, font: helvetica, color: darkGray });
+    page.drawText(d.quote.phone || "—", { x: CONTENT_LEFT + 10, y, size: 10, font: helvetica, color: darkGray });
 
-    // Right side
-    const rx = 370;
-    let ry = H - 150;
-    page.drawText(`Date: ${d.dateStr}`, { x: rx, y: ry, size: 11, font: helvetica, color: darkGray });
-    ry -= 18;
-    page.drawText(`Valid Until: ${d.validStr}`, { x: rx, y: ry, size: 11, font: helvetica, color: darkGray });
-    ry -= 18;
-    page.drawText(`Customer ID: ${d.quoteNumber}`, { x: rx, y: ry, size: 11, font: helvetica, color: darkGray });
+    const rx = 380;
+    let ry = H - MARGIN_TOP - 100;
+    page.drawText(`Date: ${d.dateStr}`, { x: rx, y: ry, size: 10, font: helvetica, color: darkGray });
+    ry -= 16;
+    page.drawText(`Valid Until: ${d.validStr}`, { x: rx, y: ry, size: 10, font: helvetica, color: darkGray });
+    ry -= 16;
+    page.drawText(`Customer ID: ${d.quoteNumber}`, { x: rx, y: ry, size: 10, font: helvetica, color: darkGray });
   };
 
-  const drawTable = (page: any, startY: number, svcList: any[]) => {
+  // Table drawing — returns { endY, remainingServices }
+  const drawTable = (page: any, startY: number, svcList: any[], showHeader: boolean) => {
     let y = startY;
-    const tL = 55;
-    const tR = W - 50;
+    const tL = CONTENT_LEFT + 5;
+    const tR = CONTENT_RIGHT - 5;
     const tW = tR - tL;
     const colDesc = tL;
     const colQty = tL + tW * 0.58;
     const colPrice = tL + tW * 0.72;
     const colTotal = tL + tW * 0.87;
 
-    // Black header bar
-    page.drawRectangle({ x: tL, y: y - 5, width: tW, height: 28, color: black });
-    page.drawText("Description", { x: colDesc + 12, y: y + 3, size: 11, font: helveticaBold, color: gold });
-    page.drawText("Quantity", { x: colQty, y: y + 3, size: 11, font: helveticaBold, color: white });
-    page.drawText("Price", { x: colPrice, y: y + 3, size: 11, font: helveticaBold, color: white });
-    page.drawText("Total", { x: colTotal, y: y + 3, size: 11, font: helveticaBold, color: white });
-    y -= 40;
+    if (showHeader) {
+      page.drawRectangle({ x: tL, y: y - 5, width: tW, height: 26, color: black });
+      page.drawText("Description", { x: colDesc + 10, y: y + 2, size: 10, font: helveticaBold, color: gold });
+      page.drawText("Quantity", { x: colQty, y: y + 2, size: 10, font: helveticaBold, color: white });
+      page.drawText("Price", { x: colPrice, y: y + 2, size: 10, font: helveticaBold, color: white });
+      page.drawText("Total", { x: colTotal, y: y + 2, size: 10, font: helveticaBold, color: white });
+      y -= 36;
+    }
+
+    const minY = MARGIN_BOTTOM + 20;
+    let drawn = 0;
 
     for (const svc of svcList) {
+      if (y < minY) break;
       const price = svc.base_price * d.rate;
       const name = svc.service_name || "Service";
-      const displayName = name.length > 42 ? name.substring(0, 39) + "..." : name;
+      const displayName = name.length > 44 ? name.substring(0, 41) + "..." : name;
 
-      page.drawText(displayName, { x: colDesc + 12, y, size: 11, font: helvetica, color: darkGray });
-      page.drawText("1", { x: colQty + 20, y, size: 11, font: helvetica, color: darkGray });
-      page.drawText(fmt(price), { x: colPrice, y, size: 11, font: helvetica, color: darkGray });
-      page.drawText(fmt(price), { x: colTotal, y, size: 11, font: helveticaBold, color: darkGray });
-      y -= 14;
+      page.drawText(displayName, { x: colDesc + 10, y, size: 10, font: helvetica, color: darkGray });
+      page.drawText("1", { x: colQty + 18, y, size: 10, font: helvetica, color: darkGray });
+      page.drawText(fmt(price), { x: colPrice, y, size: 10, font: helvetica, color: darkGray });
+      page.drawText(fmt(price), { x: colTotal, y, size: 10, font: helveticaBold, color: darkGray });
+      y -= 13;
       page.drawRectangle({ x: tL, y, width: tW, height: 0.5, color: lineGray });
-      y -= 24;
+      y -= 22;
+      drawn++;
     }
-    return y;
+
+    return { endY: y, drawn };
   };
 
   const drawWatermark = (page: any, yPos: number) => {
     if (watermarkImg) {
-      const wmW = 280;
+      const wmW = 250;
       const wmH = (watermarkImg.height / watermarkImg.width) * wmW;
       const wmX = (W - wmW) / 2;
-      // Place at yPos (dynamically after table)
-      page.drawImage(watermarkImg, { x: wmX, y: yPos - wmH + 20, width: wmW, height: wmH, opacity: 0.06 });
+      page.drawImage(watermarkImg, { x: wmX, y: yPos - wmH, width: wmW, height: wmH, opacity: 0.05 });
     }
   };
 
   const drawSignature = (page: any, y: number) => {
-    const leftX = 80;
-    const rightX = 370;
-    const lineW = 180;
+    const leftX = CONTENT_LEFT + 30;
+    const rightX = 380;
+    const lineW = 160;
     page.drawRectangle({ x: leftX, y, width: lineW, height: 1, color: black });
     page.drawRectangle({ x: rightX, y, width: lineW, height: 1, color: black });
-    page.drawText("Signature over printed name", { x: leftX + 15, y: y - 18, size: 10, font: helvetica, color: gray });
-    page.drawText("Date signed", { x: rightX + 55, y: y - 18, size: 10, font: helvetica, color: gray });
+    page.drawText("Signature over printed name", { x: leftX + 10, y: y - 16, size: 9, font: helvetica, color: gray });
+    page.drawText("Date signed", { x: rightX + 50, y: y - 16, size: 9, font: helvetica, color: gray });
   };
 
-  const drawFooter = (page: any) => {
-    // Horizontal separator
-    page.drawRectangle({ x: 0, y: 100, width: W, height: 1.5, color: black });
+  // Determine pages needed
+  const headerHeight = 180; // title + customer info
+  const tableHeaderH = 36;
+  const rowHeight = 35;
+  const contentAreaPage1 = H - MARGIN_TOP - MARGIN_BOTTOM - headerHeight - tableHeaderH;
+  const contentAreaSubsequent = H - MARGIN_TOP - MARGIN_BOTTOM - 40 - tableHeaderH;
+  const maxRowsPage1 = Math.floor(contentAreaPage1 / rowHeight);
+  const maxRowsSubsequent = Math.floor(contentAreaSubsequent / rowHeight);
 
-    page.drawText(d.companyName, { x: 55, y: 68, size: 18, font: helveticaBold, color: black });
-    page.drawText(d.companyWebsite, { x: 55, y: 48, size: 11, font: helvetica, color: darkGray });
-
-    page.drawText("Reach us at", { x: 340, y: 80, size: 10, font: helvetica, color: gray });
-    page.drawText(d.companyPhone1, { x: 340, y: 65, size: 10, font: helvetica, color: darkGray });
-    page.drawText(d.companyPhone2, { x: 340, y: 52, size: 10, font: helvetica, color: darkGray });
-    page.drawText(d.companyAddress, { x: 340, y: 39, size: 10, font: helvetica, color: darkGray });
-  };
-
-  // ===== PAGE 1 =====
-  const p1 = pdfDoc.addPage([W, H]);
-  drawBg(p1);
-  drawGoldLogo(p1);
-  drawTitle(p1);
-  drawCustomer(p1);
-
-  const tableEndY1 = drawTable(p1, H - 240, servicesPage1);
-
-  // Watermark dynamically after table, before signature
-  const wmY1 = tableEndY1 - 10;
-  drawWatermark(p1, wmY1);
-
-  // Signature block
-  const sigY1 = 160;
-  drawSignature(p1, sigY1);
-  drawFooter(p1);
-
-  // ===== PAGE 2 =====
-  const p2 = pdfDoc.addPage([W, H]);
-  drawBg(p2);
-  drawGoldLogo(p2);
-  drawTitle(p2);
-  drawCustomer(p2);
-
-  const p2Services = hasPage2Services ? servicesPage2 : servicesPage1.slice(0, 3);
-  const tableEndY2 = drawTable(p2, H - 240, p2Services);
-
-  // Terms & Conditions (left)
-  let ty = tableEndY2 - 15;
-  const termsStartY = ty;
-  p2.drawText("Terms & Conditions", { x: 65, y: ty, size: 12, font: helveticaBold, color: black });
-  ty -= 22;
-  for (const term of d.termsConditions) {
-    const bullet = `•  ${term}`;
-    const words = bullet.split(" ");
-    let line = "";
-    for (const word of words) {
-      const test = line + word + " ";
-      if (helvetica.widthOfTextAtSize(test, 10) > 240) {
-        p2.drawText(line.trim(), { x: 75, y: ty, size: 10, font: helvetica, color: darkGray });
-        ty -= 14;
-        line = "    " + word + " ";
-      } else {
-        line = test;
-      }
-    }
-    if (line.trim()) {
-      p2.drawText(line.trim(), { x: 75, y: ty, size: 10, font: helvetica, color: darkGray });
-      ty -= 18;
-    }
+  const totalServices = d.services.length;
+  let totalPages = 1;
+  if (totalServices > maxRowsPage1) {
+    const remaining = totalServices - maxRowsPage1;
+    totalPages = 1 + Math.ceil(remaining / maxRowsSubsequent);
+  }
+  // Always need at least one extra page for totals/terms/signature if multi-page
+  // But if few items, keep it on one page
+  const needsSummaryPage = totalPages > 1 || totalServices > (maxRowsPage1 - 4);
+  if (needsSummaryPage && totalPages === 1 && totalServices > maxRowsPage1 - 4) {
+    // items fit but no room for totals — add summary page
   }
 
-  // Totals (right)
-  const totalsX = 390;
-  const totalsValX = 480;
-  let totY = termsStartY;
-  const drawRow = (label: string, value: string, bold = false) => {
-    const f = bold ? helveticaBold : helvetica;
-    p2.drawText(label, { x: totalsX, y: totY, size: 11, font: f, color: darkGray });
-    p2.drawText(value, { x: totalsValX, y: totY, size: 11, font: f, color: darkGray });
-    totY -= 22;
-  };
+  // Build pages
+  let serviceIndex = 0;
+  const pages: any[] = [];
 
-  drawRow("Subtotal:", fmt(d.subtotal));
-  drawRow(`${d.taxLabel}:`, fmt(d.taxAmount));
-  drawRow(`${d.othersLabel}:`, fmt(d.othersConverted));
-  // Separator line before total
-  p2.drawRectangle({ x: totalsX, y: totY + 16, width: 140, height: 0.8, color: lineGray });
-  drawRow("Total:", fmt(d.total), true);
+  // Page 1
+  const p1 = pdfDoc.addPage([W, H]);
+  pages.push(p1);
+  drawGoldLogo(p1);
+  drawTitle(p1);
+  drawCustomerInfo(p1);
 
-  // Acceptance text (gold, bold italic)
-  const acceptY = Math.min(ty, totY) - 25;
-  p2.drawText(d.acceptanceText, { x: 65, y: acceptY, size: 12, font: helveticaBoldOblique, color: gold });
+  const tableStartY1 = H - MARGIN_TOP - headerHeight;
+  const { endY: endY1, drawn: drawn1 } = drawTable(p1, tableStartY1, d.services.slice(0, maxRowsPage1), true);
+  serviceIndex = drawn1;
 
-  // Signature
-  drawSignature(p2, acceptY - 70);
-  drawFooter(p2);
+  // If all services fit on page 1 and there's room for totals
+  const spaceForTotals = 180; // totals + terms + signature
+  if (serviceIndex >= totalServices && endY1 > MARGIN_BOTTOM + spaceForTotals) {
+    // Draw totals, terms, signature on page 1
+    let ty = endY1 - 10;
+
+    // Totals on right
+    const totalsX = 390;
+    const totalsValX = 480;
+    let totY = ty;
+    const drawTotalRow = (label: string, value: string, bold = false) => {
+      const f = bold ? helveticaBold : helvetica;
+      p1.drawText(label, { x: totalsX, y: totY, size: 10, font: f, color: darkGray });
+      p1.drawText(value, { x: totalsValX, y: totY, size: 10, font: f, color: darkGray });
+      totY -= 20;
+    };
+    drawTotalRow("Subtotal:", fmt(d.subtotal));
+    drawTotalRow(`${d.taxLabel}:`, fmt(d.taxAmount));
+    drawTotalRow(`${d.othersLabel}:`, fmt(d.othersConverted));
+    p1.drawRectangle({ x: totalsX, y: totY + 14, width: 140, height: 0.8, color: lineGray });
+    drawTotalRow("Total:", fmt(d.total), true);
+
+    // Terms on left
+    let termsY = ty;
+    p1.drawText("Terms & Conditions", { x: CONTENT_LEFT + 10, y: termsY, size: 11, font: helveticaBold, color: black });
+    termsY -= 18;
+    for (const term of d.termsConditions) {
+      const bullet = `•  ${term}`;
+      const words = bullet.split(" ");
+      let line = "";
+      for (const word of words) {
+        const test = line + word + " ";
+        if (helvetica.widthOfTextAtSize(test, 9) > 220) {
+          p1.drawText(line.trim(), { x: CONTENT_LEFT + 20, y: termsY, size: 9, font: helvetica, color: darkGray });
+          termsY -= 13;
+          line = "    " + word + " ";
+        } else {
+          line = test;
+        }
+      }
+      if (line.trim()) {
+        p1.drawText(line.trim(), { x: CONTENT_LEFT + 20, y: termsY, size: 9, font: helvetica, color: darkGray });
+        termsY -= 16;
+      }
+    }
+
+    // Acceptance + signature
+    const acceptY = Math.min(termsY, totY) - 15;
+    p1.drawText(d.acceptanceText, { x: CONTENT_LEFT + 10, y: acceptY, size: 11, font: helveticaBoldOblique, color: gold });
+
+    // Watermark between table end and signature
+    drawWatermark(p1, acceptY + 10);
+
+    drawSignature(p1, acceptY - 50);
+    drawPageChrome(p1, 1, 1);
+  } else {
+    // Need continuation pages
+    drawPageChrome(p1, 1, totalPages + 1);
+
+    // Continue services on subsequent pages
+    while (serviceIndex < totalServices) {
+      const pN = pdfDoc.addPage([W, H]);
+      pages.push(pN);
+      drawGoldLogo(pN);
+
+      const contY = H - MARGIN_TOP - 50;
+      pN.drawText(`Quotation #${d.quoteNumber} (continued)`, { x: CONTENT_LEFT + 10, y: contY, size: 16, font: helveticaBoldOblique, color: black });
+
+      const tableStartYN = contY - 30;
+      const { endY: endYN, drawn: drawnN } = drawTable(pN, tableStartYN, d.services.slice(serviceIndex), true);
+      serviceIndex += drawnN;
+      drawPageChrome(pN, pages.length, pages.length + 1);
+    }
+
+    // Final summary page
+    const pFinal = pdfDoc.addPage([W, H]);
+    pages.push(pFinal);
+    drawGoldLogo(pFinal);
+
+    let fy = H - MARGIN_TOP - 60;
+    pFinal.drawText(`Quotation #${d.quoteNumber} — Summary`, { x: CONTENT_LEFT + 10, y: fy, size: 20, font: helveticaBoldOblique, color: black });
+    fy -= 40;
+
+    // Terms on left
+    const termsStartY = fy;
+    pFinal.drawText("Terms & Conditions", { x: CONTENT_LEFT + 10, y: fy, size: 11, font: helveticaBold, color: black });
+    fy -= 20;
+    for (const term of d.termsConditions) {
+      const bullet = `•  ${term}`;
+      const words = bullet.split(" ");
+      let line = "";
+      for (const word of words) {
+        const test = line + word + " ";
+        if (helvetica.widthOfTextAtSize(test, 240) > 240) {
+          pFinal.drawText(line.trim(), { x: CONTENT_LEFT + 20, y: fy, size: 9, font: helvetica, color: darkGray });
+          fy -= 13;
+          line = "    " + word + " ";
+        } else {
+          line = test;
+        }
+      }
+      if (line.trim()) {
+        pFinal.drawText(line.trim(), { x: CONTENT_LEFT + 20, y: fy, size: 9, font: helvetica, color: darkGray });
+        fy -= 16;
+      }
+    }
+
+    // Totals on right
+    const totalsX = 390;
+    const totalsValX = 480;
+    let totY = termsStartY;
+    const drawTotalRow2 = (label: string, value: string, bold = false) => {
+      const f = bold ? helveticaBold : helvetica;
+      pFinal.drawText(label, { x: totalsX, y: totY, size: 10, font: f, color: darkGray });
+      pFinal.drawText(value, { x: totalsValX, y: totY, size: 10, font: f, color: darkGray });
+      totY -= 20;
+    };
+    drawTotalRow2("Subtotal:", fmt(d.subtotal));
+    drawTotalRow2(`${d.taxLabel}:`, fmt(d.taxAmount));
+    drawTotalRow2(`${d.othersLabel}:`, fmt(d.othersConverted));
+    pFinal.drawRectangle({ x: totalsX, y: totY + 14, width: 140, height: 0.8, color: lineGray });
+    drawTotalRow2("Total:", fmt(d.total), true);
+
+    // Acceptance + signature
+    const acceptY = Math.min(fy, totY) - 25;
+    pFinal.drawText(d.acceptanceText, { x: CONTENT_LEFT + 10, y: acceptY, size: 11, font: helveticaBoldOblique, color: gold });
+    drawWatermark(pFinal, acceptY + 10);
+    drawSignature(pFinal, acceptY - 50);
+
+    // Update all page chromes with correct total
+    const finalTotal = pages.length;
+    // Redraw chrome on all pages
+    for (let i = 0; i < pages.length; i++) {
+      drawPageChrome(pages[i], i + 1, finalTotal);
+    }
+  }
 
   return await pdfDoc.save();
 }
 
-// ===================== SIMPLE PDF (original style, no watermark) =====================
+// ===================== SIMPLE PDF (with black/gold accents) =====================
 async function generateSimplePdf(d: any): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
   const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const [goldLogoBytes] = await Promise.all([fetchImage(GOLD_LOGO_URL)]);
+  let goldLogo: any = null;
+  if (goldLogoBytes) goldLogo = await pdfDoc.embedPng(goldLogoBytes);
 
   const W = 595;
   const H = 842;
@@ -349,23 +451,50 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
   const gray = rgb(0.5, 0.5, 0.5);
   const lightLine = rgb(0.85, 0.85, 0.85);
   const white = rgb(1, 1, 1);
+  const gold = rgb(0.72, 0.64, 0.42);
+
+  const HEADER_H = 60;
+  const FOOTER_H = 50;
 
   const fmt = (n: number) => `${d.currencySymbol}${n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
+  const drawSimpleChrome = (page: any, pageNum: number, totalPages: number) => {
+    // Top black bar
+    page.drawRectangle({ x: 0, y: H - HEADER_H, width: W, height: HEADER_H, color: black });
+    // Gold accent line under header
+    page.drawRectangle({ x: 0, y: H - HEADER_H - 2, width: W, height: 2, color: gold });
+    // Logo or text in header
+    if (goldLogo) {
+      const logoW = 90;
+      const logoH = (goldLogo.height / goldLogo.width) * logoW;
+      page.drawImage(goldLogo, { x: 30, y: H - HEADER_H + (HEADER_H - logoH) / 2, width: logoW, height: logoH });
+    } else {
+      page.drawText("AUREON", { x: 30, y: H - 40, size: 22, font: helveticaBold, color: gold });
+    }
+    page.drawText(`Quote #${d.quoteNumber}`, { x: W - 180, y: H - 35, size: 12, font: helveticaBold, color: white });
+    page.drawText(d.dateStr, { x: W - 180, y: H - 50, size: 9, font: helvetica, color: gold });
+
+    // Bottom black bar
+    page.drawRectangle({ x: 0, y: 0, width: W, height: FOOTER_H, color: black });
+    // Gold accent line above footer
+    page.drawRectangle({ x: 0, y: FOOTER_H, width: W, height: 2, color: gold });
+    page.drawText(`${d.companyName}  |  ${d.companyWebsite}  |  ${d.companyPhone1}`, {
+      x: 30, y: 22, size: 8, font: helvetica, color: gold,
+    });
+    if (totalPages > 1) {
+      page.drawText(`${pageNum}/${totalPages}`, { x: W - 50, y: 22, size: 8, font: helvetica, color: gold });
+    }
+  };
+
+  // Build pages
+  const allPages: any[] = [];
   const page = pdfDoc.addPage([W, H]);
-
-  // Title
-  page.drawText("AUREON", { x: 50, y: H - 60, size: 24, font: helveticaBold, color: black });
-  page.drawText(`Quote #${d.quoteNumber}`, { x: 50, y: H - 90, size: 16, font: helveticaBold, color: black });
-  page.drawText(d.dateStr, { x: W - 150, y: H - 60, size: 10, font: helvetica, color: gray });
-  page.drawText(`Valid: ${d.validStr}`, { x: W - 150, y: H - 75, size: 10, font: helvetica, color: gray });
-
-  // Separator
-  page.drawRectangle({ x: 50, y: H - 105, width: W - 100, height: 1, color: lightLine });
+  allPages.push(page);
 
   // Client info
-  let y = H - 130;
+  let y = H - HEADER_H - 30;
   page.drawText("Bill To:", { x: 50, y, size: 10, font: helveticaBold, color: black });
+  page.drawText(`Valid Until: ${d.validStr}`, { x: W - 180, y, size: 9, font: helvetica, color: gray });
   y -= 16;
   page.drawText(d.quote.full_name || "—", { x: 50, y, size: 10, font: helvetica, color: darkGray });
   y -= 14;
@@ -380,7 +509,7 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
   page.drawText(d.quote.email || "", { x: 50, y, size: 10, font: helvetica, color: darkGray });
 
   // Table
-  y -= 35;
+  y -= 30;
   const tL = 50;
   const tR = W - 50;
   const tW = tR - tL;
@@ -390,21 +519,40 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
 
   // Header
   page.drawRectangle({ x: tL, y: y - 4, width: tW, height: 24, color: black });
-  page.drawText("Service", { x: colDesc + 8, y: y + 2, size: 10, font: helveticaBold, color: white });
-  page.drawText("Price", { x: colPrice, y: y + 2, size: 10, font: helveticaBold, color: white });
-  page.drawText("Total", { x: colTotal, y: y + 2, size: 10, font: helveticaBold, color: white });
+  page.drawText("Service", { x: colDesc + 8, y: y + 2, size: 10, font: helveticaBold, color: gold });
+  page.drawText("Price", { x: colPrice, y: y + 2, size: 10, font: helveticaBold, color: gold });
+  page.drawText("Total", { x: colTotal, y: y + 2, size: 10, font: helveticaBold, color: gold });
   y -= 30;
 
+  const minY = FOOTER_H + 20;
+  let svcIdx = 0;
+  let currentPage = page;
+
   for (const svc of d.services) {
+    if (y < minY) {
+      // Need new page
+      drawSimpleChrome(currentPage, allPages.length, allPages.length + 1);
+      currentPage = pdfDoc.addPage([W, H]);
+      allPages.push(currentPage);
+      y = H - HEADER_H - 30;
+      // Redraw table header
+      currentPage.drawRectangle({ x: tL, y: y - 4, width: tW, height: 24, color: black });
+      currentPage.drawText("Service", { x: colDesc + 8, y: y + 2, size: 10, font: helveticaBold, color: gold });
+      currentPage.drawText("Price", { x: colPrice, y: y + 2, size: 10, font: helveticaBold, color: gold });
+      currentPage.drawText("Total", { x: colTotal, y: y + 2, size: 10, font: helveticaBold, color: gold });
+      y -= 30;
+    }
+
     const price = svc.base_price * d.rate;
-    const name = (svc.service_name || "Service");
+    const name = svc.service_name || "Service";
     const displayName = name.length > 55 ? name.substring(0, 52) + "..." : name;
-    page.drawText(displayName, { x: colDesc + 8, y, size: 10, font: helvetica, color: darkGray });
-    page.drawText(fmt(price), { x: colPrice, y, size: 10, font: helvetica, color: darkGray });
-    page.drawText(fmt(price), { x: colTotal, y, size: 10, font: helveticaBold, color: darkGray });
+    currentPage.drawText(displayName, { x: colDesc + 8, y, size: 10, font: helvetica, color: darkGray });
+    currentPage.drawText(fmt(price), { x: colPrice, y, size: 10, font: helvetica, color: darkGray });
+    currentPage.drawText(fmt(price), { x: colTotal, y, size: 10, font: helveticaBold, color: darkGray });
     y -= 10;
-    page.drawRectangle({ x: tL, y, width: tW, height: 0.5, color: lightLine });
+    currentPage.drawRectangle({ x: tL, y, width: tW, height: 0.5, color: lightLine });
     y -= 18;
+    svcIdx++;
   }
 
   // Totals
@@ -412,23 +560,30 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
   const valX = colTotal;
   const lblX = colPrice;
 
-  page.drawText("Subtotal:", { x: lblX, y, size: 10, font: helvetica, color: darkGray });
-  page.drawText(fmt(d.subtotal), { x: valX, y, size: 10, font: helvetica, color: darkGray });
+  if (y < minY + 120) {
+    drawSimpleChrome(currentPage, allPages.length, allPages.length + 1);
+    currentPage = pdfDoc.addPage([W, H]);
+    allPages.push(currentPage);
+    y = H - HEADER_H - 30;
+  }
+
+  currentPage.drawText("Subtotal:", { x: lblX, y, size: 10, font: helvetica, color: darkGray });
+  currentPage.drawText(fmt(d.subtotal), { x: valX, y, size: 10, font: helvetica, color: darkGray });
   y -= 18;
-  page.drawText(`${d.taxLabel}:`, { x: lblX, y, size: 10, font: helvetica, color: darkGray });
-  page.drawText(fmt(d.taxAmount), { x: valX, y, size: 10, font: helvetica, color: darkGray });
+  currentPage.drawText(`${d.taxLabel}:`, { x: lblX, y, size: 10, font: helvetica, color: darkGray });
+  currentPage.drawText(fmt(d.taxAmount), { x: valX, y, size: 10, font: helvetica, color: darkGray });
   y -= 18;
-  page.drawText(`${d.othersLabel}:`, { x: lblX, y, size: 10, font: helvetica, color: darkGray });
-  page.drawText(fmt(d.othersConverted), { x: valX, y, size: 10, font: helvetica, color: darkGray });
+  currentPage.drawText(`${d.othersLabel}:`, { x: lblX, y, size: 10, font: helvetica, color: darkGray });
+  currentPage.drawText(fmt(d.othersConverted), { x: valX, y, size: 10, font: helvetica, color: darkGray });
   y -= 5;
-  page.drawRectangle({ x: lblX, y, width: tR - lblX, height: 0.8, color: lightLine });
+  currentPage.drawRectangle({ x: lblX, y, width: tR - lblX, height: 0.8, color: gold });
   y -= 18;
-  page.drawText("Total:", { x: lblX, y, size: 11, font: helveticaBold, color: black });
-  page.drawText(fmt(d.total), { x: valX, y, size: 11, font: helveticaBold, color: black });
+  currentPage.drawText("Total:", { x: lblX, y, size: 11, font: helveticaBold, color: black });
+  currentPage.drawText(fmt(d.total), { x: valX, y, size: 11, font: helveticaBold, color: black });
 
   // Terms
-  y -= 40;
-  page.drawText("Terms & Conditions", { x: 50, y, size: 10, font: helveticaBold, color: black });
+  y -= 35;
+  currentPage.drawText("Terms & Conditions", { x: 50, y, size: 10, font: helveticaBold, color: black });
   y -= 16;
   for (const term of d.termsConditions) {
     const line = `• ${term}`;
@@ -437,24 +592,25 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
     for (const w of words) {
       const test = cur + w + " ";
       if (helvetica.widthOfTextAtSize(test, 9) > tW) {
-        page.drawText(cur.trim(), { x: 55, y, size: 9, font: helvetica, color: gray });
+        if (y < minY) break;
+        currentPage.drawText(cur.trim(), { x: 55, y, size: 9, font: helvetica, color: gray });
         y -= 13;
         cur = "  " + w + " ";
       } else {
         cur = test;
       }
     }
-    if (cur.trim()) {
-      page.drawText(cur.trim(), { x: 55, y, size: 9, font: helvetica, color: gray });
+    if (cur.trim() && y >= minY) {
+      currentPage.drawText(cur.trim(), { x: 55, y, size: 9, font: helvetica, color: gray });
       y -= 16;
     }
   }
 
-  // Footer
-  page.drawRectangle({ x: 50, y: 50, width: tW, height: 0.5, color: lightLine });
-  page.drawText(`${d.companyName}  |  ${d.companyWebsite}  |  ${d.companyPhone1}`, {
-    x: 50, y: 35, size: 8, font: helvetica, color: gray,
-  });
+  // Apply chrome to all pages
+  const total = allPages.length;
+  for (let i = 0; i < allPages.length; i++) {
+    drawSimpleChrome(allPages[i], i + 1, total);
+  }
 
   return await pdfDoc.save();
 }

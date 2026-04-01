@@ -54,8 +54,26 @@ const ServiceDetail = () => {
         </div>
       )}
 
+      {/* Hero Image (for services without video) */}
+      {!service.headerVideo && service.headerImage && (
+        <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
+          <img src={service.headerImage} alt={service.title} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-12">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="font-display font-light text-3xl md:text-5xl text-foreground"
+            >
+              {service.title}
+            </motion.h1>
+          </div>
+        </div>
+      )}
+
       <main className="container mx-auto px-6 lg:px-12 py-16 max-w-3xl">
-        {!service.headerVideo && (
+        {!service.headerVideo && !service.headerImage && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
             <h1 className="font-display font-light text-4xl lg:text-5xl text-foreground tracking-wide">
               {service.title}
