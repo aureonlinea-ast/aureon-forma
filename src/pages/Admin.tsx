@@ -387,6 +387,9 @@ const AdminPage = () => {
 
         {/* Quote Template Tab */}
         {activeTab === "template" && <QuoteTemplateTab />}
+
+        {/* Invoices Tab */}
+        {activeTab === "invoices" && <InvoicesTab quotes={quotes} pricing={pricing} formatDate={formatDate} onRefresh={fetchData} />}
       </div>
     </div>
   );
