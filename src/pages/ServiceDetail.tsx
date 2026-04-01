@@ -34,7 +34,7 @@ const ServiceDetail = () => {
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
 
-      {/* Hero Video */}
+      {/* Hero Video or Image */}
       {service.headerVideo && (
         <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
           <video autoPlay muted loop playsInline className="w-full h-full object-cover">
