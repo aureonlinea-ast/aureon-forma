@@ -46,7 +46,7 @@ interface ServicePrice {
   is_active: boolean;
 }
 
-type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clients" | "template";
+type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clients" | "template" | "invoices";
 
 const AdminPage = () => {
   const [authenticated, setAuthenticated] = useState(false);
