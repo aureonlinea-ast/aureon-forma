@@ -5,6 +5,7 @@ import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import ClientsTab from "@/components/admin/ClientsTab";
 import QuotesTab from "@/components/admin/QuotesTab";
 import QuoteTemplateTab from "@/components/admin/QuoteTemplateTab";
+import InvoicesTab from "@/components/admin/InvoicesTab";
 
 interface ContactSubmission {
   id: string;
