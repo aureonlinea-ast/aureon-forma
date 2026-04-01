@@ -5,6 +5,7 @@ import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import ClientsTab from "@/components/admin/ClientsTab";
 import QuotesTab from "@/components/admin/QuotesTab";
 import QuoteTemplateTab from "@/components/admin/QuoteTemplateTab";
+import InvoicesTab from "@/components/admin/InvoicesTab";
 
 interface ContactSubmission {
   id: string;
@@ -45,7 +46,7 @@ interface ServicePrice {
   is_active: boolean;
 }
 
-type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clients" | "template";
+type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clients" | "template" | "invoices";
 
 const AdminPage = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -158,6 +159,7 @@ const AdminPage = () => {
     { key: "clients", label: "Clients" },
     { key: "contacts", label: "Contact Forms" },
     { key: "quotes", label: "Quotes" },
+    { key: "invoices", label: "Invoices" },
     { key: "pricing", label: "Pricing" },
     { key: "template", label: "Quote Template" },
   ];
@@ -385,6 +387,9 @@ const AdminPage = () => {
 
         {/* Quote Template Tab */}
         {activeTab === "template" && <QuoteTemplateTab />}
+
+        {/* Invoices Tab */}
+        {activeTab === "invoices" && <InvoicesTab quotes={quotes} pricing={pricing} formatDate={formatDate} onRefresh={fetchData} />}
       </div>
     </div>
   );

@@ -50,6 +50,83 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          company: string | null
+          created_at: string
+          currency: string
+          email: string
+          full_name: string
+          id: string
+          installments: Json
+          invoice_number: string
+          notes: string | null
+          others_amount: number
+          payment_method: string
+          payment_plan: string
+          phone: string | null
+          quote_id: string | null
+          services: Json
+          status: string
+          subtotal: number
+          tax_amount: number
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          currency?: string
+          email: string
+          full_name: string
+          id?: string
+          installments?: Json
+          invoice_number: string
+          notes?: string | null
+          others_amount?: number
+          payment_method?: string
+          payment_plan?: string
+          phone?: string | null
+          quote_id?: string | null
+          services?: Json
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          currency?: string
+          email?: string
+          full_name?: string
+          id?: string
+          installments?: Json
+          invoice_number?: string
+          notes?: string | null
+          others_amount?: number
+          payment_method?: string
+          payment_plan?: string
+          phone?: string | null
+          quote_id?: string | null
+          services?: Json
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quote_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quote_requests: {
         Row: {
           additional_notes: string | null
