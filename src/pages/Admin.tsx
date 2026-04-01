@@ -159,6 +159,7 @@ const AdminPage = () => {
     { key: "clients", label: "Clients" },
     { key: "contacts", label: "Contact Forms" },
     { key: "quotes", label: "Quotes" },
+    { key: "invoices", label: "Invoices" },
     { key: "pricing", label: "Pricing" },
     { key: "template", label: "Quote Template" },
   ];
