@@ -4,7 +4,7 @@ import { allProjects } from "@/data/projects";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
 
 const featuredSlugs = [
-  "hillside-retreat",
+  "luna-residence",
   "jardins-tower",
   "blue-horizon-estate",
   "bts-studio-tour",
