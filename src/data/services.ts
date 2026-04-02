@@ -1,4 +1,9 @@
 import hillsidePlan1 from "@/assets/projects/hillside-plan-1.png";
+import civicRenderedPlan from "@/assets/projects/civic-rendered-plan.png";
+import civicPlanA from "@/assets/projects/civic-plan-a.png";
+import hillsidePlan2 from "@/assets/projects/hillside-plan-2.png";
+import hillsidePlanLower from "@/assets/projects/hillside-plan-lower.png";
+import hillsidePlanCirculation from "@/assets/projects/hillside-plan-circulation.png";
 
 export interface Service {
   title: string;
@@ -9,6 +14,7 @@ export interface Service {
   process: string[];
   headerVideo?: string;
   headerImage?: string;
+  gallery?: string[];
 }
 
 export const allServices: Service[] = [
@@ -55,6 +61,7 @@ export const allServices: Service[] = [
       "Final design documentation",
     ],
     headerImage: hillsidePlan1,
+    gallery: [hillsidePlan1, hillsidePlan2, hillsidePlanLower, hillsidePlanCirculation, civicRenderedPlan, civicPlanA],
   },
   {
     title: "3D Modelling",
@@ -121,5 +128,6 @@ export const allServices: Service[] = [
       "Production-ready file delivery",
     ],
     headerVideo: "/videos/hypervsn.mp4",
+    gallery: ["/videos/holographic-display.mp4", "/videos/track-overlay.mp4", "/videos/hypervsn.mp4"],
   },
 ];

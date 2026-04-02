@@ -14,6 +14,8 @@ const featuredSlugs = [
   "echelon-heights",
   "virelle",
   "silverwood",
+  "aureal-tower",
+  "orion-residences",
 ];
 const featured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
 
@@ -34,7 +36,6 @@ const FeaturedProjects = () => {
           <div className="w-12 h-[1px] bg-primary mt-6" />
         </motion.div>
 
-        {/* Grid: 1 col mobile, 2 col md, 3 col lg — each row ~80vh tall */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {featured.map((project, i) => (
             <div key={project.slug} className="h-[85vh] md:h-[75vh] lg:h-[80vh]">

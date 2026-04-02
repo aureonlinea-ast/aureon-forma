@@ -23,6 +23,10 @@ import hillsidePlanLower from "@/assets/projects/hillside-plan-lower.png";
 import hillsidePlan1 from "@/assets/projects/hillside-plan-1.png";
 import hillsidePlan2 from "@/assets/projects/hillside-plan-2.png";
 import hillsidePlanCirculation from "@/assets/projects/hillside-plan-circulation.png";
+import aurealTower from "@/assets/projects/aureal-tower.jpeg";
+import orionTowers from "@/assets/projects/orion-towers.jpeg";
+import civicRenderedPlan from "@/assets/projects/civic-rendered-plan.png";
+import civicPlanA from "@/assets/projects/civic-plan-a.png";
 
 export interface Project {
   title: string;
@@ -43,11 +47,58 @@ export interface Project {
 
 export const allProjects: Project[] = [
   {
+    title: "Aureal Tower",
+    slug: "aureal-tower",
+    category: "Commercial Architecture",
+    status: "In Progress",
+    image: aurealTower,
+    location: "Nairobi, Kenya",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A soaring mixed-use tower with a sculptural curved façade, geometric cladding, and rooftop greenery crowning the skyline.",
+    detailedDescription: "Aureal Tower is a landmark mixed-use development defined by its dramatic curved silhouette and articulated geometric façade. The tower rises from a multi-level retail podium with faceted glass and composite panels that create a dynamic interplay of light and shadow throughout the day. Rooftop gardens and sky terraces integrate biophilic elements at height.",
+    concept: "The design explores the tension between solidity and lightness — a monolithic tower carved with a sweeping vertical incision that creates visual dynamism and functional sky gardens. The faceted cladding references crystalline geological formations.",
+    designInspiration: "Drawing from the sculptural towers of Zaha Hadid and the parametric explorations of UNStudio, combined with tropical modernist principles for passive cooling and natural ventilation through the tower's carved void.",
+    rendering: "Rendered with V-Ray under golden-hour conditions to emphasize the warmth of the composite cladding and the dramatic interplay of the curved void against the evening sky.",
+    gallery: [aurealTower],
+  },
+  {
+    title: "Orion Residences",
+    slug: "orion-residences",
+    category: "Residential Design",
+    status: "In Progress",
+    image: orionTowers,
+    location: "Istanbul, Turkey",
+    completionDate: "2027 (Est.)",
+    shortDescription: "Twin residential towers with flowing organic balconies, warm interior lighting, and a landscaped retail podium connecting them at ground level.",
+    detailedDescription: "Orion Residences is a twin-tower residential development connected by a landscaped ground-level retail promenade. The towers feature continuous organic balcony bands that wrap each floor, creating a flowing horizontal rhythm. Warm interior lighting spills through floor-to-ceiling glazing, giving the towers a lantern-like quality at dusk.",
+    concept: "Designed as a pair in dialogue — the twin forms mirror and complement each other across a central garden axis. The flowing balcony bands blur the distinction between floors, creating a unified vertical landscape.",
+    designInspiration: "Influenced by the organic residential work of MAD Architects and the twin-tower typologies of MVRDV. The material palette of white concrete frames and warm timber balcony soffits creates a refined residential character.",
+    rendering: "Rendered with Corona Renderer under overcast twilight conditions to emphasize the warm glow of inhabited spaces and the flowing geometry of the continuous balconies.",
+    gallery: [orionTowers],
+  },
+  {
+    title: "Civic Pavilion",
+    slug: "civic-pavilion",
+    category: "Architectural Design",
+    status: "In Progress",
+    video: "/videos/civic-cinematic.mp4",
+    image: civicRenderedPlan,
+    location: "Mombasa, Kenya",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A biomorphic civic pavilion with twin organic wings, amphitheater seating, and water features, designed as a cultural hub.",
+    detailedDescription: "The Civic Pavilion is a public cultural space conceived as two interlocking organic forms surrounding a central plaza. The design features amphitheater seating, café and dining zones, service facilities, and integrated water features. The biomorphic plan responds to natural circulation patterns and creates intimate zones within a grand civic gesture.",
+    concept: "Inspired by the double-helix of natural forms, the twin wings create a flowing spatial sequence from public plaza to intimate dining alcoves. Water channels and landscape features guide visitors through the space organically.",
+    designInspiration: "Drawing from the organic architecture of Santiago Calatrava and the landscape-integrated public spaces of Snøhetta. Material transitions from stone to timber to water create sensory richness.",
+    rendering: "Cinematic flythrough rendered in Lumion with atmospheric lighting transitions from day to night, showcasing the pavilion as a gathering place across all hours.",
+    gallery: [civicRenderedPlan, civicPlanA],
+  },
+  {
     title: "Terraced Hillside Retreat",
     slug: "hillside-retreat",
     category: "Architectural Design",
     status: "In Progress",
     image: hillsideMansion,
+    video: "/videos/hillside-villa-flow.mp4",
     location: "Coastal East Africa",
     completionDate: "2026 (Est.)",
     shortDescription: "A cascading luxury mansion carved into a tropical hillside, featuring infinity pools, terraced living, and panoramic valley views.",
@@ -315,4 +366,4 @@ export const allProjects: Project[] = [
 ];
 
 // Export images for use elsewhere
-export { hillsidePlan1, hillsideMansion, hillsideCloseup };
+export { hillsidePlan1, hillsideMansion, hillsideCloseup, civicRenderedPlan, civicPlanA };

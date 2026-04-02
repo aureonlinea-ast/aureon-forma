@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import GallerySlideshow from "@/components/GallerySlideshow";
 import { allServices } from "@/data/services";
 
 const ServiceDetail = () => {
@@ -30,6 +31,10 @@ const ServiceDetail = () => {
     }),
   };
 
+  // Separate image and video gallery items
+  const galleryImages = service.gallery?.filter((g) => !g.endsWith(".mp4")) ?? [];
+  const galleryVideos = service.gallery?.filter((g) => g.endsWith(".mp4")) ?? [];
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
@@ -41,7 +46,7 @@ const ServiceDetail = () => {
             <source src={service.headerVideo} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-12">
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-12">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -59,7 +64,7 @@ const ServiceDetail = () => {
         <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
           <img src={service.headerImage} alt={service.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-12">
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-12">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -72,7 +77,7 @@ const ServiceDetail = () => {
         </div>
       )}
 
-      <main className="container mx-auto px-6 lg:px-12 py-16 max-w-3xl">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-12 py-16 max-w-3xl">
         {!service.headerVideo && !service.headerImage && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
             <h1 className="font-display font-light text-4xl lg:text-5xl text-foreground tracking-wide">
@@ -87,7 +92,7 @@ const ServiceDetail = () => {
           initial="hidden"
           animate="visible"
           variants={sectionVariants}
-          className="text-base font-body font-light text-muted-foreground leading-[1.8] mb-16"
+          className="text-sm sm:text-base font-body font-light text-muted-foreground leading-[1.8] mb-16"
         >
           {service.detailedDescription}
         </motion.p>
@@ -122,7 +127,42 @@ const ServiceDetail = () => {
           </div>
         </motion.div>
 
-        <motion.div custom={3} initial="hidden" animate="visible" variants={sectionVariants}>
+        {/* Gallery - Images */}
+        {galleryImages.length > 0 && (
+          <motion.div custom={3} initial="hidden" animate="visible" variants={sectionVariants} className="mb-16">
+            <h2 className="font-display text-2xl text-foreground font-light mb-4">Gallery</h2>
+            <div className="w-8 h-[1px] bg-primary mb-6" />
+            <GallerySlideshow images={galleryImages} title={service.title} />
+          </motion.div>
+        )}
+
+        {/* Gallery - Videos */}
+        {galleryVideos.length > 0 && (
+          <motion.div custom={4} initial="hidden" animate="visible" variants={sectionVariants} className="mb-16">
+            <h2 className="font-display text-2xl text-foreground font-light mb-4">
+              {galleryImages.length > 0 ? "Showcase" : "Gallery"}
+            </h2>
+            <div className="w-8 h-[1px] bg-primary mb-6" />
+            <div className="space-y-6">
+              {galleryVideos.map((vid, i) => (
+                <div key={i} className="relative w-full aspect-video overflow-hidden">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                    className="w-full h-full object-cover"
+                  >
+                    <source src={vid} type="video/mp4" />
+                  </video>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        <motion.div custom={5} initial="hidden" animate="visible" variants={sectionVariants}>
           <Link
             to="/services"
             className="gold-underline text-sm font-body font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors pb-1"
