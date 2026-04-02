@@ -62,16 +62,17 @@ const ViewportProjectCard = ({
           to={`${linkPrefix}/${slug}`}
           className="group block relative overflow-hidden h-full"
         >
-          {video ? (
+        {video ? (
             <video
               autoPlay
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"
+              poster={image}
               className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
             >
-              <source src={video} type="video/mp4" />
+              {inView && <source src={video} type="video/mp4" />}
             </video>
           ) : (
             <img
@@ -79,6 +80,7 @@ const ViewportProjectCard = ({
               alt={title}
               className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               loading="lazy"
+              decoding="async"
             />
           )}
           {/* Gradient overlay */}
