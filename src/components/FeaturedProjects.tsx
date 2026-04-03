@@ -14,7 +14,6 @@ const featuredSlugs = [
   "echelon-heights",
   "virelle",
   "silverwood",
-  "aureal-tower",
   "orion-residences",
 ];
 const featured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
