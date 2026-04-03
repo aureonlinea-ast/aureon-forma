@@ -150,8 +150,11 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
 
   const fmt = (n: number) => `${d.currencySymbol}${n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
-  const drawPageChrome = (page: any, pageNum: number, totalPages: number) => {
+  const drawPageBackground = (page: any) => {
     page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: cream });
+  };
+
+  const drawPageChrome = (page: any, pageNum: number, totalPages: number) => {
     page.drawRectangle({ x: MARGIN_LEFT, y: MARGIN_BOTTOM, width: 1.5, height: H - MARGIN_TOP - MARGIN_BOTTOM, color: black });
     page.drawRectangle({ x: 0, y: MARGIN_BOTTOM, width: W, height: 1.5, color: black });
     page.drawText(d.companyName, { x: CONTENT_LEFT + 10, y: MARGIN_BOTTOM - 30, size: 16, font: helveticaBold, color: black });
@@ -223,6 +226,7 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
   // --- PAGE 1 ---
   const p1 = pdfDoc.addPage([W, H]);
   allPages.push(p1);
+  drawPageBackground(p1);
   drawGoldLogo(p1);
 
   // Title
@@ -285,6 +289,7 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
       // Start new page
       const pN = pdfDoc.addPage([W, H]);
       allPages.push(pN);
+      drawPageBackground(pN);
       drawGoldLogo(pN);
       const contY = H - MARGIN_TOP - 50;
       pN.drawText(`${d.docLabel} #${d.docNumber} (continued)`, { x: CONTENT_LEFT + 10, y: contY, size: 16, font: helveticaBoldOblique, color: black });
@@ -304,6 +309,7 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
     // Need new page for summary
     const pFinal = pdfDoc.addPage([W, H]);
     allPages.push(pFinal);
+      drawPageBackground(pFinal);
     drawGoldLogo(pFinal);
     tableY = H - MARGIN_TOP - 60;
     pFinal.drawText(`${d.docLabel} #${d.docNumber} — Summary`, { x: CONTENT_LEFT + 10, y: tableY, size: 20, font: helveticaBoldOblique, color: black });
