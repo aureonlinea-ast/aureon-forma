@@ -174,11 +174,20 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
         body: {
           ...invoice,
           id: invoice.invoice_number,
+          full_name: invoice.full_name,
+          email: invoice.email,
+          phone: invoice.phone,
+          company: invoice.company,
           style: "branded",
+          documentType: "invoice",
           template,
+          currency: invoice.currency,
           exchangeRate: 1,
           services: invoice.services,
           estimated_price: invoice.subtotal,
+          payment_plan: invoice.payment_plan,
+          payment_method: invoice.payment_method,
+          installments: invoice.installments,
         },
       });
       if (error) throw error;
