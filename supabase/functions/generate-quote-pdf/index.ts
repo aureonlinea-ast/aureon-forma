@@ -619,6 +619,14 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
     }
   }
 
+  // Website verification link
+  y -= 10;
+  if (y >= minY + 20) {
+    currentPage.drawText("Verify or modify your order at:", { x: 50, y, size: 9, font: helvetica, color: gray });
+    y -= 14;
+    currentPage.drawText(`${d.websiteUrl}/quote`, { x: 50, y, size: 9, font: helveticaBold, color: gold });
+  }
+
   // Apply chrome
   const total = allPages.length;
   for (let i = 0; i < allPages.length; i++) {
