@@ -4,6 +4,12 @@ import civicPlanA from "@/assets/projects/civic-plan-a.png";
 import hillsidePlan2 from "@/assets/projects/hillside-plan-2.png";
 import hillsidePlanLower from "@/assets/projects/hillside-plan-lower.png";
 import hillsidePlanCirculation from "@/assets/projects/hillside-plan-circulation.png";
+import theRidgePlan from "@/assets/projects/the-ridge-plan.jpeg";
+import interior2 from "@/assets/projects/interior-2.jpeg";
+import vertex from "@/assets/projects/vertex.jpeg";
+import vertex1 from "@/assets/projects/vertex-1.jpeg";
+import leafLine from "@/assets/projects/leaf-line.jpeg";
+import floraHeights from "@/assets/projects/flora-heights.jpeg";
 
 export interface Service {
   title: string;
@@ -39,6 +45,7 @@ export const allServices: Service[] = [
       "Deliver final assets in print and digital formats",
     ],
     headerVideo: "/videos/lumina.mp4",
+    gallery: [leafLine, floraHeights, vertex, vertex1, interior2],
   },
   {
     title: "Architectural Design",
@@ -61,7 +68,7 @@ export const allServices: Service[] = [
       "Final design documentation",
     ],
     headerImage: hillsidePlan1,
-    gallery: [hillsidePlan1, hillsidePlan2, hillsidePlanLower, hillsidePlanCirculation, civicRenderedPlan, civicPlanA],
+    gallery: [hillsidePlan1, hillsidePlan2, hillsidePlanLower, hillsidePlanCirculation, civicRenderedPlan, civicPlanA, theRidgePlan],
   },
   {
     title: "3D Modelling",

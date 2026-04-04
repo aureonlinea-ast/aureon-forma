@@ -5,7 +5,8 @@ import ViewportProjectCard from "@/components/ViewportProjectCard";
 
 const featuredSlugs = [
   "luna-residence",
-  "jardins-tower",
+  "eden-terrace",
+  "the-monolith",
   "blue-horizon-estate",
   "bts-studio-tour",
   "lumina-tower",
