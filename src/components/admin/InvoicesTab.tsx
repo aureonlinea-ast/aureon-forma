@@ -120,7 +120,9 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
       status: "pending",
     }));
 
-    const invoiceNumber = `INV-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}-${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
+    // Sync invoice number with quote ID for coherent tracking
+    const quoteRef = quote.id.slice(0, 8).toUpperCase();
+    const invoiceNumber = `INV-${quoteRef}`;
 
     const { error } = await supabase.from("invoices" as any).insert({
       quote_id: quote.id,

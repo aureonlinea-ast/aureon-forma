@@ -59,7 +59,12 @@ serve(async (req) => {
     const currencySymbol = body.currency === "KES" ? "KES " : body.currency === "EUR" ? "€" : body.currency === "RMB" ? "¥" : "$";
     const rate = body.exchangeRate || 1;
     const services = body.services || [];
-    const docNumber = body.id?.slice(0, 8)?.toUpperCase() || "DRAFT";
+    // For invoices, use the invoice_number directly; for quotes, derive from ID
+    const rawDocNumber = isInvoice && body.invoice_number
+      ? body.invoice_number.replace(/^INV-/, "")
+      : body.id?.slice(0, 8)?.toUpperCase() || "DRAFT";
+    const docNumber = rawDocNumber;
+    const websiteUrl = "https://aureon-forma.lovable.app";
     const dateNow = new Date();
     const dateStr = dateNow.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
     const validDate = new Date(dateNow.getTime() + validityDays * 86400000);
@@ -84,6 +89,7 @@ serve(async (req) => {
       taxLabel, othersLabel, termsConditions, acceptanceText,
       companyName, companyWebsite, companyPhone1, companyPhone2, companyAddress,
       isInvoice, docLabel, docPrefix, paymentPlan, paymentMethod, installments,
+      websiteUrl,
     };
 
     let pdfBytes: Uint8Array;
@@ -413,6 +419,11 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
   currentPage.drawText("Signature over printed name", { x: leftX + 10, y: sigY - 16, size: 9, font: helvetica, color: gray });
   currentPage.drawText("Date signed", { x: rightX2 + 50, y: sigY - 16, size: 9, font: helvetica, color: gray });
 
+  // Website verification link
+  const linkY = sigY - 40;
+  currentPage.drawText("Verify or modify your order at:", { x: CONTENT_LEFT + 10, y: linkY, size: 9, font: helvetica, color: gray });
+  currentPage.drawText(`${websiteUrl}/quote`, { x: CONTENT_LEFT + 10, y: linkY - 14, size: 9, font: helveticaBold, color: gold });
+
   // Apply chrome to all pages
   const totalPageCount = allPages.length;
   for (let i = 0; i < allPages.length; i++) {
@@ -606,6 +617,14 @@ async function generateSimplePdf(d: any): Promise<Uint8Array> {
       currentPage.drawText(cur.trim(), { x: 55, y, size: 9, font: helvetica, color: gray });
       y -= 16;
     }
+  }
+
+  // Website verification link
+  y -= 10;
+  if (y >= minY + 20) {
+    currentPage.drawText("Verify or modify your order at:", { x: 50, y, size: 9, font: helvetica, color: gray });
+    y -= 14;
+    currentPage.drawText(`${d.websiteUrl}/quote`, { x: 50, y, size: 9, font: helveticaBold, color: gold });
   }
 
   // Apply chrome

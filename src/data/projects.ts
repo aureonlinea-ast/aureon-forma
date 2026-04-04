@@ -27,6 +27,12 @@ import aurealTower from "@/assets/projects/aureal-tower.jpeg";
 import orionTowers from "@/assets/projects/orion-towers.jpeg";
 import civicRenderedPlan from "@/assets/projects/civic-rendered-plan.png";
 import civicPlanA from "@/assets/projects/civic-plan-a.png";
+import floraHeights from "@/assets/projects/flora-heights.jpeg";
+import leafLine from "@/assets/projects/leaf-line.jpeg";
+import interior2 from "@/assets/projects/interior-2.jpeg";
+import theRidgePlan from "@/assets/projects/the-ridge-plan.jpeg";
+import vertex1 from "@/assets/projects/vertex-1.jpeg";
+import vertex from "@/assets/projects/vertex.jpeg";
 
 export interface Project {
   title: string;
@@ -46,6 +52,98 @@ export interface Project {
 }
 
 export const allProjects: Project[] = [
+  {
+    title: "Eden Terrace",
+    slug: "eden-terrace",
+    category: "Residential Design",
+    status: "In Progress",
+    video: "/videos/eden-terrace.mp4",
+    image: leafLine,
+    location: "Mombasa, Kenya",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A coastal luxury tower with flowing organic balconies, lush terraced gardens, and infinity pools cantilevered over the Indian Ocean.",
+    detailedDescription: "Eden Terrace is a landmark coastal residential tower that reimagines tropical high-rise living. Flowing organic balcony bands cascade down the facade, each one hosting private gardens, plunge pools, and outdoor living spaces. The design dissolves the boundary between interior luxury and tropical landscape, creating a vertical garden resort.",
+    concept: "Inspired by the terraced rice paddies and cascading waterfalls of Southeast Asia, Eden Terrace layers living spaces vertically so every resident experiences the sensation of a private villa suspended in the sky.",
+    designInspiration: "Drawing from the biophilic towers of WOHA Architects and the luxury hospitality of Aman Resorts. Materials include warm timber decking, white concrete fins, and frameless glass to maximize ocean views.",
+    rendering: "Cinematic flythrough rendered in Lumion with golden-hour oceanfront lighting, emphasizing the warmth of timber against tropical greenery and the reflective quality of cantilevered infinity pools.",
+    gallery: [leafLine, floraHeights, interior2],
+  },
+  {
+    title: "The Monolith",
+    slug: "the-monolith",
+    category: "Commercial Architecture",
+    status: "In Progress",
+    video: "/videos/the-monolith.mp4",
+    image: floraHeights,
+    location: "Nairobi, Kenya",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A sculptural supertall tower with a dramatic tapered silhouette, geometric cladding, and sky gardens punctuating the monolithic form.",
+    detailedDescription: "The Monolith is a landmark commercial tower that commands the skyline with its dramatic tapered form. The facade features a parametric cladding system that creates shifting patterns of light and shadow throughout the day. Sky gardens at key intervals break the monolithic mass, introducing biophilic elements at altitude.",
+    concept: "The design explores the tension between monumentality and porosity — a singular, powerful form carved with voids that breathe life into the vertical city. The taper reduces wind load while creating an iconic silhouette.",
+    designInspiration: "Influenced by the monolithic minimalism of John Pawson, the structural expressionism of SOM's supertalls, and the environmental responsiveness of Ken Yeang's bioclimatic towers.",
+    rendering: "Cinematic animation rendered in Unreal Engine 5 with dramatic cloud formations and atmospheric lighting to convey the tower's commanding presence against the African sky.",
+    gallery: [floraHeights],
+  },
+  {
+    title: "Flora Heights",
+    slug: "flora-heights",
+    category: "Residential Design",
+    status: "In Progress",
+    image: floraHeights,
+    location: "Dubai, UAE",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A beachfront luxury tower with sculpted organic forms, sky gardens, and a distinctive pinched waist creating dual-character massing.",
+    detailedDescription: "Flora Heights rises from a pristine beachfront with a distinctive sculpted silhouette. The tower features a dramatic pinched waist that creates two distinct character zones — a broader base for amenities and a slender crown for premium penthouses. Rooftop greenery and flowing balcony gardens bring nature to every level.",
+    concept: "The dual-mass form creates visual dynamism while solving the practical challenge of varying unit sizes. The narrowing at mid-height introduces a sky lobby with panoramic views, serving as the social heart of the building.",
+    designInspiration: "Drawing from the sculptural towers of MAD Architects and the coastal luxury of Foster + Partners' beachfront projects. The organic cladding references coral reef formations native to the Gulf.",
+    rendering: "Rendered with V-Ray under clear tropical skies with beach-level perspective to emphasize the tower's relationship to sand, sea, and sky.",
+    gallery: [floraHeights],
+  },
+  {
+    title: "Leaf Line Residences",
+    slug: "leaf-line",
+    category: "Residential Design",
+    status: "In Progress",
+    image: leafLine,
+    location: "Colombo, Sri Lanka",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A coastal tower with flowing organic balconies, private plunge pools, and lush vertical gardens overlooking the Indian Ocean.",
+    detailedDescription: "Leaf Line Residences is a luxury coastal tower where every floor features continuous organic balconies that wrap the building like leaves on a vine. Private plunge pools, outdoor dining terraces, and curated tropical plantings create a resort-like atmosphere at every level.",
+    concept: "Each floor plate is treated as a unique landscape — the flowing balcony forms create sheltered microclimates for outdoor living while providing visual privacy between units. The city skyline becomes a backdrop to private tropical gardens.",
+    designInspiration: "Influenced by the organic residential work of MAD Architects and the tropical luxury of Kerry Hill Architects. The material palette of white concrete, warm timber, and lush greenery creates refined coastal living.",
+    rendering: "Rendered with Corona Renderer under golden-hour coastal conditions to emphasize the warmth of inhabited spaces and the flowing geometry of the continuous balconies.",
+    gallery: [leafLine],
+  },
+  {
+    title: "Vertex Hub",
+    slug: "vertex-hub",
+    category: "Commercial Architecture",
+    status: "In Progress",
+    image: vertex,
+    location: "Kigali, Rwanda",
+    completionDate: "2027 (Est.)",
+    shortDescription: "A biomorphic mixed-use campus with flowing horizontal bands, integrated wetland landscape, and wind turbines crowning the roofline.",
+    detailedDescription: "Vertex Hub is a mixed-use commercial campus that wraps organically around a central wetland garden. The flowing horizontal bands of the facade create a layered, topographic aesthetic that blurs the line between building and landscape. Rooftop wind turbines and integrated solar panels make it a net-zero energy development.",
+    concept: "The campus is conceived as a landscape rather than a building — the horizontal bands echo the geological strata of the surrounding hills, while the central wetland provides natural cooling, stormwater management, and a biodiverse habitat.",
+    designInspiration: "Drawing from the landscape-integrated architecture of Snøhetta and the environmental ambition of BIG. The material palette of timber louvers, weathering steel, and green roofs roots the design in its East African context.",
+    rendering: "Rendered in Lumion with atmospheric twilight conditions to emphasize the warm glow of occupied spaces against the wetland landscape and distant hills.",
+    gallery: [vertex, vertex1],
+  },
+  {
+    title: "The Ridge",
+    slug: "the-ridge",
+    category: "Residential Design",
+    status: "Design",
+    image: interior2,
+    location: "Naivasha, Kenya",
+    completionDate: "Concept Phase",
+    shortDescription: "A luxury lakeside residence with refined interiors, fluted wall panels, and warm natural materials creating spa-like tranquility.",
+    detailedDescription: "The Ridge is a luxury lakeside residence designed around the principles of wellness architecture. Every space is crafted to promote calm — from the fluted wall panels that create rhythmic shadow play to the natural stone and warm timber that ground the interiors in their landscape context.",
+    concept: "Architecture as therapy — the design orchestrates a sequence of sensory experiences from arrival through to the private spa wing. Materials are selected for their tactile and acoustic qualities as much as their visual character.",
+    designInspiration: "Influenced by the wellness-focused architecture of Peter Zumthor's Therme Vals and the refined material sensibility of Vincent Van Duysen. Japanese concepts of 'wabi-sabi' inform the celebration of natural material imperfection.",
+    rendering: "Interior renders produced with Corona Renderer with precise natural light simulation to capture the interplay of shadow across fluted surfaces and the warmth of natural timber under diffused daylight.",
+    gallery: [interior2, theRidgePlan],
+  },
   {
     title: "Aureal Tower",
     slug: "aureal-tower",
@@ -366,4 +464,4 @@ export const allProjects: Project[] = [
 ];
 
 // Export images for use elsewhere
-export { hillsidePlan1, hillsideMansion, hillsideCloseup, civicRenderedPlan, civicPlanA };
+export { hillsidePlan1, hillsideMansion, hillsideCloseup, civicRenderedPlan, civicPlanA, theRidgePlan, interior2, vertex, vertex1 };
