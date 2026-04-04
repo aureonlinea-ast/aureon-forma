@@ -418,6 +418,11 @@ async function generateBrandedPdf(d: any): Promise<Uint8Array> {
   currentPage.drawText("Signature over printed name", { x: leftX + 10, y: sigY - 16, size: 9, font: helvetica, color: gray });
   currentPage.drawText("Date signed", { x: rightX2 + 50, y: sigY - 16, size: 9, font: helvetica, color: gray });
 
+  // Website verification link
+  const linkY = sigY - 40;
+  currentPage.drawText("Verify or modify your order at:", { x: CONTENT_LEFT + 10, y: linkY, size: 9, font: helvetica, color: gray });
+  currentPage.drawText(`${websiteUrl}/quote`, { x: CONTENT_LEFT + 10, y: linkY - 14, size: 9, font: helveticaBold, color: gold });
+
   // Apply chrome to all pages
   const totalPageCount = allPages.length;
   for (let i = 0; i < allPages.length; i++) {
