@@ -59,7 +59,12 @@ serve(async (req) => {
     const currencySymbol = body.currency === "KES" ? "KES " : body.currency === "EUR" ? "€" : body.currency === "RMB" ? "¥" : "$";
     const rate = body.exchangeRate || 1;
     const services = body.services || [];
-    const docNumber = body.id?.slice(0, 8)?.toUpperCase() || "DRAFT";
+    // For invoices, use the invoice_number directly; for quotes, derive from ID
+    const rawDocNumber = isInvoice && body.invoice_number
+      ? body.invoice_number.replace(/^INV-/, "")
+      : body.id?.slice(0, 8)?.toUpperCase() || "DRAFT";
+    const docNumber = rawDocNumber;
+    const websiteUrl = "https://aureon-forma.lovable.app";
     const dateNow = new Date();
     const dateStr = dateNow.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
     const validDate = new Date(dateNow.getTime() + validityDays * 86400000);
