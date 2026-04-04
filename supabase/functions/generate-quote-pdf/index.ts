@@ -89,6 +89,7 @@ serve(async (req) => {
       taxLabel, othersLabel, termsConditions, acceptanceText,
       companyName, companyWebsite, companyPhone1, companyPhone2, companyAddress,
       isInvoice, docLabel, docPrefix, paymentPlan, paymentMethod, installments,
+      websiteUrl,
     };
 
     let pdfBytes: Uint8Array;
