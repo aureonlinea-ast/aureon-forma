@@ -57,10 +57,13 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground font-body antialiased;
+  html, body {
     overflow-x: hidden;
     max-width: 100vw;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
   }
 
   html {
