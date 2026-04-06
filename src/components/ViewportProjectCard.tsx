@@ -68,7 +68,7 @@ const ViewportProjectCard = ({
               muted
               loop
               playsInline
-              preload="none"
+              preload="metadata"
               poster={image}
               className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
             >
@@ -81,6 +81,7 @@ const ViewportProjectCard = ({
               className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               loading="lazy"
               decoding="async"
+              fetchPriority={index < 3 ? "high" : "low"}
             />
           )}
           {/* Gradient overlay */}
