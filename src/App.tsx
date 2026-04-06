@@ -14,6 +14,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import NotFound from "./pages/NotFound";
 import Quote from "./pages/Quote";
 import Admin from "./pages/Admin";
+import AiChatbot from "./components/AiChatbot";
 
 const queryClient = new QueryClient();
 
