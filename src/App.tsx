@@ -14,6 +14,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import NotFound from "./pages/NotFound";
 import Quote from "./pages/Quote";
 import Admin from "./pages/Admin";
+import AiChatbot from "./components/AiChatbot";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <AiChatbot />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
