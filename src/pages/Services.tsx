@@ -6,6 +6,7 @@ import { allServices } from "@/data/services";
 import { useIsMobile } from "@/hooks/use-mobile";
 import astoriaBg from "@/assets/projects/astoria-2.jpg";
 import GetQuoteButton from "@/components/GetQuoteButton";
+import ServicesShowcaseGallery from "@/components/ServicesShowcaseGallery";
 
 const ServicesPage = () => {
   const isMobile = useIsMobile();
@@ -82,6 +83,8 @@ const ServicesPage = () => {
               </motion.div>
             ))}
           </motion.div>
+
+          <ServicesShowcaseGallery />
 
           <div className="mt-12 flex justify-center">
             <GetQuoteButton />
