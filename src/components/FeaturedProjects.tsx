@@ -6,7 +6,6 @@ import ViewportProjectCard from "@/components/ViewportProjectCard";
 const featuredSlugs = [
   "luna-residence",
   "eden-terrace",
-  "the-monolith",
   "blue-horizon-estate",
   "bts-studio-tour",
   "lumina-tower",
@@ -15,7 +14,6 @@ const featuredSlugs = [
   "echelon-heights",
   "virelle",
   "silverwood",
-  "orion-residences",
 ];
 const featured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
 
