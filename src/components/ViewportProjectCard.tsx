@@ -68,11 +68,11 @@ const ViewportProjectCard = ({
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
               poster={image}
               className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
             >
-              {inView && <source src={video} type="video/mp4" />}
+              <source src={video} type="video/mp4" />
             </video>
           ) : (
             <img
