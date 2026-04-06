@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { allProjects } from "@/data/projects";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const featuredSlugs = [
   "luna-residence",
@@ -15,7 +16,8 @@ const featuredSlugs = [
   "virelle",
   "silverwood",
 ];
-const featured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
+const mobileExclude = ["blue-horizon-estate"];
+const allFeatured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
 
 const FeaturedProjects = () => {
   return (
