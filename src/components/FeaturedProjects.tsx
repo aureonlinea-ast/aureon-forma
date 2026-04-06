@@ -20,6 +20,11 @@ const mobileExclude = ["blue-horizon-estate"];
 const allFeatured = allProjects.filter((p) => featuredSlugs.includes(p.slug));
 
 const FeaturedProjects = () => {
+  const isMobile = useIsMobile();
+  const featured = isMobile
+    ? allFeatured.filter((p) => !mobileExclude.includes(p.slug))
+    : allFeatured;
+
   return (
     <section className="bg-background py-24 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
