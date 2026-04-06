@@ -37,6 +37,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <AiChatbot />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
