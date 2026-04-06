@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { allProjects } from "@/data/projects";
 
 const showcaseSlugs = [
-  "eden-terrace",
   "blue-horizon-estate",
   "hillside-retreat",
   "flora-heights",
@@ -12,7 +11,6 @@ const showcaseSlugs = [
   "vertex-hub",
   "the-ridge",
   "leaf-line",
-  "the-monolith",
 ];
 
 const showcaseItems = allProjects

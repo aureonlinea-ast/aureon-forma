@@ -6,7 +6,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const featuredSlugs = [
   "luna-residence",
-  "eden-terrace",
   "blue-horizon-estate",
   "bts-studio-tour",
   "lumina-tower",

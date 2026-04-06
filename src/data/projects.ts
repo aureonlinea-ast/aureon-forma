@@ -53,22 +53,6 @@ export interface Project {
 
 export const allProjects: Project[] = [
   {
-    title: "Eden Terrace",
-    slug: "eden-terrace",
-    category: "Residential Design",
-    status: "In Progress",
-    video: "/videos/eden-terrace.mp4",
-    image: leafLine,
-    location: "Mombasa, Kenya",
-    completionDate: "2027 (Est.)",
-    shortDescription: "A coastal luxury tower with flowing organic balconies, lush terraced gardens, and infinity pools cantilevered over the Indian Ocean.",
-    detailedDescription: "Eden Terrace is a landmark coastal residential tower that reimagines tropical high-rise living. Flowing organic balcony bands cascade down the facade, each one hosting private gardens, plunge pools, and outdoor living spaces. The design dissolves the boundary between interior luxury and tropical landscape, creating a vertical garden resort.",
-    concept: "Inspired by the terraced rice paddies and cascading waterfalls of Southeast Asia, Eden Terrace layers living spaces vertically so every resident experiences the sensation of a private villa suspended in the sky.",
-    designInspiration: "Drawing from the biophilic towers of WOHA Architects and the luxury hospitality of Aman Resorts. Materials include warm timber decking, white concrete fins, and frameless glass to maximize ocean views.",
-    rendering: "Cinematic flythrough rendered in Lumion with golden-hour oceanfront lighting, emphasizing the warmth of timber against tropical greenery and the reflective quality of cantilevered infinity pools.",
-    gallery: [leafLine, floraHeights, interior2],
-  },
-  {
     title: "The Monolith",
     slug: "the-monolith",
     category: "Commercial Architecture",

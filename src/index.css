@@ -123,4 +123,9 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Hide Lovable banner */
+  .lovable-banner, #lovable-banner, .lovable-widget, #lovable-widget, .lovable-tagger, #lovable-tagger {
+    display: none !important;
+  }
 }
