@@ -168,10 +168,10 @@ const AiChatbot = () => {
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
               <div>
                 <h3 className="font-display text-sm font-light tracking-wide text-foreground">
-                  Aureon Assistant
+                  Lyra
                 </h3>
                 <p className="text-[10px] font-body font-light text-muted-foreground tracking-wider uppercase">
-                  AI-Powered
+                  Aureon Assistant
                 </p>
               </div>
               <button
@@ -188,7 +188,7 @@ const AiChatbot = () => {
               {messages.length === 0 && (
                 <div className="space-y-3 pt-4">
                   <p className="text-xs font-body font-light text-muted-foreground text-center">
-                    Hi! I'm Aureon's AI assistant. How can I help?
+                    I'm Lyra — Aureon's assistant. How may I help?
                   </p>
                   <div className="flex flex-col gap-2">
                     {SUGGESTIONS.map((s) => (
