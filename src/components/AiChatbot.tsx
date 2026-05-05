@@ -8,9 +8,17 @@ type Msg = { role: "user" | "assistant"; content: string };
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 const SUGGESTIONS = [
+  "Request a quote",
+  "Check availability",
+  "Discuss a complex brief",
   "What services does Aureon offer?",
-  "How do I request a quote?",
-  "Tell me about your ArchViz work",
+];
+
+const QUICK_REPLIES = [
+  { label: "Request a quote", prompt: "I'd like to request a quote." },
+  { label: "Check availability", prompt: "What's your current availability and lead time?" },
+  { label: "Complex brief", prompt: "I have a complex, multi-discipline brief to discuss." },
+  { label: "Contact the team", prompt: "How do I get in touch with the team directly?" },
 ];
 
 async function streamChat({
@@ -239,6 +247,19 @@ const AiChatbot = () => {
 
             {/* Input */}
             <div className="px-4 py-3 border-t border-border/30">
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {QUICK_REPLIES.map((q) => (
+                  <button
+                    key={q.label}
+                    type="button"
+                    onClick={() => send(q.prompt)}
+                    disabled={loading}
+                    className="text-[10px] font-body font-light tracking-wider uppercase text-muted-foreground hover:text-primary border border-border/30 hover:border-primary/40 rounded-full px-2.5 py-1 transition-colors disabled:opacity-40"
+                  >
+                    {q.label}
+                  </button>
+                ))}
+              </div>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
