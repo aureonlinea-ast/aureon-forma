@@ -8,9 +8,10 @@ type Msg = { role: "user" | "assistant"; content: string };
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 const SUGGESTIONS = [
+  "Request a quote",
+  "Check availability",
+  "Discuss a complex brief",
   "What services does Aureon offer?",
-  "How do I request a quote?",
-  "Tell me about your ArchViz work",
 ];
 
 async function streamChat({
