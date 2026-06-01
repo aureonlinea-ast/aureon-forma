@@ -5,8 +5,19 @@ import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import GetQuoteButton from "@/components/GetQuoteButton";
+import Seo from "@/components/Seo";
 
 const ContactPage = () => {
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Aureon Forma",
+    image: "https://aureon-forma.lovable.app/logos/aureon-gold-logo-transparent.png",
+    url: "https://aureon-forma.lovable.app/",
+    address: { "@type": "PostalAddress", addressLocality: "Nairobi", addressCountry: "KE" },
+    areaServed: "Worldwide",
+    priceRange: "$$$$",
+  };
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -75,6 +86,12 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Contact — Enquiries, Availability & Briefs | Aureon Forma"
+        description="Get in touch with Aureon Forma about availability, lead times, partnerships, or complex multi-discipline briefs. We respond to every enquiry personally."
+        path="/contact"
+        jsonLd={localBusinessSchema}
+      />
       <Navigation />
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-6 lg:px-12 max-w-2xl">

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
+import Seo from "@/components/Seo";
 
 /* ── BTS media items displayed as viewport-filling cards ── */
 const btsItems = [
@@ -58,6 +59,11 @@ const btsItems = [
 const BehindTheScenesPage = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo
+        title="Behind The Scenes — Process & Craft | Aureon Forma"
+        description="A glimpse into Aureon Forma's creative process — from concept sketches and wireframes to cinematic architectural output."
+        path="/behind-the-scenes"
+      />
       <Navigation />
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">

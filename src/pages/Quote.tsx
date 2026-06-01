@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 interface ServicePrice {
   id: string;
@@ -187,6 +188,11 @@ const QuotePage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Request a Quote — Bespoke Pricing | Aureon Forma"
+        description="Tell us about your project. Aureon Forma's pricing is bespoke and shaped by scope, scale, and finish. Receive a tailored quote within 48 hours."
+        path="/quote"
+      />
       <Navigation />
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-6 lg:px-12 max-w-4xl">

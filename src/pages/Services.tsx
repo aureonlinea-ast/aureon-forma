@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import astoriaBg from "@/assets/projects/astoria-2.jpg";
 import GetQuoteButton from "@/components/GetQuoteButton";
 import ServicesShowcaseGallery from "@/components/ServicesShowcaseGallery";
+import Seo from "@/components/Seo";
 
 const ServicesPage = () => {
   const isMobile = useIsMobile();
@@ -32,6 +33,21 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo
+        title="Services — ArchViz, Design, Modelling, Branding | Aureon Forma"
+        description="Architectural visualisation, design, 3D modelling, product visualisation, and brand identity services for developers, architects, and considered brands."
+        path="/services"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: allServices.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: s.title,
+            url: `https://aureon-forma.lovable.app/services/${s.slug}`,
+          })),
+        }}
+      />
       <Navigation />
       <main className="pt-32 pb-24 relative">
         {/* Faint building background */}

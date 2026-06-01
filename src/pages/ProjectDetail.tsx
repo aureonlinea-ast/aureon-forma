@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import GallerySlideshow from "@/components/GallerySlideshow";
 import { allProjects } from "@/data/projects";
+import Seo from "@/components/Seo";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -33,6 +34,20 @@ const ProjectDetail = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo
+        title={`${project.title} — ${project.category} | Aureon Forma`}
+        description={(project as { description?: string }).description || `${project.title}: ${project.category} architectural visualisation project by Aureon Forma.`}
+        path={`/work/${project.slug}`}
+        type="article"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          name: project.title,
+          genre: project.category,
+          url: `https://aureon-forma.lovable.app/work/${project.slug}`,
+          creator: { "@type": "Organization", name: "Aureon Forma" },
+        }}
+      />
       <Navigation />
 
       {/* Hero */}

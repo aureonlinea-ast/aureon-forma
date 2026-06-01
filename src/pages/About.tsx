@@ -1,10 +1,16 @@
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="About — Spatial Storytelling Atelier | Aureon Forma"
+        description="Aureon Forma is a Nairobi-based design atelier crafting architectural visualisation, conceptual design, and brand identity. Based locally, working globally."
+        path="/about"
+      />
       <Navigation />
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
