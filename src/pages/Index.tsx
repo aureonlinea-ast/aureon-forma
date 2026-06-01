@@ -4,10 +4,16 @@ import FeaturedProjects from "@/components/FeaturedProjects";
 import ServicesOverview from "@/components/ServicesOverview";
 import Footer from "@/components/Footer";
 import GetQuoteButton from "@/components/GetQuoteButton";
+import Seo from "@/components/Seo";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Aureon Forma — Architectural Visualisation Atelier"
+        description="Premium architectural visualisation atelier crafting photoreal renders, cinematic animation, planning, and brand identity for developers and architects."
+        path="/"
+      />
       <Navigation />
       <HeroSection />
       <FeaturedProjects />

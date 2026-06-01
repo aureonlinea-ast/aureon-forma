@@ -4,10 +4,23 @@ import Footer from "@/components/Footer";
 import { allProjects } from "@/data/projects";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
 import GetQuoteButton from "@/components/GetQuoteButton";
+import Seo from "@/components/Seo";
 
 const WorkPage = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo
+        title="Work — Architectural Visualisation Portfolio | Aureon Forma"
+        description="Portfolio of spatial narratives: residential, commercial, masterplanning, and civic architectural visualisation projects by Aureon Forma."
+        path="/work"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Aureon Forma — Work",
+          description: "Portfolio of architectural visualisation projects.",
+          url: "https://aureon-forma.lovable.app/work",
+        }}
+      />
       <Navigation />
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
@@ -18,7 +31,7 @@ const WorkPage = () => {
             className="mb-12 lg:mb-16"
           >
             <h1 className="font-display font-light text-3xl sm:text-4xl lg:text-5xl text-foreground tracking-wide">
-              Work
+              Portfolio of Spatial Narratives
             </h1>
             <div className="w-12 h-[1px] bg-primary mt-6" />
           </motion.div>

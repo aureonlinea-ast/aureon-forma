@@ -5,8 +5,19 @@ import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import GetQuoteButton from "@/components/GetQuoteButton";
+import Seo from "@/components/Seo";
 
 const ContactPage = () => {
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Aureon Forma",
+    image: "https://aureon-forma.lovable.app/logos/aureon-gold-logo-transparent.png",
+    url: "https://aureon-forma.lovable.app/",
+    address: { "@type": "PostalAddress", addressLocality: "Nairobi", addressCountry: "KE" },
+    areaServed: "Worldwide",
+    priceRange: "$$$$",
+  };
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
