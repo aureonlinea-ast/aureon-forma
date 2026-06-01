@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import GallerySlideshow from "@/components/GallerySlideshow";
 import { allServices } from "@/data/services";
+import Seo from "@/components/Seo";
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -37,6 +38,20 @@ const ServiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo
+        title={`${service.title} — Service | Aureon Forma`}
+        description={service.description.slice(0, 158)}
+        path={`/services/${service.slug}`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: service.title,
+          description: service.description,
+          provider: { "@type": "Organization", name: "Aureon Forma", url: "https://aureon-forma.lovable.app/" },
+          areaServed: "Worldwide",
+          url: `https://aureon-forma.lovable.app/services/${service.slug}`,
+        }}
+      />
       <Navigation />
 
       {/* Hero Video or Image */}
