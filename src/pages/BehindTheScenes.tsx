@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
+import Seo from "@/components/Seo";
 
 /* ── BTS media items displayed as viewport-filling cards ── */
 const btsItems = [

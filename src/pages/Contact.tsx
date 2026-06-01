@@ -86,6 +86,12 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Contact — Enquiries, Availability & Briefs | Aureon Forma"
+        description="Get in touch with Aureon Forma about availability, lead times, partnerships, or complex multi-discipline briefs. We respond to every enquiry personally."
+        path="/contact"
+        jsonLd={localBusinessSchema}
+      />
       <Navigation />
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-6 lg:px-12 max-w-2xl">
