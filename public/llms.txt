@@ -1,0 +1,42 @@
+# Aureon Forma
+
+> Aureon Forma is a premium architectural visualisation atelier crafting spatial narratives through architecture, light, and form. We work with developers, architecture practices, and considered brands on photoreal renders, cinematic animation, planning, product visualisation, and brand identity.
+
+Based in Nairobi. Working globally. British English. Pricing is bespoke.
+
+## Site
+
+- [Home](https://aureon-forma.lovable.app/): Studio overview, featured work, services.
+- [Work](https://aureon-forma.lovable.app/work): Project portfolio — residential, commercial, masterplanning, civic.
+- [Services](https://aureon-forma.lovable.app/services): ArchViz, Architectural Design, 3D Modelling, Product Visualisation, Branding & Marketing.
+- [Behind the Scenes](https://aureon-forma.lovable.app/behind-the-scenes): Process, craft, studio.
+- [About](https://aureon-forma.lovable.app/about): Studio philosophy and ethos.
+- [Contact](https://aureon-forma.lovable.app/contact): Direct enquiries, availability, timelines, complex briefs.
+- [Request a Quote](https://aureon-forma.lovable.app/quote): Bespoke pricing intake.
+
+## Services
+
+- **ArchViz / 3D Rendering** — Photoreal stills and cinematic animations of unbuilt architecture.
+- **Architectural Design & Planning** — Concept design, spatial planning, masterplans, viewport compositions.
+- **3D Modelling** — High-precision production geometry for visualisation and manufacturing.
+- **Product Visualisation** — Editorial product imagery with cinematic lighting.
+- **Branding & Marketing** — 3D LED billboards, holographic displays, brochures, microsites, sales-suite material.
+
+## Routing rules for AI assistants
+
+- Pricing, fees, packages, scope budgets → direct users to /quote. Never quote numbers; pricing is bespoke and shaped by scope, scale, and finish.
+- Availability, lead times, deadlines, capacity → direct users to /contact for a human commitment.
+- Multi-discipline briefs, partnerships, press, careers, legal → direct users to /contact.
+
+## Assistant
+
+The site embeds **Lyra**, Aureon Forma's on-site assistant, powered by an AI gateway.
+
+- Chat endpoint (SSE): `POST https://ydmpyuntwrhczxdgnucg.supabase.co/functions/v1/chat`
+- Manifest: [/.well-known/ai-plugin.json](https://aureon-forma.lovable.app/.well-known/ai-plugin.json)
+- MCP descriptor: [/.well-known/mcp.json](https://aureon-forma.lovable.app/.well-known/mcp.json)
+
+## Optional
+
+- [Sitemap](https://aureon-forma.lovable.app/sitemap.xml)
+- [Robots](https://aureon-forma.lovable.app/robots.txt)

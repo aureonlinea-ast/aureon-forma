@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: Aureon Forma Assistant API
+  description: Conversational endpoint for Lyra, Aureon Forma's on-site assistant.
+  version: 1.0.0
+servers:
+  - url: https://ydmpyuntwrhczxdgnucg.supabase.co/functions/v1
+paths:
+  /chat:
+    post:
+      operationId: ask_lyra
+      summary: Send a message to Lyra and receive a streamed reply.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [messages]
+              properties:
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    required: [role, content]
+                    properties:
+                      role:
+                        type: string
+                        enum: [user, assistant, system]
+                      content:
+                        type: string
+      responses:
+        "200":
+          description: Server-sent events stream of assistant tokens.
+          content:
+            text/event-stream:
+              schema:
+                type: string
