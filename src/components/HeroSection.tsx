@@ -26,7 +26,11 @@ const HeroSection = () => {
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
         <motion.img
           src={aureonLogo}
-          alt="Aureon"
+          alt="Aureon Forma — architectural visualisation atelier"
+          width={300}
+          height={150}
+          fetchPriority="high"
+          decoding="async"
           className="h-[108px] lg:h-[150px] w-auto mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex flex-col lg:flex-row items-start justify-between gap-12">
           <div>
-            <img src={aureonLogo} alt="Aureon" className="h-6 w-auto mb-6" />
+            <img src={aureonLogo} alt="Aureon Forma logo" className="h-6 w-auto mb-6" />
             <p className="text-sm font-body font-light text-muted-foreground max-w-xs leading-relaxed">
               Crafting spatial narratives through architecture, light, and form.
             </p>
