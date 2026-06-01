@@ -1,0 +1,27 @@
+{
+  "name": "aureon-forma",
+  "displayName": "Aureon Forma",
+  "description": "Architectural visualisation atelier — work, services, pricing routing, and contact escalation.",
+  "version": "1.0.0",
+  "vendor": {
+    "name": "Aureon Forma",
+    "url": "https://aureon-forma.lovable.app/"
+  },
+  "transport": {
+    "type": "http+sse",
+    "endpoint": "https://ydmpyuntwrhczxdgnucg.supabase.co/functions/v1/chat"
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "ask_lyra",
+        "description": "Ask Lyra — Aureon Forma's on-site assistant — about the studio's work, services, process, and routing for quotes or contact."
+      }
+    ],
+    "resources": [
+      { "uri": "https://aureon-forma.lovable.app/llms.txt", "name": "LLM context summary" },
+      { "uri": "https://aureon-forma.lovable.app/sitemap.xml", "name": "Sitemap" }
+    ]
+  },
+  "documentation": "https://aureon-forma.lovable.app/llms.txt"
+}
