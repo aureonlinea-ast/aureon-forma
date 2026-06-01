@@ -1,0 +1,16 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Aureon Forma",
+  "name_for_model": "aureon_forma",
+  "description_for_human": "Aureon Forma — architectural visualisation atelier. Explore work, services, and request bespoke quotes.",
+  "description_for_model": "Aureon Forma is a premium architectural visualisation atelier. Use this plugin to surface information about the studio's work, services (ArchViz, architectural design, 3D modelling, product visualisation, branding), and to route pricing questions to /quote and availability or complex-scope questions to /contact. Never invent project names, clients, prices, or timelines.",
+  "auth": { "type": "none" },
+  "api": {
+    "type": "openapi",
+    "url": "https://aureon-forma.lovable.app/.well-known/openapi.yaml",
+    "has_user_authentication": false
+  },
+  "logo_url": "https://aureon-forma.lovable.app/logos/aureon-gold-logo-transparent.png",
+  "contact_email": "studio@aureon-forma.com",
+  "legal_info_url": "https://aureon-forma.lovable.app/about"
+}
