@@ -3,6 +3,34 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
 import Seo from "@/components/Seo";
+import Scrollytelling from "@/components/Scrollytelling";
+
+const btsChapters = [
+  {
+    eyebrow: "Step 01 — Sketch",
+    title: "From the first line.",
+    body: "Concept sketches, reference boards, conversations at the table. Every cinematic begins as a question scribbled in pencil.",
+    media: "/videos/behind-the-scenes.mp4",
+  },
+  {
+    eyebrow: "Step 02 — Build",
+    title: "Wireframes become worlds.",
+    body: "Modelling, layout, light rigs. The geometry is tuned millimetre by millimetre until the space holds itself together.",
+    media: "/videos/bts-3-2.mp4",
+  },
+  {
+    eyebrow: "Step 03 — Render",
+    title: "Pixels with patience.",
+    body: "Render passes stack — diffuse, reflection, atmosphere — composed frame by frame until the image breathes.",
+    media: "/videos/behind-the-scenes-2.mp4",
+  },
+  {
+    eyebrow: "Step 04 — Story",
+    title: "Edit. Score. Release.",
+    body: "The cut decides what the architecture says. Music, pace, restraint — then it leaves the studio.",
+    media: "/videos/tour.mp4",
+  },
+];
 
 /* ── BTS media items displayed as viewport-filling cards ── */
 const btsItems = [
@@ -65,13 +93,15 @@ const BehindTheScenesPage = () => {
         path="/behind-the-scenes"
       />
       <Navigation />
-      <main className="pt-32 pb-24">
+      <main className="pt-24 pb-24">
+        <Scrollytelling label="The Process" chapters={btsChapters} />
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-12 lg:mb-16"
+            className="mt-24 mb-12 lg:mb-16"
           >
             <h1 className="font-display font-light text-3xl sm:text-4xl lg:text-5xl text-foreground tracking-wide">
               Behind The Scenes
