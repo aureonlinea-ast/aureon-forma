@@ -8,6 +8,34 @@ import astoriaBg from "@/assets/projects/astoria-2.jpg";
 import GetQuoteButton from "@/components/GetQuoteButton";
 import ServicesShowcaseGallery from "@/components/ServicesShowcaseGallery";
 import Seo from "@/components/Seo";
+import Scrollytelling from "@/components/Scrollytelling";
+
+const serviceChapters = [
+  {
+    eyebrow: "Discipline 01",
+    title: "Architectural Visualisation.",
+    body: "Cinematic stills and films that let your project be experienced before a brick is laid.",
+    media: "/videos/lumina.mp4",
+  },
+  {
+    eyebrow: "Discipline 02",
+    title: "Design & 3D Modelling.",
+    body: "Form-finding, façade studies, and high-fidelity geometry tuned for both render and production.",
+    media: "/videos/echelon.mp4",
+  },
+  {
+    eyebrow: "Discipline 03",
+    title: "Product & Brand Visualisation.",
+    body: "Objects and identities rendered with the same patience as buildings — material, light, restraint.",
+    media: "/videos/holographic-display.mp4",
+  },
+  {
+    eyebrow: "Discipline 04",
+    title: "A studio, end to end.",
+    body: "Concept to release. Choose a single service or hand us the whole arc.",
+    media: "/videos/hero-2.mp4",
+  },
+];
 
 const ServicesPage = () => {
   const isMobile = useIsMobile();
@@ -50,6 +78,8 @@ const ServicesPage = () => {
       />
       <Navigation />
       <main className="pt-32 pb-24 relative">
+        <Scrollytelling label="The Services" chapters={serviceChapters} className="-mt-8" />
+
         {/* Faint building background */}
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
@@ -66,7 +96,7 @@ const ServicesPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-12 lg:mb-16"
+            className="mt-24 mb-12 lg:mb-16"
           >
             <h1 className="font-display font-light text-3xl sm:text-4xl lg:text-5xl text-foreground tracking-wide">
               Services

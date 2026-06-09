@@ -1,0 +1,5 @@
+# SPA fallback for deep links (e.g. /admin, /work/:slug) on Netlify
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
