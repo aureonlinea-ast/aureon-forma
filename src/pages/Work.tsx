@@ -36,7 +36,7 @@ const workChapters = [
 
 const WorkPage = () => {
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-clip">
       <Seo
         title="Work — Architectural Visualisation Portfolio | Aureon Forma"
         description="Portfolio of spatial narratives: residential, commercial, masterplanning, and civic architectural visualisation projects by Aureon Forma."
