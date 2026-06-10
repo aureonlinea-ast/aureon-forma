@@ -31,7 +31,7 @@ interface ScrollytellingProps {
 const Scrollytelling = ({
   chapters,
   label,
-  perChapterVh = 110,
+  perChapterVh = 80,
   className = "",
 }: ScrollytellingProps) => {
   const ref = useRef<HTMLDivElement>(null);
