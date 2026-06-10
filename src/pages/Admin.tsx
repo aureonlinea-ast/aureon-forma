@@ -50,6 +50,8 @@ type Tab = "dashboard" | "contacts" | "quotes" | "pricing" | "analytics" | "clie
 
 const AdminPage = () => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
@@ -66,11 +68,12 @@ const AdminPage = () => {
     setLoginError("");
     try {
       const { data, error } = await supabase.functions.invoke("admin-auth", {
-        body: { password },
+        body: { action: "login", password },
       });
       if (error) throw error;
-      if (data?.authenticated) {
+      if (data?.authenticated && data?.role === "admin" && data?.token) {
         setAuthenticated(true);
+        setRole(data.role);
         sessionStorage.setItem("aureon_admin", data.token);
       } else {
         setLoginError("Invalid password");
@@ -83,8 +86,31 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
+    // Always re-verify the stored token with the server. The token is an
+    // HMAC signed by ADMIN_PASSWORD (server-only secret) — it cannot be
+    // forged or replayed regardless of where this dashboard is deployed.
     const token = sessionStorage.getItem("aureon_admin");
-    if (token) setAuthenticated(true);
+    if (!token) {
+      setCheckingSession(false);
+      return;
+    }
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("admin-auth", {
+          body: { action: "verify", token },
+        });
+        if (!error && data?.authenticated && data?.role === "admin") {
+          setAuthenticated(true);
+          setRole(data.role);
+        } else {
+          sessionStorage.removeItem("aureon_admin");
+        }
+      } catch {
+        sessionStorage.removeItem("aureon_admin");
+      } finally {
+        setCheckingSession(false);
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -113,11 +139,25 @@ const AdminPage = () => {
 
   const handleLogout = () => {
     setAuthenticated(false);
+    setRole(null);
     sessionStorage.removeItem("aureon_admin");
     setPassword("");
   };
 
-  if (!authenticated) {
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+          <p className="text-xs font-body font-light tracking-[0.2em] uppercase text-muted-foreground">
+            Verifying session
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!authenticated || role !== "admin") {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.form
