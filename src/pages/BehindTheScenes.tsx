@@ -86,7 +86,7 @@ const btsItems = [
 
 const BehindTheScenesPage = () => {
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-clip">
       <Seo
         title="Behind The Scenes — Process & Craft | Aureon Forma"
         description="A glimpse into Aureon Forma's creative process — from concept sketches and wireframes to cinematic architectural output."

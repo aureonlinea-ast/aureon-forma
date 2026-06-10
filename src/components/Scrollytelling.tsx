@@ -1,5 +1,11 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  MotionValue,
+} from "framer-motion";
 
 export interface ScrollyChapter {
   eyebrow?: string;
@@ -38,6 +44,13 @@ const Scrollytelling = ({
   const totalVh = Math.max(perChapterVh * n, perChapterVh);
   const railScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
+  // Virtualise: only mount the active chapter + its immediate neighbours.
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    const i = Math.min(n - 1, Math.max(0, Math.floor(p * n)));
+    if (i !== active) setActive(i);
+  });
+
   return (
     <section
       ref={ref}
@@ -54,6 +67,8 @@ const Scrollytelling = ({
               total={n}
               media={c.media}
               progress={scrollYProgress}
+              shouldLoad={Math.abs(i - active) <= 1}
+              eager={i === 0}
             />
           ))}
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/95 pointer-events-none" />
@@ -105,21 +120,29 @@ const ChapterMedia = ({
   total,
   media,
   progress,
+  shouldLoad,
+  eager,
 }: {
   index: number;
   total: number;
   media?: string;
   progress: MotionValue<number>;
+  shouldLoad: boolean;
+  eager: boolean;
 }) => {
   const slot = 1 / total;
   const start = index * slot;
   const end = start + slot;
   const mid = start + slot / 2;
 
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+  // Keep the first frame visible (opacity 1 at progress 0) and the last
+  // frame visible at progress 1 — so the stage is never blank.
   const opacity = useTransform(
     progress,
     [Math.max(0, start - slot * 0.25), mid, Math.min(1, end + slot * 0.25)],
-    [0, 1, 0]
+    [isFirst ? 1 : 0, 1, isLast ? 1 : 0]
   );
   const scale = useTransform(progress, [start, end], [1.08, 1.0]);
   const y = useTransform(progress, [start, end], ["3%", "-3%"]);
@@ -138,21 +161,24 @@ const ChapterMedia = ({
   return (
     <motion.div style={{ opacity }} className="absolute inset-0">
       <motion.div style={{ scale, y }} className="absolute inset-0 will-change-transform">
-        {isVideo ? (
+        {!shouldLoad ? (
+          <div className="w-full h-full bg-gradient-to-br from-background via-background to-primary/5" />
+        ) : isVideo ? (
           <video
             src={media}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={eager ? "auto" : "metadata"}
             className="w-full h-full object-cover"
           />
         ) : (
           <img
             src={media}
             alt=""
-            loading="lazy"
+            loading={eager ? "eager" : "lazy"}
+            fetchPriority={eager ? "high" : "low"}
             decoding="async"
             className="w-full h-full object-cover"
           />
@@ -181,7 +207,7 @@ const ChapterText = ({
   const opacity = useTransform(
     progress,
     [start, mid - slot * 0.15, mid + slot * 0.15, end],
-    [0, 1, 1, 0]
+    [index === 0 ? 1 : 0, 1, 1, index === total - 1 ? 1 : 0]
   );
   const y = useTransform(progress, [start, end], [40, -40]);
 

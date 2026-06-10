@@ -60,7 +60,7 @@ const ServicesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-clip">
       <Seo
         title="Services — ArchViz, Design, Modelling, Branding | Aureon Forma"
         description="Architectural visualisation, design, 3D modelling, product visualisation, and brand identity services for developers, architects, and considered brands."
