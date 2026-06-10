@@ -99,9 +99,10 @@ const BehindTheScenesPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="mt-24 mb-12 lg:mb-16"
+            className="mt-8 mb-12 lg:mb-16"
           >
             <h1 className="font-display font-light text-3xl sm:text-4xl lg:text-5xl text-foreground tracking-wide">
               Behind The Scenes
