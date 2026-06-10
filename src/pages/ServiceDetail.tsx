@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import GallerySlideshow from "@/components/GallerySlideshow";
 import { allServices } from "@/data/services";
 import Seo from "@/components/Seo";
+import ServiceRequestForm from "@/components/ServiceRequestForm";
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -177,7 +178,9 @@ const ServiceDetail = () => {
           </motion.div>
         )}
 
-        <motion.div custom={5} initial="hidden" animate="visible" variants={sectionVariants}>
+        <ServiceRequestForm service={service} />
+
+        <motion.div custom={5} initial="hidden" animate="visible" variants={sectionVariants} className="mt-16">
           <Link
             to="/services"
             className="gold-underline text-sm font-body font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors pb-1"
