@@ -302,7 +302,7 @@ const ServiceRequestForm = ({ service }: ServiceRequestFormProps) => {
                         </svg>
                       )}
                     </span>
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start justify-between gap-3 flex-1">
                       <div className="flex-1">
                         <span className="text-sm font-body font-light text-foreground block">
                           {p.service_name}
