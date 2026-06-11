@@ -59,7 +59,7 @@ const WorkPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="mt-8 mb-12 lg:mb-16"
+            className="mb-12 lg:mb-16"
           >
             <h1 className="font-display font-light text-3xl sm:text-4xl lg:text-5xl text-foreground tracking-wide">
               Portfolio of Spatial Narratives

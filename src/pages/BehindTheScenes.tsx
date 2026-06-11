@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ViewportProjectCard from "@/components/ViewportProjectCard";
 import Seo from "@/components/Seo";
 import Scrollytelling from "@/components/Scrollytelling";
+import BehindTheScenesIntro from "@/components/BehindTheScenesIntro";
 
 const btsChapters = [
   {
@@ -96,13 +97,15 @@ const BehindTheScenesPage = () => {
       <main className="pt-24 pb-24">
         <Scrollytelling label="The Process" chapters={btsChapters} />
 
+        <BehindTheScenesIntro />
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="mt-8 mb-12 lg:mb-16"
+            className="mb-12 lg:mb-16"
           >
             <h1 className="font-display font-light text-3xl sm:text-4xl lg:text-5xl text-foreground tracking-wide">
               Behind The Scenes
