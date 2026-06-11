@@ -50,6 +50,36 @@ export type Database = {
         }
         Relationships: []
       }
+      currency_rates: {
+        Row: {
+          code: string
+          created_at: string
+          is_active: boolean
+          name: string
+          rate_to_usd: number
+          symbol: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          is_active?: boolean
+          name: string
+          rate_to_usd?: number
+          symbol: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          is_active?: boolean
+          name?: string
+          rate_to_usd?: number
+          symbol?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           company: string | null
@@ -132,6 +162,7 @@ export type Database = {
           additional_notes: string | null
           company: string | null
           created_at: string
+          currency: string
           email: string
           estimated_price: number | null
           full_name: string
@@ -148,6 +179,7 @@ export type Database = {
           additional_notes?: string | null
           company?: string | null
           created_at?: string
+          currency?: string
           email: string
           estimated_price?: number | null
           full_name: string
@@ -164,6 +196,7 @@ export type Database = {
           additional_notes?: string | null
           company?: string | null
           created_at?: string
+          currency?: string
           email?: string
           estimated_price?: number | null
           full_name?: string
@@ -186,9 +219,11 @@ export type Database = {
           company_phone_1: string
           company_phone_2: string
           company_website: string
+          default_currency: string
           id: string
           others_amount: number
           others_label: string
+          supported_currencies: string[]
           tax_label: string
           tax_percentage: number
           terms_conditions: string[]
@@ -202,9 +237,11 @@ export type Database = {
           company_phone_1?: string
           company_phone_2?: string
           company_website?: string
+          default_currency?: string
           id?: string
           others_amount?: number
           others_label?: string
+          supported_currencies?: string[]
           tax_label?: string
           tax_percentage?: number
           terms_conditions?: string[]
@@ -218,9 +255,11 @@ export type Database = {
           company_phone_1?: string
           company_phone_2?: string
           company_website?: string
+          default_currency?: string
           id?: string
           others_amount?: number
           others_label?: string
+          supported_currencies?: string[]
           tax_label?: string
           tax_percentage?: number
           terms_conditions?: string[]
@@ -233,6 +272,7 @@ export type Database = {
         Row: {
           base_price: number
           created_at: string
+          currency: string
           description: string | null
           id: string
           is_active: boolean
@@ -244,6 +284,7 @@ export type Database = {
         Insert: {
           base_price?: number
           created_at?: string
+          currency?: string
           description?: string | null
           id?: string
           is_active?: boolean
@@ -255,6 +296,7 @@ export type Database = {
         Update: {
           base_price?: number
           created_at?: string
+          currency?: string
           description?: string | null
           id?: string
           is_active?: boolean

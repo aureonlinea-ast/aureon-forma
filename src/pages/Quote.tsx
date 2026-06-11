@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
+import { useCurrencies, convertPrice, formatPrice } from "@/hooks/useCurrencies";
 
 interface ServicePrice {
   id: string;
@@ -13,6 +14,7 @@ interface ServicePrice {
   base_price: number;
   price_per_unit: string | null;
   description: string | null;
+  currency?: string;
 }
 
 const projectClassifications = [
@@ -67,6 +69,8 @@ const categoryLabels: Record<string, string> = {
 const categoryOrder = ["archviz", "architectural-design", "modelling", "product-visualization", "branding", "vr"];
 
 const QuotePage = () => {
+  const { currencies } = useCurrencies();
+  const [currency, setCurrency] = useState<string>("USD");
   const [services, setServices] = useState<ServicePrice[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [formData, setFormData] = useState({
@@ -100,9 +104,16 @@ const QuotePage = () => {
     );
   };
 
-  const estimatedPrice = services
+  const activeCurrency = currencies.find((c) => c.code === currency);
+
+  const selectedLines = services
     .filter((s) => selectedServices.includes(s.service_name))
-    .reduce((sum, s) => sum + Number(s.base_price), 0);
+    .map((s) => ({
+      ...s,
+      converted: convertPrice(Number(s.base_price), s.currency || "USD", currency, currencies),
+    }));
+
+  const estimatedPrice = selectedLines.reduce((sum, s) => sum + s.converted, 0);
 
   const timelineMultiplier =
     formData.timeline === "Urgent (1-2 weeks)" ? 1.5 :
@@ -134,7 +145,8 @@ const QuotePage = () => {
       requirement_period: formData.requirementPeriod || null,
       additional_notes: formData.additionalNotes.trim() || null,
       estimated_price: finalPrice,
-    });
+      currency,
+    } as any);
 
     setIsSubmitting(false);
 
@@ -159,6 +171,7 @@ const QuotePage = () => {
           requirement_period: formData.requirementPeriod || null,
           estimated_price: finalPrice,
           additional_notes: formData.additionalNotes.trim() || null,
+          currency,
         },
       },
     }).catch(console.error);
@@ -205,9 +218,29 @@ const QuotePage = () => {
               Get a Quote
             </h1>
             <div className="w-12 h-[1px] bg-primary mb-4" />
-            <p className="text-sm font-body font-light text-muted-foreground mb-12 leading-relaxed max-w-xl">
-              Configure your project requirements below and receive an instant estimate. Our team will follow up with a detailed proposal.
-            </p>
+            <div className="flex flex-wrap items-end justify-between gap-4 mb-12">
+              <p className="text-sm font-body font-light text-muted-foreground leading-relaxed max-w-xl">
+                Configure your project requirements below and receive an instant estimate. Our team will follow up with a detailed proposal.
+              </p>
+              {currencies.length > 1 && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-body font-light tracking-[0.25em] uppercase text-muted-foreground">
+                    Currency
+                  </span>
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="glass-surface bg-transparent px-3 py-2 text-xs font-body font-light text-foreground focus:outline-none focus:border-primary/50 appearance-none"
+                  >
+                    {currencies.map((c) => (
+                      <option key={c.code} value={c.code} className="bg-background">
+                        {c.code} — {c.symbol}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
           </motion.div>
 
           <motion.form
@@ -269,7 +302,7 @@ const QuotePage = () => {
                 Select Services
               </h2>
               <p className="text-xs font-body font-light text-muted-foreground mb-6">
-                Choose all the services you need. Prices shown are starting rates in USD.
+                Choose all the services you need. Prices shown are starting rates in {currency}.
               </p>
 
               <div className="flex flex-col gap-8">
@@ -281,6 +314,12 @@ const QuotePage = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {group.items.map((service) => {
                         const isSelected = selectedServices.includes(service.service_name);
+                        const displayed = convertPrice(
+                          Number(service.base_price),
+                          service.currency || "USD",
+                          currency,
+                          currencies
+                        );
                         return (
                           <button
                             key={service.id}
@@ -305,7 +344,7 @@ const QuotePage = () => {
                               </div>
                               <div className="text-right shrink-0">
                                 <span className="text-sm font-body text-primary block">
-                                  ${Number(service.base_price).toLocaleString()}
+                                  {formatPrice(displayed, activeCurrency)}
                                 </span>
                                 {service.price_per_unit && (
                                   <span className="text-xs font-body font-light text-muted-foreground">
@@ -343,12 +382,10 @@ const QuotePage = () => {
                   Estimated Quote
                 </h2>
                 <div className="flex flex-col gap-2 mb-4">
-                  {services
-                    .filter((s) => selectedServices.includes(s.service_name))
-                    .map((s) => (
+                  {selectedLines.map((s) => (
                       <div key={s.id} className="flex justify-between text-sm font-body font-light">
                         <span className="text-muted-foreground">{s.service_name}</span>
-                        <span className="text-foreground">${Number(s.base_price).toLocaleString()}</span>
+                        <span className="text-foreground">{formatPrice(s.converted, activeCurrency)}</span>
                       </div>
                     ))}
                   {timelineMultiplier > 1 && (
@@ -363,7 +400,7 @@ const QuotePage = () => {
                     Estimated Total
                   </span>
                   <span className="font-display text-3xl text-primary">
-                    ${finalPrice.toLocaleString()}
+                    {formatPrice(finalPrice, activeCurrency)}
                   </span>
                 </div>
                 <p className="text-xs font-body font-light text-muted-foreground mt-3">

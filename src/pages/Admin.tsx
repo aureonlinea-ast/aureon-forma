@@ -6,6 +6,7 @@ import ClientsTab from "@/components/admin/ClientsTab";
 import QuotesTab from "@/components/admin/QuotesTab";
 import QuoteTemplateTab from "@/components/admin/QuoteTemplateTab";
 import InvoicesTab from "@/components/admin/InvoicesTab";
+import PricingTab from "@/components/admin/PricingTab";
 
 interface ContactSubmission {
   id: string;
@@ -367,63 +368,7 @@ const AdminPage = () => {
         {activeTab === "quotes" && <QuotesTab quotes={quotes} pricing={pricing} formatDate={formatDate} onRefresh={fetchData} />}
 
         {/* Pricing Tab */}
-        {activeTab === "pricing" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <h2 className="font-display text-xl text-foreground font-light tracking-wide">Service Pricing (USD)</h2>
-              <p className="text-xs font-body font-light text-muted-foreground">Click any price to edit</p>
-            </div>
-            {Object.entries(
-              pricing.reduce<Record<string, ServicePrice[]>>((acc, s) => {
-                (acc[s.service_category] = acc[s.service_category] || []).push(s);
-                return acc;
-              }, {})
-            ).map(([category, items]) => (
-              <div key={category}>
-                <h3 className="text-sm font-body font-light tracking-[0.15em] uppercase text-primary mb-3">
-                  {category.replace(/-/g, " ")}
-                </h3>
-                <div className="flex flex-col gap-2">
-                  {items.map((service) => (
-                    <div key={service.id} className="glass-surface p-4 flex items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <p className="text-sm font-body font-light text-foreground">{service.service_name}</p>
-                        <p className="text-xs font-body font-light text-muted-foreground">
-                          {service.description} {service.price_per_unit && `· ${service.price_per_unit}`}
-                        </p>
-                      </div>
-                      {editingPrice === service.id ? (
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">$</span>
-                          <input
-                            type="number"
-                            value={editValue}
-                            onChange={(e) => setEditValue(e.target.value)}
-                            className="w-24 bg-transparent border-b border-primary text-sm font-body text-foreground focus:outline-none py-1"
-                            autoFocus
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") updatePrice(service.id);
-                              if (e.key === "Escape") setEditingPrice(null);
-                            }}
-                          />
-                          <button onClick={() => updatePrice(service.id)} className="text-xs text-primary hover:text-primary/80">Save</button>
-                          <button onClick={() => setEditingPrice(null)} className="text-xs text-muted-foreground hover:text-foreground">Cancel</button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => { setEditingPrice(service.id); setEditValue(String(service.base_price)); }}
-                          className="text-sm font-body text-primary hover:text-primary/80 transition-colors"
-                        >
-                          ${Number(service.base_price).toLocaleString()}
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        )}
+        {activeTab === "pricing" && <PricingTab />}
 
         {/* Quote Template Tab */}
         {activeTab === "template" && <QuoteTemplateTab />}

@@ -5,6 +5,9 @@ import { allServices } from "@/data/services";
 import GetQuoteButton from "@/components/GetQuoteButton";
 import Seo from "@/components/Seo";
 import ServiceStage from "@/components/ServiceStage";
+import ServiceInsightPanel from "@/components/ServiceInsight";
+import ServiceTransition from "@/components/ServiceTransition";
+import { serviceInsights } from "@/data/serviceInsights";
 
 const ServicesPage = () => {
   return (
@@ -46,10 +49,23 @@ const ServicesPage = () => {
           </motion.div>
         </div>
 
-        {/* Per-service full-viewport stages */}
-        {allServices.map((service, i) => (
-          <ServiceStage key={service.slug} service={service} index={i} />
-        ))}
+        {/* Per-service full-viewport stages interleaved with insight panels + textured transitions */}
+        {allServices.map((service, i) => {
+          const insight = serviceInsights.find((x) => x.after === service.slug);
+          const isLast = i === allServices.length - 1;
+          return (
+            <div key={service.slug}>
+              <ServiceStage service={service} index={i} />
+              {insight && (
+                <>
+                  <ServiceTransition />
+                  <ServiceInsightPanel insight={insight} reverse={i % 2 === 1} />
+                  {!isLast && <ServiceTransition />}
+                </>
+              )}
+            </div>
+          );
+        })}
 
         <div className="mt-20 flex justify-center">
           <GetQuoteButton />
