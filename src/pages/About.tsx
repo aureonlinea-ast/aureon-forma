@@ -74,9 +74,10 @@ const AboutPage = () => {
               We make light <em className="not-italic text-primary">behave</em>.
             </h1>
             <p className="mt-10 max-w-2xl text-base sm:text-lg font-body font-light text-muted-foreground leading-[1.9]">
-              Aureon Forma is a small, uncompromising studio devoted to architectural visualisation
-              and spatial storytelling. We work slowly, by hand, and only with clients who
-              understand that an image, like a building, holds time.
+              Aureon Forma is an uncompromising studio devoted to architectural visualisation
+              and spatial storytelling. We work with deliberate attention to detail —
+              intricate, considered, and only with clients who understand that an image,
+              like a building, holds time.
             </p>
             <p className="mt-6 max-w-2xl text-sm font-body font-light text-muted-foreground/80 leading-[1.9]">
               Some of what we do is not on this page. By design.
@@ -93,6 +94,43 @@ const AboutPage = () => {
                 "radial-gradient(ellipse at 20% 30%, hsl(var(--gold) / 0.10), transparent 55%)",
             }}
           />
+          {/* Geometric artwork — slow, deliberate motion */}
+          <svg
+            aria-hidden
+            className="absolute -top-20 -right-20 w-[520px] h-[520px] opacity-[0.12] pointer-events-none"
+            viewBox="0 0 400 400"
+            fill="none"
+          >
+            <g stroke="hsl(var(--gold))" strokeWidth="0.6">
+              <circle cx="200" cy="200" r="180" className="origin-center [animation:spin_120s_linear_infinite]" style={{ transformBox: "fill-box" }} />
+              <circle cx="200" cy="200" r="140" />
+              <circle cx="200" cy="200" r="100" />
+              <polygon points="200,40 360,290 40,290" />
+              <polygon points="200,360 40,110 360,110" className="opacity-60" />
+              <line x1="20" y1="200" x2="380" y2="200" />
+              <line x1="200" y1="20" x2="200" y2="380" />
+            </g>
+          </svg>
+          <svg
+            aria-hidden
+            className="absolute -bottom-32 -left-24 w-[420px] h-[420px] opacity-[0.08] pointer-events-none"
+            viewBox="0 0 400 400"
+            fill="none"
+          >
+            <g stroke="hsl(var(--gold))" strokeWidth="0.5">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <line
+                  key={i}
+                  x1="200"
+                  y1="200"
+                  x2={200 + 180 * Math.cos((i * Math.PI) / 6)}
+                  y2={200 + 180 * Math.sin((i * Math.PI) / 6)}
+                />
+              ))}
+              <circle cx="200" cy="200" r="180" />
+              <rect x="80" y="80" width="240" height="240" transform="rotate(45 200 200)" />
+            </g>
+          </svg>
           <div className="container mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 relative">
             <motion.div
               initial={{ opacity: 0, y: 24 }}

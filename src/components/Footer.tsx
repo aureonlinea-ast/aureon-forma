@@ -9,8 +9,44 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="bg-background border-t border-border py-16">
-      <div className="container mx-auto px-6 lg:px-12">
+    <footer className="relative bg-background border-t border-border py-16 overflow-hidden">
+      {/* Geometric artwork — slow ambient motion */}
+      <svg
+        aria-hidden
+        className="absolute -right-24 -bottom-32 w-[460px] h-[460px] opacity-[0.07] pointer-events-none"
+        viewBox="0 0 400 400"
+        fill="none"
+      >
+        <g stroke="hsl(var(--gold))" strokeWidth="0.5">
+          <circle cx="200" cy="200" r="190" />
+          <circle cx="200" cy="200" r="150" />
+          <circle cx="200" cy="200" r="110" />
+          <g style={{ transformOrigin: "200px 200px", animation: "spin 90s linear infinite" }}>
+            <polygon points="200,40 360,290 40,290" />
+            <polygon points="200,360 40,110 360,110" opacity="0.6" />
+          </g>
+        </g>
+      </svg>
+      <svg
+        aria-hidden
+        className="absolute -left-20 -top-16 w-[300px] h-[300px] opacity-[0.06] pointer-events-none"
+        viewBox="0 0 400 400"
+        fill="none"
+      >
+        <g stroke="hsl(var(--gold))" strokeWidth="0.5" style={{ transformOrigin: "200px 200px", animation: "spin 140s linear infinite reverse" }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <rect
+              key={i}
+              x="100"
+              y="100"
+              width="200"
+              height="200"
+              transform={`rotate(${i * 11.25} 200 200)`}
+            />
+          ))}
+        </g>
+      </svg>
+      <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="flex flex-col lg:flex-row items-start justify-between gap-12">
           <div>
             <img src={aureonLogo} alt="Aureon Forma logo" className="h-6 w-auto mb-6" />

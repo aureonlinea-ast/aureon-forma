@@ -46,6 +46,26 @@ const ServiceTransition = () => {
           }}
         />
       </motion.div>
+
+      {/* Geometric artwork — drifts slowly across the transition band */}
+      <motion.svg
+        aria-hidden
+        style={{ opacity: lineOpacity }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] pointer-events-none"
+        viewBox="0 0 100 100"
+        fill="none"
+      >
+        <g
+          stroke="hsl(var(--gold) / 0.35)"
+          strokeWidth="0.3"
+          style={{ transformOrigin: "50px 50px", animation: "spin 30s linear infinite" }}
+        >
+          <circle cx="50" cy="50" r="46" />
+          <circle cx="50" cy="50" r="32" />
+          <polygon points="50,8 88,72 12,72" />
+          <polygon points="50,92 12,28 88,28" opacity="0.5" />
+        </g>
+      </motion.svg>
     </div>
   );
 };

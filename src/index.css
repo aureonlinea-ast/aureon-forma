@@ -124,6 +124,22 @@
     display: none;
   }
 
+  @keyframes shimmer {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(400%); }
+  }
+
+  @keyframes float-rotate {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(180deg); }
+  }
+
+  @keyframes draw-line {
+    0% { stroke-dashoffset: 400; opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { stroke-dashoffset: 0; opacity: 0.4; }
+  }
+
   /* Hide Lovable banner */
   .lovable-banner, #lovable-banner, .lovable-widget, #lovable-widget, .lovable-tagger, #lovable-tagger {
     display: none !important;
