@@ -68,7 +68,7 @@ const ViewportProjectCard = ({
               muted
               loop
               playsInline
-              preload="auto"
+              preload={index < 3 ? "auto" : "metadata"}
               poster={image}
               className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
             >

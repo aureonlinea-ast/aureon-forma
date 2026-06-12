@@ -78,7 +78,7 @@ const ServiceDetail = () => {
       {/* Hero Image (for services without video) */}
       {!service.headerVideo && service.headerImage && (
         <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
-          <img src={service.headerImage} alt={service.title} className="w-full h-full object-cover" />
+          <img src={service.headerImage} alt={service.title} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-12">
             <motion.h1
