@@ -1,52 +1,50 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 /**
- * Smooth textured transition between full-viewport service sections.
- * Uses a layered radial-noise SVG + animated gold thread for material feel.
+ * Seamless transition between full-viewport service sections.
+ * Pure tonal bleed — no contrasting color block, no labels, no random marks.
+ * A single hairline scales in as it enters view, then fades as it leaves.
  */
 const ServiceTransition = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  // Hairline draws in on entry, holds, then fades on exit.
+  const lineScale = useTransform(scrollYProgress, [0, 0.45, 0.55, 1], [0, 1, 1, 1]);
+  const lineOpacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0, 1, 1, 0]);
+
   return (
     <div
-      className="relative h-[18vh] sm:h-[20vh] w-full overflow-hidden bg-background"
+      ref={ref}
+      className="relative h-[14vh] sm:h-[16vh] w-full overflow-hidden bg-background"
       aria-hidden
     >
-      {/* Vertical fade so the previous and next sections breathe in */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/40 to-background" />
-
-      {/* Grain / texture layer */}
-      <svg
-        className="absolute inset-0 w-full h-full opacity-[0.18] mix-blend-overlay"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <filter id="aureon-grain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#aureon-grain)" />
-      </svg>
-
-      {/* Slow drifting gold thread */}
-      <motion.div
-        initial={{ scaleX: 0, opacity: 0 }}
-        whileInView={{ scaleX: 1, opacity: 1 }}
-        viewport={{ once: false, margin: "-10%" }}
-        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[1px] w-[60%] origin-center"
+      {/* Pure tonal bleed — matches surrounding sections so the eye glides through */}
+      <div className="absolute inset-0 bg-background" />
+      <div
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to right, transparent 0%, hsl(var(--gold) / 0.5) 50%, transparent 100%)",
+            "radial-gradient(ellipse at center, hsl(var(--gold) / 0.04) 0%, transparent 65%)",
         }}
       />
 
-      {/* Tiny chapter mark */}
+      {/* Single drawn-in hairline — quiet rhythm marker, no text */}
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 1, delay: 0.4 }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 mt-3 text-[9px] tracking-[0.4em] uppercase font-body font-light text-primary/60"
+        style={{ scaleX: lineScale, opacity: lineOpacity }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-px w-[42%] origin-center"
       >
-        ·
+        <div
+          className="w-full h-full"
+          style={{
+            background:
+              "linear-gradient(to right, transparent 0%, hsl(var(--gold) / 0.45) 50%, transparent 100%)",
+          }}
+        />
       </motion.div>
     </div>
   );
