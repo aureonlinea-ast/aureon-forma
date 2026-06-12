@@ -57,7 +57,7 @@ const ProjectDetail = () => {
             <source src={project.video} type="video/mp4" />
           </video>
         ) : (
-          <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+          <img src={project.image} alt={project.title} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-12">
