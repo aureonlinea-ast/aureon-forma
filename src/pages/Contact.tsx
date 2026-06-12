@@ -85,7 +85,33 @@ const ContactPage = () => {
     "w-full glass-surface bg-transparent px-5 py-4 text-sm font-body font-light text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors duration-300";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen bg-background overflow-hidden">
+      {/* Geometric artwork — ambient backdrop */}
+      <svg
+        aria-hidden
+        className="fixed -right-32 top-20 w-[600px] h-[600px] opacity-[0.06] pointer-events-none"
+        viewBox="0 0 400 400"
+        fill="none"
+      >
+        <g stroke="hsl(var(--gold))" strokeWidth="0.5" style={{ transformOrigin: "200px 200px", animation: "spin 180s linear infinite" }}>
+          <circle cx="200" cy="200" r="190" />
+          <circle cx="200" cy="200" r="140" />
+          <circle cx="200" cy="200" r="90" />
+          <polygon points="200,20 380,290 20,290" />
+        </g>
+      </svg>
+      <svg
+        aria-hidden
+        className="fixed -left-24 bottom-10 w-[380px] h-[380px] opacity-[0.05] pointer-events-none"
+        viewBox="0 0 400 400"
+        fill="none"
+      >
+        <g stroke="hsl(var(--gold))" strokeWidth="0.5" style={{ transformOrigin: "200px 200px", animation: "spin 220s linear infinite reverse" }}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <rect key={i} x="80" y="80" width="240" height="240" transform={`rotate(${i * 15} 200 200)`} />
+          ))}
+        </g>
+      </svg>
       <Seo
         title="Contact — Enquiries, Availability & Briefs | Aureon Forma"
         description="Get in touch with Aureon Forma about availability, lead times, partnerships, or complex multi-discipline briefs. We respond to every enquiry personally."

@@ -71,8 +71,10 @@ const Scrollytelling = ({
               eager={i === 0}
             />
           ))}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/95 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent pointer-events-none" />
+          {/* Persistent base so the stage never reads as a flat black gap */}
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/40 to-background pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/35 to-background/85 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/55 via-transparent to-transparent pointer-events-none" />
         </div>
 
         <div className="relative z-10 h-full container mx-auto px-4 sm:px-6 lg:px-12 flex items-center">
@@ -162,7 +164,7 @@ const ChapterMedia = ({
     <motion.div style={{ opacity }} className="absolute inset-0">
       <motion.div style={{ scale, y }} className="absolute inset-0 will-change-transform">
         {!shouldLoad ? (
-          <div className="w-full h-full bg-gradient-to-br from-background via-background to-primary/5" />
+          <ChapterSkeleton index={index} />
         ) : isVideo ? (
           <video
             src={media}
@@ -185,6 +187,33 @@ const ChapterMedia = ({
         )}
       </motion.div>
     </motion.div>
+  );
+};
+
+/**
+ * Deliberate skeleton placeholder shown while a chapter's media is still
+ * fetching. Uses a soft gold/secondary gradient + slow shimmer so mobile
+ * never sees a flat black gap during slow-network loads.
+ */
+const ChapterSkeleton = ({ index }: { index: number }) => {
+  const angle = (index * 27) % 360;
+  return (
+    <div className="relative w-full h-full overflow-hidden bg-secondary/40">
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(${angle}deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 50%, hsl(var(--background)) 100%)`,
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-50"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 40%, hsl(var(--gold) / 0.10), transparent 60%)",
+        }}
+      />
+      <div className="absolute inset-y-0 -left-full w-1/2 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent animate-[shimmer_2.4s_ease-in-out_infinite]" />
+    </div>
   );
 };
 
