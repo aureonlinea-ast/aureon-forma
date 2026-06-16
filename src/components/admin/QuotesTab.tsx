@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { adminDb } from "@/lib/adminDb";
 import { toast } from "sonner";
 
 type Currency = "USD" | "KES" | "EUR" | "RMB";
@@ -108,10 +109,7 @@ const QuotesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
     setUpdatingStatus(quoteId);
     const quote = quotes.find((q) => q.id === quoteId);
 
-    const { error } = await supabase
-      .from("quote_requests")
-      .update({ status: newStatus })
-      .eq("id", quoteId);
+    const { error } = await adminDb.update("quote_requests", { status: newStatus }, { id: quoteId });
 
     if (error) {
       toast.error("Failed to update status");
