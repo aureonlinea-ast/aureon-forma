@@ -8,6 +8,7 @@ import ServiceStage from "@/components/ServiceStage";
 import ServiceInsightPanel from "@/components/ServiceInsight";
 import ServiceTransition from "@/components/ServiceTransition";
 import { serviceInsights } from "@/data/serviceInsights";
+import GeometricField from "@/components/GeometricField";
 
 const ServicesPage = () => {
   return (
@@ -28,7 +29,8 @@ const ServicesPage = () => {
         }}
       />
       <Navigation />
-      <main className="pt-24 pb-24">
+      <GeometricField />
+      <main className="relative z-10 pt-24 pb-24">
         {/* Page intro */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-8 pb-12">
           <motion.div
