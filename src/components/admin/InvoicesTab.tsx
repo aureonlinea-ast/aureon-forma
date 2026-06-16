@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { adminDb } from "@/lib/adminDb";
 import { toast } from "sonner";
 
 interface QuoteRequest {
@@ -84,7 +85,7 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
   }, []);
 
   const fetchInvoices = async () => {
-    const { data } = await supabase.from("invoices" as any).select("*").order("created_at", { ascending: false });
+    const { data } = await adminDb.select("invoices", { order: { column: "created_at", ascending: false } });
     if (data) setInvoices(data as any);
   };
 
@@ -124,7 +125,7 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
     const quoteRef = quote.id.slice(0, 8).toUpperCase();
     const invoiceNumber = `INV-${quoteRef}`;
 
-    const { error } = await supabase.from("invoices" as any).insert({
+    const { error } = await adminDb.insert("invoices", {
       quote_id: quote.id,
       invoice_number: invoiceNumber,
       full_name: quote.full_name,
@@ -141,7 +142,7 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
       payment_method: paymentMethod,
       installments,
       status: "draft",
-    } as any);
+    });
 
     if (error) {
       toast.error("Failed to create invoice");
@@ -155,7 +156,7 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
   };
 
   const updateInvoiceStatus = async (id: string, status: string) => {
-    await supabase.from("invoices" as any).update({ status, updated_at: new Date().toISOString() } as any).eq("id", id);
+    await adminDb.update("invoices", { status, updated_at: new Date().toISOString() }, { id });
     toast.success(`Invoice status updated to ${status}`);
     fetchInvoices();
   };
@@ -165,7 +166,7 @@ const InvoicesTab = ({ quotes, pricing, formatDate, onRefresh }: Props) => {
     if (!invoice) return;
     const updated = [...invoice.installments];
     updated[installmentIndex] = { ...updated[installmentIndex], status };
-    await supabase.from("invoices" as any).update({ installments: updated, updated_at: new Date().toISOString() } as any).eq("id", invoiceId);
+    await adminDb.update("invoices", { installments: updated, updated_at: new Date().toISOString() }, { id: invoiceId });
     toast.success(`Installment ${installmentIndex + 1} marked as ${status}`);
     fetchInvoices();
   };

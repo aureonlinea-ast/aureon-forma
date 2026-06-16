@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { adminDb } from "@/lib/adminDb";
 import { toast } from "sonner";
 
 interface QuoteTemplate {
@@ -45,9 +46,9 @@ const QuoteTemplateTab = () => {
   const save = async () => {
     if (!template) return;
     setSaving(true);
-    const { error } = await supabase
-      .from("quote_template" as any)
-      .update({
+    const { error } = await adminDb.update(
+      "quote_template",
+      {
         company_name: template.company_name,
         company_website: template.company_website,
         company_phone_1: template.company_phone_1,
@@ -61,8 +62,9 @@ const QuoteTemplateTab = () => {
         terms_conditions: template.terms_conditions,
         acceptance_text: template.acceptance_text,
         updated_at: new Date().toISOString(),
-      } as any)
-      .eq("id", template.id);
+      },
+      { id: template.id }
+    );
     if (error) {
       toast.error("Failed to save template");
       console.error(error);
