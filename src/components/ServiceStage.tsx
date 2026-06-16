@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { Service } from "@/data/services";
+import { serviceInsights } from "@/data/serviceInsights";
 
 interface ServiceStageProps {
   service: Service;
@@ -37,6 +38,7 @@ const ServiceStage = ({ service, index }: ServiceStageProps) => {
   const media = service.headerVideo ?? service.gallery?.[0] ?? service.headerImage;
   const isVideo = !!media && /\.(mp4|webm|mov)$/i.test(media);
   const isReverse = index % 2 === 1;
+  const insight = serviceInsights.find((x) => x.after === service.slug);
 
   return (
     <section
@@ -108,6 +110,28 @@ const ServiceStage = ({ service, index }: ServiceStageProps) => {
             <p className="mt-6 text-sm sm:text-base font-body font-light text-muted-foreground leading-relaxed">
               {service.description}
             </p>
+
+            {insight && (
+              <div
+                className={`mt-8 grid grid-cols-3 gap-3 max-w-md ${
+                  isReverse ? "ml-auto" : ""
+                }`}
+              >
+                {insight.metrics.map((m) => (
+                  <div
+                    key={m.label}
+                    className="glass-surface p-3 sm:p-4 transition-all duration-700 hover:border-primary/40"
+                  >
+                    <div className="font-display text-xl sm:text-2xl text-primary leading-none">
+                      {m.value}
+                    </div>
+                    <div className="mt-2 text-[9px] sm:text-[10px] font-body font-light tracking-[0.18em] uppercase text-muted-foreground leading-tight">
+                      {m.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div
               className={`mt-10 flex flex-wrap gap-3 ${

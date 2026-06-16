@@ -2,9 +2,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 /**
- * Seamless transition between full-viewport service sections.
- * Pure tonal bleed — no contrasting color block, no labels, no random marks.
- * A single hairline scales in as it enters view, then fades as it leaves.
+ * Transition between full-viewport service sections.
+ * Large triangular shapes form a complex but minimal pattern,
+ * drifting slowly to give the band a sense of breath.
  */
 const ServiceTransition = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -13,59 +13,72 @@ const ServiceTransition = () => {
     offset: ["start end", "end start"],
   });
 
-  // Hairline draws in on entry, holds, then fades on exit.
-  const lineScale = useTransform(scrollYProgress, [0, 0.45, 0.55, 1], [0, 1, 1, 1]);
-  const lineOpacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0, 1, 1, 0]);
+  const fieldOpacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
+  const parallaxA = useTransform(scrollYProgress, [0, 1], ["6%", "-6%"]);
+  const parallaxB = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  const rotateSlow = useTransform(scrollYProgress, [0, 1], [-3, 3]);
 
   return (
     <div
       ref={ref}
-      className="relative h-[14vh] sm:h-[16vh] w-full overflow-hidden bg-background"
+      className="relative h-[26vh] sm:h-[34vh] w-full overflow-hidden bg-background"
       aria-hidden
     >
-      {/* Pure tonal bleed — matches surrounding sections so the eye glides through */}
       <div className="absolute inset-0 bg-background" />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, hsl(var(--gold) / 0.04) 0%, transparent 65%)",
+            "radial-gradient(ellipse at center, hsl(var(--gold) / 0.06) 0%, transparent 70%)",
         }}
       />
 
-      {/* Single drawn-in hairline — quiet rhythm marker, no text */}
+      {/* Triangular field — large overlapping shapes, slow drift */}
+      <motion.svg
+        style={{ opacity: fieldOpacity, y: parallaxA, rotate: rotateSlow }}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 1200 400"
+        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+      >
+        <g stroke="hsl(var(--gold) / 0.32)" strokeWidth="0.6" strokeLinejoin="round">
+          <polygon points="120,360 380,40 640,360" />
+          <polygon points="560,360 820,40 1080,360" opacity="0.7" />
+          <polygon points="340,360 600,120 860,360" opacity="0.5" />
+        </g>
+        <g fill="hsl(var(--gold) / 0.04)">
+          <polygon points="380,40 640,360 120,360" />
+          <polygon points="820,40 1080,360 560,360" />
+        </g>
+      </motion.svg>
+
+      <motion.svg
+        style={{ opacity: fieldOpacity, y: parallaxB }}
+        className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen"
+        viewBox="0 0 1200 400"
+        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+      >
+        <g stroke="hsl(var(--gold) / 0.18)" strokeWidth="0.4">
+          <polygon points="0,360 220,80 440,360" />
+          <polygon points="760,360 980,80 1200,360" />
+          <polygon points="220,80 440,360 760,360 980,80" opacity="0.4" />
+        </g>
+      </motion.svg>
+
+      {/* Hairline anchor */}
       <motion.div
-        style={{ scaleX: lineScale, opacity: lineOpacity }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-px w-[42%] origin-center"
+        style={{ opacity: fieldOpacity }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-px w-[28%]"
       >
         <div
           className="w-full h-full"
           style={{
             background:
-              "linear-gradient(to right, transparent 0%, hsl(var(--gold) / 0.45) 50%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, hsl(var(--gold) / 0.5) 50%, transparent 100%)",
           }}
         />
       </motion.div>
-
-      {/* Geometric artwork — drifts slowly across the transition band */}
-      <motion.svg
-        aria-hidden
-        style={{ opacity: lineOpacity }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] pointer-events-none"
-        viewBox="0 0 100 100"
-        fill="none"
-      >
-        <g
-          stroke="hsl(var(--gold) / 0.35)"
-          strokeWidth="0.3"
-          style={{ transformOrigin: "50px 50px", animation: "spin 30s linear infinite" }}
-        >
-          <circle cx="50" cy="50" r="46" />
-          <circle cx="50" cy="50" r="32" />
-          <polygon points="50,8 88,72 12,72" />
-          <polygon points="50,92 12,28 88,28" opacity="0.5" />
-        </g>
-      </motion.svg>
     </div>
   );
 };
