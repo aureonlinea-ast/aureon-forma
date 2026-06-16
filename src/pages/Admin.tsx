@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { adminDb, setAdminToken, getAdminToken, clearAdminToken } from "@/lib/adminDb";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import ClientsTab from "@/components/admin/ClientsTab";
 import QuotesTab from "@/components/admin/QuotesTab";
@@ -75,7 +76,7 @@ const AdminPage = () => {
       if (data?.authenticated && data?.role === "admin" && data?.token) {
         setAuthenticated(true);
         setRole(data.role);
-        sessionStorage.setItem("aureon_admin", data.token);
+        setAdminToken(data.token);
       } else {
         setLoginError("Invalid password");
       }
@@ -90,7 +91,7 @@ const AdminPage = () => {
     // Always re-verify the stored token with the server. The token is an
     // HMAC signed by ADMIN_PASSWORD (server-only secret) — it cannot be
     // forged or replayed regardless of where this dashboard is deployed.
-    const token = sessionStorage.getItem("aureon_admin");
+    const token = getAdminToken();
     if (!token) {
       setCheckingSession(false);
       return;
@@ -104,10 +105,10 @@ const AdminPage = () => {
           setAuthenticated(true);
           setRole(data.role);
         } else {
-          sessionStorage.removeItem("aureon_admin");
+          clearAdminToken();
         }
       } catch {
-        sessionStorage.removeItem("aureon_admin");
+        clearAdminToken();
       } finally {
         setCheckingSession(false);
       }
@@ -121,9 +122,9 @@ const AdminPage = () => {
 
   const fetchData = async () => {
     const [contactsRes, quotesRes, pricingRes] = await Promise.all([
-      supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }),
-      supabase.from("quote_requests").select("*").order("created_at", { ascending: false }),
-      supabase.from("service_pricing").select("*").order("service_category", { ascending: true }),
+      adminDb.select("contact_submissions", { order: { column: "created_at", ascending: false } }),
+      adminDb.select("quote_requests", { order: { column: "created_at", ascending: false } }),
+      adminDb.select("service_pricing", { order: { column: "service_category", ascending: true } }),
     ]);
     if (contactsRes.data) setContacts(contactsRes.data as ContactSubmission[]);
     if (quotesRes.data) setQuotes(quotesRes.data as QuoteRequest[]);
@@ -133,7 +134,7 @@ const AdminPage = () => {
   const updatePrice = async (id: string) => {
     const newPrice = parseFloat(editValue);
     if (isNaN(newPrice)) return;
-    await supabase.from("service_pricing").update({ base_price: newPrice, updated_at: new Date().toISOString() }).eq("id", id);
+    await adminDb.update("service_pricing", { base_price: newPrice, updated_at: new Date().toISOString() }, { id });
     setEditingPrice(null);
     fetchData();
   };
@@ -141,7 +142,7 @@ const AdminPage = () => {
   const handleLogout = () => {
     setAuthenticated(false);
     setRole(null);
-    sessionStorage.removeItem("aureon_admin");
+    clearAdminToken();
     setPassword("");
   };
 
