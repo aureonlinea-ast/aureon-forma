@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { adminDb } from "@/lib/adminDb";
 import { toast } from "sonner";
 import { useCurrencies, type CurrencyRate } from "@/hooks/useCurrencies";
 
@@ -39,8 +40,8 @@ const PricingTab = () => {
 
   const fetchAll = async () => {
     const [pRes, cRes] = await Promise.all([
-      supabase.from("service_pricing").select("*").order("service_category"),
-      supabase.from("currency_rates" as any).select("*").order("code"),
+      adminDb.select("service_pricing", { order: { column: "service_category", ascending: true } }),
+      adminDb.select("currency_rates", { order: { column: "code", ascending: true } }),
     ]);
     if (pRes.data) setPricing(pRes.data as ServicePrice[]);
     if (cRes.data) setRates(cRes.data as unknown as CurrencyRate[]);
@@ -52,9 +53,9 @@ const PricingTab = () => {
 
   const saveRow = async (row: ServicePrice) => {
     setSavingId(row.id);
-    const { error } = await supabase
-      .from("service_pricing")
-      .update({
+    const { error } = await adminDb.update(
+      "service_pricing",
+      {
         service_name: row.service_name,
         service_category: row.service_category,
         base_price: Number(row.base_price) || 0,
@@ -63,8 +64,9 @@ const PricingTab = () => {
         is_active: row.is_active,
         currency: row.currency || "USD",
         updated_at: new Date().toISOString(),
-      } as any)
-      .eq("id", row.id);
+      },
+      { id: row.id }
+    );
     setSavingId(null);
     if (error) toast.error("Save failed");
     else toast.success("Saved");
@@ -72,7 +74,7 @@ const PricingTab = () => {
 
   const deleteRow = async (id: string) => {
     if (!confirm("Delete this pricing item?")) return;
-    await supabase.from("service_pricing").delete().eq("id", id);
+    await adminDb.delete("service_pricing", { id });
     setPricing((prev) => prev.filter((p) => p.id !== id));
   };
 
@@ -81,23 +83,20 @@ const PricingTab = () => {
       toast.error("Service name required");
       return;
     }
-    const { data, error } = await supabase
-      .from("service_pricing")
-      .insert({
-        service_name: newRow.service_name.trim(),
-        service_category: newRow.service_category,
-        base_price: Number(newRow.base_price) || 0,
-        price_per_unit: newRow.price_per_unit || null,
-        description: newRow.description || null,
-        currency: newRow.currency,
-      } as any)
-      .select()
-      .single();
+    const { data, error } = await adminDb.insert("service_pricing", {
+      service_name: newRow.service_name.trim(),
+      service_category: newRow.service_category,
+      base_price: Number(newRow.base_price) || 0,
+      price_per_unit: newRow.price_per_unit || null,
+      description: newRow.description || null,
+      currency: newRow.currency,
+    });
     if (error) {
       toast.error("Add failed: " + error.message);
       return;
     }
-    setPricing((prev) => [...prev, data as ServicePrice]);
+    const inserted = Array.isArray(data) ? data[0] : data;
+    if (inserted) setPricing((prev) => [...prev, inserted as ServicePrice]);
     setNewRow({ service_name: "", service_category: "archviz", base_price: 0, price_per_unit: "", description: "", currency: "USD" });
     toast.success("Added");
   };
@@ -107,16 +106,17 @@ const PricingTab = () => {
   };
 
   const saveRate = async (rate: CurrencyRate) => {
-    const { error } = await supabase
-      .from("currency_rates" as any)
-      .update({
+    const { error } = await adminDb.update(
+      "currency_rates",
+      {
         name: rate.name,
         symbol: rate.symbol,
         rate_to_usd: Number(rate.rate_to_usd) || 1,
         is_active: rate.is_active,
         updated_at: new Date().toISOString(),
-      } as any)
-      .eq("code", rate.code);
+      },
+      { code: rate.code }
+    );
     if (error) toast.error("Save failed");
     else toast.success(`${rate.code} updated`);
   };
