@@ -21,10 +21,15 @@ const ServiceTransition = () => {
   return (
     <div
       ref={ref}
-      className="relative h-[26vh] sm:h-[34vh] w-full overflow-hidden bg-background"
+      className="relative h-[26vh] sm:h-[34vh] w-full overflow-hidden bg-transparent"
+      style={{
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
+        maskImage:
+          "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
+      }}
       aria-hidden
     >
-      <div className="absolute inset-0 bg-background" />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
