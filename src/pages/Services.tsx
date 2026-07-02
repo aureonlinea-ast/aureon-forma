@@ -11,6 +11,7 @@ import { serviceInsights } from "@/data/serviceInsights";
 import GeometricField from "@/components/GeometricField";
 import { useEffect } from "react";
 import luminaCdn from "@/assets/cdn/lumina.mp4.asset.json";
+import { startRUM } from "@/lib/rum";
 
 const ServicesPage = () => {
   // CDN edge preload: warm the first service video (LCP media) as soon as
@@ -27,6 +28,10 @@ const ServicesPage = () => {
       document.head.removeChild(link);
     };
   }, []);
+
+  // Real-user monitoring: capture LCP + CLS for /services so we can
+  // validate CDN + preload wins on real mobile networks.
+  useEffect(() => startRUM("/services"), []);
 
   return (
     <div className="min-h-screen bg-background overflow-x-clip">
