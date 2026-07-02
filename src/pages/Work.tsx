@@ -6,6 +6,7 @@ import ViewportProjectCard from "@/components/ViewportProjectCard";
 import GetQuoteButton from "@/components/GetQuoteButton";
 import Seo from "@/components/Seo";
 import Scrollytelling from "@/components/Scrollytelling";
+import luminaCdn from "@/assets/cdn/lumina.mp4.asset.json";
 
 const workChapters = [
   {
@@ -18,7 +19,7 @@ const workChapters = [
     eyebrow: "Chapter 02 — Form",
     title: "Form is found, not forced.",
     body: "Massing studies, light analysis, material logic. We translate intent into geometry, refining proportion until the building feels inevitable.",
-    media: "/videos/lumina.mp4",
+    media: luminaCdn.url,
   },
   {
     eyebrow: "Chapter 03 — Atmosphere",
