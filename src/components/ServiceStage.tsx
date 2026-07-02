@@ -37,9 +37,22 @@ const ServiceStage = ({ service, index }: ServiceStageProps) => {
 
   const media = service.headerVideo ?? service.gallery?.[0] ?? service.headerImage;
   const isVideo = !!media && /\.(mp4|webm|mov)$/i.test(media);
+  // Prefer a real image poster; fall back to an inline dark-tone SVG so
+  // <video> never flashes a black frame before the first keyframe decodes.
+  const FALLBACK_POSTER =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'>` +
+        `<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>` +
+        `<stop offset='0' stop-color='#0A0A0A'/>` +
+        `<stop offset='1' stop-color='#1a1408'/>` +
+        `</linearGradient></defs>` +
+        `<rect width='16' height='9' fill='url(#g)'/></svg>`,
+    );
   const posterImage =
-    (service.gallery?.find((g) => !/\.(mp4|webm|mov)$/i.test(g))) ||
-    service.headerImage;
+    service.gallery?.find((g) => !/\.(mp4|webm|mov)$/i.test(g)) ||
+    service.headerImage ||
+    FALLBACK_POSTER;
   const isReverse = index % 2 === 1;
   const insight = serviceInsights.find((x) => x.after === service.slug);
 
