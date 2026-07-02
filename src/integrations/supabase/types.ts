@@ -157,6 +157,48 @@ export type Database = {
           },
         ]
       }
+      perf_metrics: {
+        Row: {
+          connection: string | null
+          created_at: string
+          device: string | null
+          id: string
+          metric: string
+          rating: string | null
+          route: string
+          user_agent: string | null
+          value: number
+          viewport_h: number | null
+          viewport_w: number | null
+        }
+        Insert: {
+          connection?: string | null
+          created_at?: string
+          device?: string | null
+          id?: string
+          metric: string
+          rating?: string | null
+          route: string
+          user_agent?: string | null
+          value: number
+          viewport_h?: number | null
+          viewport_w?: number | null
+        }
+        Update: {
+          connection?: string | null
+          created_at?: string
+          device?: string | null
+          id?: string
+          metric?: string
+          rating?: string | null
+          route?: string
+          user_agent?: string | null
+          value?: number
+          viewport_h?: number | null
+          viewport_w?: number | null
+        }
+        Relationships: []
+      }
       quote_requests: {
         Row: {
           additional_notes: string | null
