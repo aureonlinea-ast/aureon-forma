@@ -37,6 +37,9 @@ const ServiceStage = ({ service, index }: ServiceStageProps) => {
 
   const media = service.headerVideo ?? service.gallery?.[0] ?? service.headerImage;
   const isVideo = !!media && /\.(mp4|webm|mov)$/i.test(media);
+  const posterImage =
+    (service.gallery?.find((g) => !/\.(mp4|webm|mov)$/i.test(g))) ||
+    service.headerImage;
   const isReverse = index % 2 === 1;
   const insight = serviceInsights.find((x) => x.after === service.slug);
 
@@ -62,7 +65,9 @@ const ServiceStage = ({ service, index }: ServiceStageProps) => {
                 loop
                 playsInline
                 preload={index === 0 ? "auto" : "metadata"}
-                className="w-full h-full object-cover"
+                poster={posterImage}
+                className="w-full h-full object-cover object-center"
+                style={{ minWidth: "100%", minHeight: "100%" }}
               />
             ) : (
               <img
@@ -70,7 +75,8 @@ const ServiceStage = ({ service, index }: ServiceStageProps) => {
                 alt={service.title}
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
+                style={{ minWidth: "100%", minHeight: "100%" }}
               />
             )
           ) : (
