@@ -11,6 +11,12 @@ import vertex1 from "@/assets/projects/vertex-1.jpeg";
 import leafLine from "@/assets/projects/leaf-line.jpeg";
 import floraHeights from "@/assets/projects/flora-heights.jpeg";
 
+// CDN-hosted service header videos (edge-cached, globally delivered)
+import luminaCdn from "@/assets/cdn/lumina.mp4.asset.json";
+import insProjectCdn from "@/assets/cdn/ins-project.mp4.asset.json";
+import echelonCdn from "@/assets/cdn/echelon.mp4.asset.json";
+import hypervsnCdn from "@/assets/cdn/hypervsn.mp4.asset.json";
+
 export interface Service {
   title: string;
   slug: string;
@@ -44,7 +50,7 @@ export const allServices: Service[] = [
       "Render and post-produce to cinematic standard",
       "Deliver final assets in print and digital formats",
     ],
-    headerVideo: "/videos/lumina.mp4",
+    headerVideo: luminaCdn.url,
     gallery: [leafLine, floraHeights, vertex, vertex1, interior2],
   },
   {
@@ -90,7 +96,7 @@ export const allServices: Service[] = [
       "UV mapping and material assignment",
       "Export and format optimization",
     ],
-    headerVideo: "/videos/ins-project.mp4",
+    headerVideo: insProjectCdn.url,
   },
   {
     title: "Product Visualization",
