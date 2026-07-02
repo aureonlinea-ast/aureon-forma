@@ -9,8 +9,25 @@ import ServiceInsightPanel from "@/components/ServiceInsight";
 import ServiceTransition from "@/components/ServiceTransition";
 import { serviceInsights } from "@/data/serviceInsights";
 import GeometricField from "@/components/GeometricField";
+import { useEffect } from "react";
+import luminaCdn from "@/assets/cdn/lumina.mp4.asset.json";
 
 const ServicesPage = () => {
+  // CDN edge preload: warm the first service video (LCP media) as soon as
+  // the /services route mounts, before <ServiceStage> even renders. This
+  // gets the range-request rolling against the R2 edge cache.
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "video";
+    link.href = luminaCdn.url;
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background overflow-x-clip">
       <Seo
