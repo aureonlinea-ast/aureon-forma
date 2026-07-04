@@ -9,6 +9,7 @@ import ServiceInsightPanel from "@/components/ServiceInsight";
 import ServiceTransition from "@/components/ServiceTransition";
 import { serviceInsights } from "@/data/serviceInsights";
 import GeometricField from "@/components/GeometricField";
+import ServicesShowcaseGallery from "@/components/ServicesShowcaseGallery";
 import { useEffect } from "react";
 import luminaCdn from "@/assets/cdn/lumina.mp4.asset.json";
 import { startRUM } from "@/lib/rum";
@@ -90,6 +91,10 @@ const ServicesPage = () => {
             </div>
           );
         })}
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 mt-20">
+          <ServicesShowcaseGallery />
+        </div>
 
         <div className="mt-20 flex justify-center">
           <GetQuoteButton />
