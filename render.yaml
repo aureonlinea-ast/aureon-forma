@@ -1,0 +1,25 @@
+# Render.com — Static Site with SPA fallback so /admin (and every deep link) resolves.
+# 1) New +  Static Site → connect this repo.
+# 2) Render auto-detects this file. Add the three VITE_SUPABASE_* env vars below
+#    under "Environment" (values from your Lovable Cloud / Supabase project).
+services:
+  - type: web
+    name: aureon-web
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: VITE_SUPABASE_PROJECT_ID
+        sync: false
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
