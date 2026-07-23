@@ -1,0 +1,13 @@
+# Railway / Nixpacks build config for a Vite SPA.
+# Serves the built dist/ with an SPA fallback so /admin deep-links work.
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npx --yes serve@14 -s dist -l ${PORT:-8080}"
