@@ -2,7 +2,7 @@
   "comment": "Platform targets for the deployment smoke tests. Override at runtime with SMOKE_TARGETS=\"name=url,name=url\" or SMOKE_URL=<single url>.",
   "targets": {
     "lovable": "https://aureon-forma.lovable.app",
-    "custom-domain": "https://aureon.lucene.co",
+    "custom-domain": "",
     "vercel": "",
     "render": "",
     "railway": "",
