@@ -48,5 +48,7 @@ env vars under the service's **Variables** tab.
 - Visit `/admin` on a fresh tab → login screen renders.
 - Log in with `ADMIN_PASSWORD` (`$Astro4L`) → dashboard loads data.
 - Hard-refresh on `/admin` → still resolves (proves SPA fallback works).
+- Or run the automated smoke tests: `SMOKE_URL=https://your-deploy npm run smoke`
+  (and `npm run smoke:ui` for the browser pass). See `scripts/smoke/README.md`.
 - If the login screen loads but the dashboard is empty, the `VITE_SUPABASE_*`
   vars weren't set at build time — rebuild after adding them.
