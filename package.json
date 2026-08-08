@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "smoke": "node scripts/smoke/smoke.mjs",
+    "smoke:ui": "node scripts/smoke/smoke-ui.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
