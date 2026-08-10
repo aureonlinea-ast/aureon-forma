@@ -134,19 +134,26 @@ async function checkAuthGating() {
     });
 
   const cases = [
-    ["rejects wrong password", () => post("admin-auth", { action: "login", password: "definitely-not-it" })],
-    ["rejects forged token", () => post("admin-auth", { action: "verify", token: "admin.9999999999999.forged" })],
-    ["admin-db rejects missing token", () => post("admin-db", { op: "select", table: "quote_requests" })],
+    ["rejects wrong password", () => post("admin-auth", { action: "login", password: "definitely-not-it" }), 401],
+    [
+      "verify reports forged token as unauthenticated",
+      () => post("admin-auth", { action: "verify", token: "admin.9999999999999.forged" }),
+      200,
+    ],
+    ["admin-db rejects missing token", () => post("admin-db", { op: "select", table: "quote_requests" }), 401],
     [
       "admin-db rejects forged token",
       () => post("admin-db", { op: "select", table: "quote_requests", token: "admin.9999999999999.forged" }),
+      401,
     ],
   ];
 
-  for (const [label, run] of cases) {
+  for (const [label, run, expected] of cases) {
     try {
       const res = await run();
-      record("auth", label, res.status === 401, `HTTP ${res.status}`);
+      const body = await res.json().catch(() => ({}));
+      const ok = res.status === expected && body?.authenticated !== true;
+      record("auth", label, ok, `HTTP ${res.status}`);
     } catch (e) {
       record("auth", label, false, String(e?.message ?? e));
     }
