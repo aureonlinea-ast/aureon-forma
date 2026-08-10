@@ -76,9 +76,11 @@ serve(async (req) => {
 
     if (action === "verify") {
       const token = String(body?.token ?? "");
-      if (!token) return json({ authenticated: false, role: null }, 401);
+      // A missing/expired/invalid session is a normal state, not an error:
+      // respond 200 so clients can render the login gate without throwing.
+      if (!token) return json({ authenticated: false, role: null });
       const v = await verifyToken(token, adminPassword);
-      if (!v.valid) return json({ authenticated: false, role: null }, 401);
+      if (!v.valid) return json({ authenticated: false, role: null });
       return json({ authenticated: true, role: v.role, exp: v.exp });
     }
 
